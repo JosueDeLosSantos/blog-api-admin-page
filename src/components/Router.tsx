@@ -1,23 +1,20 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import Index from "./Index";
-import LogIn from "./log-in";
-import SignUp from "./sign-up";
+import Index from ".";
+import User from "./user";
+import ErrorPage from "./ErrorPage";
 
 const Router = () => {
 	const router = createBrowserRouter([
 		{
 			path: "/",
 			element: <Index />,
+			errorElement: <ErrorPage />
 		},
 		{
-			path: "user/sign-up",
-			element: <SignUp />,
-		},
-		{
-			path: "user/log-in",
-			element: <LogIn />,
-		},
+			path: ":name",
+			element: <User />
+		}
 	]);
 	return <RouterProvider router={router} />;
 };

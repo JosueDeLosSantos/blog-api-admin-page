@@ -7,13 +7,12 @@ function Index() {
 		(async function fetchPosts() {
 			try {
 				const response = await fetch("https://dummy-blog.adaptable.app/", {
-					method: "GET",
-					mode: "no-cors",
+					method: "GET"
 				});
 				const data = await response.json();
 				console.log(data);
 			} catch (error) {
-				console.error("Error fetching data:", error);
+				console.error(error);
 			}
 		})();
 	}, []); // only on first render
@@ -22,7 +21,7 @@ function Index() {
 		<>
 			<h1>Hello world</h1>
 			<button type='button'>
-				<Link to='user/sign-up'>Sign up</Link>
+				<Link to='sign-up'>Sign up</Link>
 			</button>
 		</>
 	);
