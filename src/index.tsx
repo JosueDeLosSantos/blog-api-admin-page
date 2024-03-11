@@ -6,7 +6,9 @@ function Index() {
 	useEffect(() => {
 		(async function fetchPosts() {
 			try {
-				const response = await fetch("https://dummy-blog.adaptable.app/", {
+				// http://localhost:3000/
+				// https://dummy-blog.adaptable.app/
+				const response = await fetch("http://localhost:3000/", {
 					method: "GET"
 				});
 				const data = await response.json();
@@ -22,6 +24,9 @@ function Index() {
 			<h1>Hello world</h1>
 			<button type='button'>
 				<Link to='sign-up'>Sign up</Link>
+			</button>
+			<button type='button'>
+				<Link to='log-in'>Log in</Link>
 			</button>
 		</>
 	);

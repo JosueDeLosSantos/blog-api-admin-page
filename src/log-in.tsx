@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Field from "./field";
+import { TextField } from "./components/Fields";
 
 function LogIn() {
 	const [formData, setFormData] = useState({
@@ -9,7 +9,8 @@ function LogIn() {
 		password: ""
 	});
 
-	const navigate = useNavigate(); // Utilize the useNavigate hook
+	// eslint-disable-next-line react-hooks/rules-of-hooks
+	const navigate = useNavigate(); // Utilize the useNavigate hook for programmatic navigation
 
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		const { name, value } = event.target;
@@ -18,7 +19,9 @@ function LogIn() {
 
 	async function onSubmit(e: FormEvent) {
 		e.preventDefault();
-		const apiUrl = "https://dummy-blog.adaptable.app/user/log-in";
+		// http://localhost:3000/
+		// https://dummy-blog.adaptable.app/user/log-in
+		const apiUrl = "http://localhost:3000/user/log-in";
 		try {
 			const response = await axios.post(apiUrl, formData, {
 				headers: {
@@ -26,10 +29,12 @@ function LogIn() {
 					"Content-Type": "application/json" // Example for JSON data
 				}
 			});
+
 			if (response.data.accessToken) {
 				localStorage.setItem("accessToken", `${response.data.accessToken}`);
-				// Redirect to desired page after successful login
-				navigate("/posts"); // Replace "/home" with your target route
+				console.log(response.data.accessToken);
+
+				navigate("/posts"); // Redirect to desired page after successful login
 			} else {
 				console.log(response.data.message);
 			}
@@ -43,23 +48,23 @@ function LogIn() {
 			<h1>Log in</h1>
 			<form onSubmit={onSubmit}>
 				<div className='labels-inputs'>
-					<Field
+					<TextField
 						name='username'
 						type='text'
 						onInput={handleInputChange}
 						value={formData.username}
 					>
 						Username:
-					</Field>
+					</TextField>
 					<br />
-					<Field
+					<TextField
 						name='password'
 						type='text'
 						onInput={handleInputChange}
 						value={formData.password}
 					>
 						Password:
-					</Field>
+					</TextField>
 					<br />
 				</div>
 				<button type='submit'>Log in</button>

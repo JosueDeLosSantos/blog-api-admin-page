@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Field from "./field";
+import { TextField } from "./components/Fields";
 
 function SignUp() {
 	const [formData, setFormData] = useState({
@@ -12,7 +12,7 @@ function SignUp() {
 		passwordConfirmation: ""
 	});
 
-	// const navigate = useNavigate();
+	const navigate = useNavigate();
 
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		const { name, value } = event.target;
@@ -21,7 +21,9 @@ function SignUp() {
 
 	async function onSubmit(e: FormEvent) {
 		e.preventDefault();
-		const apiUrl = "https://dummy-blog.adaptable.app/user/sign-up";
+		// http://localhost:3000/user/sign-up
+		//https://dummy-blog.adaptable.app/user/sign-up
+		const apiUrl = "http://localhost:3000/user/sign-up";
 		console.log(JSON.stringify(formData));
 		try {
 			const response = await axios.post(apiUrl, formData, {
@@ -31,6 +33,9 @@ function SignUp() {
 				}
 			});
 			console.log(response.data);
+			if (response.data.message) {
+				navigate("/log-in");
+			}
 		} catch (error) {
 			console.log(error);
 		}
@@ -41,50 +46,50 @@ function SignUp() {
 			<h1>Sign up</h1>
 			<form onSubmit={onSubmit}>
 				<div className='labels-inputs'>
-					<Field
+					<TextField
 						name='first_name'
 						type='text'
 						onInput={handleInputChange}
 						value={formData.first_name}
 					>
 						First Name:
-					</Field>
+					</TextField>
 					<br />
-					<Field
+					<TextField
 						name='last_name'
 						type='text'
 						onInput={handleInputChange}
 						value={formData.last_name}
 					>
 						Last Name:
-					</Field>
+					</TextField>
 					<br />
-					<Field
+					<TextField
 						name='username'
 						type='text'
 						onInput={handleInputChange}
 						value={formData.username}
 					>
 						Username:
-					</Field>
+					</TextField>
 					<br />
-					<Field
+					<TextField
 						name='password'
 						type='text'
 						onInput={handleInputChange}
 						value={formData.password}
 					>
 						Password:
-					</Field>
+					</TextField>
 					<br />
-					<Field
+					<TextField
 						name='passwordConfirmation'
 						type='text'
 						onInput={handleInputChange}
 						value={formData.passwordConfirmation}
 					>
 						Password Confirmation:
-					</Field>
+					</TextField>
 					<br />
 				</div>
 				<button type='submit'>Sign up</button>

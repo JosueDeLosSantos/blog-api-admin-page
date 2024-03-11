@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import Index from ".";
 import User from "./user";
+import CreatePost from "./CreatePost";
 import ErrorPage from "./ErrorPage";
 
 const Router = () => {
@@ -14,6 +15,10 @@ const Router = () => {
 		{
 			path: ":name",
 			element: <User />
+		},
+		{
+			path: "posts/create",
+			element: <CreatePost />
 		}
 	]);
 	return <RouterProvider router={router} />;
