@@ -41,10 +41,13 @@ function UpdatePost() {
 					return error;
 				});
 			console.log(response);
-
+			// Sets the inital value for the forData state. this is useful
+			// to add place holders to the form
 			setFormData(response.data.post);
-
-			if (response.data.post.file.filename) {
+			// if the initial formData value includes medatadata for any file stored in the server
+			// that filename is saved in a temporal trash state. It will be useful if
+			// a new file is uploaded so that we can command the server to delete the old one.
+			if (response.data.post.file?.filename) {
 				setTrash(response.data.post.file.filename);
 			}
 		})();
@@ -62,15 +65,15 @@ function UpdatePost() {
 		const updateFormData = formData;
 		updateFormData.trash = trash;
 
-		// http://localhost:3000/user/sign-up
-		//https://dummy-blog.adaptable.app/user/sign-up
+		// http://localhost:3000/user/posts/:name
+		//https://dummy-blog.adaptable.app/user/posts/:name
 		const apiUrl = `http://localhost:3000/user/posts/${name}`;
 		const jwtToken = localStorage.getItem("accessToken");
 		const headers: Record<string, string> = {};
 		if (jwtToken) {
 			headers["Authorization"] = `Bearer ${jwtToken}`;
 		}
-		console.log(JSON.stringify(updateFormData));
+
 		const response = await axios
 			.postForm(apiUrl, updateFormData, {
 				headers: {

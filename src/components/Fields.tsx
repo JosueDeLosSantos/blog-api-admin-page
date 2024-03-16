@@ -47,7 +47,7 @@ export function FileField({ name, onInput, children }: imageFile) {
 	return (
 		<div className='form-group'>
 			<label htmlFor={name}>{children}</label>
-			<input type='file' onChange={onInput} name={name} accept={"image/*"}></input>
+			<input type='file' onChange={onInput} name={name} accept={"image/*"} />
 		</div>
 	);
 }
