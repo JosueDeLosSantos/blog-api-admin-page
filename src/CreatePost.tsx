@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
 import axios from "axios";
 // import * as Editor from "ckeditor5-custom-build/build/ckeditor";
-import type EditorConfig from "@ckeditor/ckeditor5-core";
+// import type EditorConfig from "@ckeditor/ckeditor5-core";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 // import { TextField, TextAreaField, FileField } from "./components/Fields";
@@ -41,7 +41,7 @@ function CreatePost() {
 		if (jwtToken) {
 			headers["Authorization"] = `Bearer ${jwtToken}`;
 		}
-		console.log(JSON.stringify(formData));
+		console.log(formData);
 
 		const response = await axios
 			.postForm(apiUrl, formData, {
@@ -57,6 +57,7 @@ function CreatePost() {
 
 	const editorConfiguration = {
 		toolbar: [
+			"heading",
 			"alignment", // Displaying the proper UI element in the toolbar.
 			"|",
 			"bold",
@@ -147,7 +148,6 @@ function CreatePost() {
 										className='border-2 border-gray-300 p-2 w-full'
 										name='file'
 										onChange={handleInputChange}
-										required
 									/>
 								</div>
 

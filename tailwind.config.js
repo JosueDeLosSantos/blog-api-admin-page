@@ -7,5 +7,8 @@ export default {
 			PressStart2P: ['"Press Start 2P"']
 		}
 	},
-	plugins: []
+	plugins: [],
+	corePlugins: {
+		preflight: false
+	}
 };

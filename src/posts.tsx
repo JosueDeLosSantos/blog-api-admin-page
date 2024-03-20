@@ -7,6 +7,7 @@ import axios from "axios";
 
 function Posts() {
 	const [state, setState] = useState("loading");
+	const [postList, setPostList] = useState(undefined);
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	// const navigate = useNavigate();
 
@@ -26,7 +27,10 @@ function Posts() {
 					headers: headers
 				});
 
-				console.log(response);
+				console.log(response.data.posts);
+				if (response.data.posts.length) {
+					setPostList(response.data.posts);
+				}
 				setState("success");
 			} catch (error) {
 				console.log(error);
@@ -43,7 +47,7 @@ function Posts() {
 		)) ||
 		(state === "success" && (
 			<>
-				<PostsTemplate />
+				<PostsTemplate posts={postList} />
 			</>
 		)) ||
 		(state === "error" && (
