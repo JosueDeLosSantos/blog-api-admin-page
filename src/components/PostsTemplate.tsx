@@ -4,6 +4,7 @@ import he from "he"; // decodes mongodb encoded HTML
 export type BlogPost = {
 	_id: string;
 	title: string;
+	description: string;
 	post: string;
 	date: string;
 	author: string;
@@ -27,14 +28,15 @@ function PostTemplate({ posts }: { posts: BlogPost[] | undefined }) {
 					posts.map((post) => (
 						<li key={post._id}>
 							<h2>{post.title}</h2>
+							<p>{post.description}</p>
 							<p>{post.date}</p>
 							<p>{post.author}</p>
 
-							<div
+							{/* <div
 								dangerouslySetInnerHTML={{
 									__html: he.decode(post.post) // renders decoded HTML
 								}}
-							/>
+							/> */}
 							{/* Render other properties as needed */}
 						</li>
 					))}

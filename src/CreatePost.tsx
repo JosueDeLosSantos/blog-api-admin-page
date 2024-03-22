@@ -8,14 +8,16 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 type formDataType = {
 	title: string;
+	description: string;
 	post: string;
 	author: string;
-	file: string | number | readonly string[] | undefined;
+	file: string | undefined;
 };
 
 function CreatePost() {
 	const [formData, setFormData] = useState<formDataType>({
 		title: "",
+		description: "",
 		post: "",
 		author: "",
 		file: undefined
@@ -97,6 +99,23 @@ function CreatePost() {
 										onInput={handleInputChange}
 										value={formData.title}
 										required
+									/>
+								</div>
+
+								<div className='mb-4'>
+									<label
+										htmlFor='description'
+										className='text-xl text-gray-600'
+									>
+										Description{" "}
+										<span className='text-red-500'>*</span>
+									</label>
+									<input
+										type='text'
+										className='border-2 border-gray-300 p-2 w-full'
+										name='description'
+										onInput={handleInputChange}
+										value={formData.description}
 									/>
 								</div>
 
