@@ -1,7 +1,9 @@
 import { FormEvent, useState } from "react";
 import axios from "axios";
-// import * as Editor from "ckeditor5-custom-build/build/ckeditor";
-// import type EditorConfig from "@ckeditor/ckeditor5-core";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../app/store";
+import { postsList } from "../features/posts/postsSlice";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 // import { TextField, TextAreaField, FileField } from "./components/Fields";
@@ -15,6 +17,8 @@ type formDataType = {
 };
 
 function CreatePost() {
+	const dispatch: AppDispatch = useDispatch();
+	const navigate = useNavigate();
 	const [formData, setFormData] = useState<formDataType>({
 		title: "",
 		description: "",
@@ -54,13 +58,16 @@ function CreatePost() {
 			.catch((error) => {
 				return error;
 			});
-		console.log(response);
+		dispatch(postsList(response.data.posts)); // update global state
+
+		navigate("/");
 	}
 
 	const editorConfiguration = {
+		// Displaying the proper UI element in the toolbar.
 		toolbar: [
 			"heading",
-			"alignment", // Displaying the proper UI element in the toolbar.
+			"alignment",
 			"|",
 			"bold",
 			"italic",
@@ -123,15 +130,12 @@ function CreatePost() {
 									<label className='text-xl text-gray-600'>
 										Content <span className='text-red-500'>*</span>
 									</label>
-									{/* <textarea
-										name='content'
-										className='border-2 border-gray-500'
-									></textarea> */}
+
 									<CKEditor
 										editor={ClassicEditor}
 										data={formData.post}
 										config={editorConfiguration}
-										onChange={(event, editor) => {
+										onChange={(_, editor) => {
 											const content = editor.getData(); // Get the updated content
 											handlePostChange(content); // Update the state
 										}}

@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
-import LogIn from "./log-in";
-import SignUp from "./sign-up";
-import Posts from "./posts";
-import ErrorPage from "./ErrorPage";
+import LogIn from "../features/log-in";
+import SignUp from "../features/sign-up";
+import Posts from "../features/posts/posts";
+import ErrorPage from "../features/ErrorPage";
 
 function User() {
 	const { name } = useParams();

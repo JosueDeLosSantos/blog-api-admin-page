@@ -1,10 +1,10 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import Index from ".";
-import User from "./user";
-import CreatePost from "./CreatePost";
-import UpdatePost from "./UpdatePost";
-import ErrorPage from "./ErrorPage";
+import Index from "../components";
+import User from "../components/user";
+import CreatePost from "../components/CreatePost";
+import UpdatePost from "../components/UpdatePost";
+import ErrorPage from "../features/ErrorPage";
 
 const Router = () => {
 	const router = createBrowserRouter([

@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import codeImage from "../public/images/safar-safarov-koOdUvfGr4c-unsplash.jpg";
+import codeImage from "../../public/images/safar-safarov-koOdUvfGr4c-unsplash.jpg";
 
 function LogIn() {
 	const [formData, setFormData] = useState({

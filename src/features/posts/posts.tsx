@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
-import Loading from "./components/Loading";
-import Forbidden from "./components/Forbidden";
-import PostsTemplate from "./components/PostsTemplate";
+import Loading from "../Loading";
+import Forbidden from "../Forbidden";
+import PostsTemplate from "./PostsTemplate";
 import axios from "axios";
 
 function Posts() {
