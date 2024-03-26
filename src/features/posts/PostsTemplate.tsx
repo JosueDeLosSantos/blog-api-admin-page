@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import he from "he"; // decodes mongodb encoded HTML
+//import he from "he"; // decodes mongodb encoded HTML
 
 export type BlogPost = {
 	_id: string;
@@ -32,12 +32,13 @@ function PostTemplate({ posts }: { posts: BlogPost[] | undefined }) {
 							<p>{post.date}</p>
 							<p>{post.author}</p>
 
-							{/* <div
-								dangerouslySetInnerHTML={{
-									__html: he.decode(post.post) // renders decoded HTML
-								}}
-							/> */}
-							{/* Render other properties as needed */}
+							{
+								// <div
+								// 	dangerouslySetInnerHTML={{
+								// 		__html: he.decode(post.post) // renders decoded HTML
+								// 	}}
+								// />
+							}
 						</li>
 					))}
 			</ul>
