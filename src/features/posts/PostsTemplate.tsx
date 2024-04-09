@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-//import he from "he"; // decodes mongodb encoded HTML
+import MenuBar from "../../components/MenuBar";
+// import he from "he"; // decodes mongodb encoded HTML
 
 export type BlogPost = {
 	_id: string;
@@ -19,9 +20,16 @@ export type BlogPost = {
 	__v: number;
 };
 
-function PostTemplate({ posts }: { posts: BlogPost[] | undefined }) {
+function PostTemplate({
+	member,
+	posts
+}: {
+	member: string;
+	posts: BlogPost[] | undefined;
+}) {
 	return (
 		<div>
+			<MenuBar member={member} />
 			<h1>Posts</h1>
 			<ul>
 				{posts !== undefined &&
@@ -43,7 +51,11 @@ function PostTemplate({ posts }: { posts: BlogPost[] | undefined }) {
 					))}
 			</ul>
 			<br />
-			<Link to='create'>Create post</Link>
+			{member === "user" && (
+				<p>
+					if you want to create a post, <Link to='log-in'>Log in</Link> first.
+				</p>
+			)}
 		</div>
 	);
 }

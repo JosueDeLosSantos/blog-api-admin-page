@@ -22,7 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# sample tsx elements
-
-./BaseUiExample.tsx

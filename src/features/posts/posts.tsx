@@ -47,7 +47,7 @@ function Posts() {
 		)) ||
 		(state === "success" && (
 			<>
-				<PostsTemplate posts={postList} />
+				<PostsTemplate member='admin' posts={postList} />
 			</>
 		)) ||
 		(state === "error" && (
