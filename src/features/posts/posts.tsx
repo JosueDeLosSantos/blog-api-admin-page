@@ -8,6 +8,9 @@ import axios from "axios";
 function Posts() {
 	const [state, setState] = useState("loading");
 	const [postList, setPostList] = useState(undefined);
+	// http://localhost:3000/
+	// https://dummy-blog.adaptable.app/user/posts
+	const server = "http://localhost:3000/";
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	// const navigate = useNavigate();
 
@@ -19,9 +22,8 @@ function Posts() {
 				headers["Authorization"] = `Bearer ${jwtToken}`;
 			}
 			console.log(headers);
-			// http://localhost:3000/
-			// https://dummy-blog.adaptable.app/user/posts
-			const url = "http://localhost:3000/user/posts";
+
+			const url = `${server}user/posts`;
 			try {
 				const response = await axios.get(url, {
 					headers: headers
@@ -47,7 +49,7 @@ function Posts() {
 		)) ||
 		(state === "success" && (
 			<>
-				<PostsTemplate member='admin' posts={postList} />
+				<PostsTemplate server={server} member='admin' posts={postList} />
 			</>
 		)) ||
 		(state === "error" && (

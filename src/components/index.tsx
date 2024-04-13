@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import PostTemplate from "../features/posts/PostsTemplate";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../app/store";
@@ -10,15 +10,16 @@ function Index() {
 	const dispatch: AppDispatch = useDispatch();
 	const posts = useSelector((state: RootState) => state.posts);
 	const [postList, setPostList] = useState(undefined);
+	// http://localhost:3000/
+	// https://dummy-blog.adaptable.app/
+	const server = "http://localhost:3000/";
 	// request all posts
 	useEffect(() => {
 		// make an API call only if the state array is empty
 		if (!posts.length) {
 			(async function fetchPosts() {
 				try {
-					// http://localhost:3000/
-					// https://dummy-blog.adaptable.app/
-					const response = await fetch("http://localhost:3000/", {
+					const response = await fetch(`${server}`, {
 						method: "GET"
 					});
 					const data = await response.json();
@@ -41,7 +42,7 @@ function Index() {
 
 	return (
 		<>
-			<PostTemplate member='user' posts={postList} />
+			<PostTemplate server={server} member='user' posts={postList} />
 		</>
 	);
 }

@@ -60,7 +60,7 @@ function CreatePost() {
 			});
 		dispatch(postsList(response.data.posts)); // update global state
 
-		navigate("/");
+		navigate("/posts");
 	}
 
 	const editorConfiguration = {

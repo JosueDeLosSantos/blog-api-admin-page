@@ -21,9 +21,11 @@ export type BlogPost = {
 };
 
 function PostTemplate({
+	server,
 	member,
 	posts
 }: {
+	server: string;
 	member: string;
 	posts: BlogPost[] | undefined;
 }) {
@@ -47,6 +49,9 @@ function PostTemplate({
 								// 	}}
 								// />
 							}
+							{post.file !== null && (
+								<img src={`${server}${post.file.path}`} alt='' />
+							)}
 						</li>
 					))}
 			</ul>
