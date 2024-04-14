@@ -20,6 +20,7 @@
     "@reduxjs/toolkit": "^2.2.2",
     "@types/react-redux": "^7.1.33",
     "axios": "^1.6.7",
+    "colorthief": "^2.2.0",
     "he": "^1.2.0",
     "install": "^0.13.0",
     "npm": "^10.5.0",
