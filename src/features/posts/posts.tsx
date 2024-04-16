@@ -7,14 +7,11 @@ import { RootState } from "../../app/rootReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../app/store";
 import { postsList } from "./postsSlice";
-import { postTypes } from "./types";
 
 function Posts() {
 	const [state, setState] = useState("loading");
 	const posts = useSelector((state: RootState) => state.posts);
 	const dispatch: AppDispatch = useDispatch();
-	const placeholder: postTypes[] = [];
-	const [postList, setPostList] = useState(placeholder);
 	// http://localhost:3000/
 	// https://dummy-blog.adaptable.app/user/posts
 	const server = "http://localhost:3000/";
@@ -38,17 +35,12 @@ function Posts() {
 
 						dispatch(postsList(response.data.posts));
 
-						if (response.data?.posts?.length) {
-							setPostList(response.data.posts);
-						}
 						setState("success");
 					} catch (error) {
 						setState("error");
 					}
 				})();
 			} else {
-				console.log(posts);
-				setPostList(posts);
 				setState("success");
 			}
 		})();
@@ -62,7 +54,7 @@ function Posts() {
 		)) ||
 		(state === "success" && (
 			<>
-				<PostsTemplate server={server} member='admin' posts={postList} />
+				<PostsTemplate server={server} member='admin' posts={posts} />
 			</>
 		)) ||
 		(state === "error" && (

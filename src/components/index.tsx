@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-// import { Link } from "react-router-dom";
 import PostsTemplate from "../features/posts/PostsTemplate";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../app/store";
@@ -11,7 +10,6 @@ import Forbidden from "../features/Forbidden";
 function Index() {
 	const dispatch: AppDispatch = useDispatch();
 	const posts = useSelector((state: RootState) => state.posts);
-	const [postList, setPostList] = useState(undefined);
 	const [state, setState] = useState("loading");
 	// http://localhost:3000/
 	// https://dummy-blog.adaptable.app/
@@ -26,20 +24,14 @@ function Index() {
 						method: "GET"
 					});
 					const data = await response.json();
-					console.log(data.posts);
+
 					dispatch(postsList(data.posts));
-					if (data.posts.length) {
-						setPostList(data.posts);
-					}
 					setState("success");
 				} catch (error) {
-					console.error(error);
 					setState("error");
 				}
 			})();
 		} else {
-			console.log(posts);
-			setPostList(posts);
 			setState("success");
 		}
 	}, [posts, dispatch]); // only on first render
@@ -52,7 +44,7 @@ function Index() {
 		)) ||
 		(state === "success" && (
 			<>
-				<PostsTemplate server={server} member='user' posts={postList} />
+				<PostsTemplate server={server} member='user' posts={posts} />
 			</>
 		)) ||
 		(state === "error" && (

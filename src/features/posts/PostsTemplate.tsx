@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import MenuBar from "../../components/MenuBar";
-import { useEffect, useRef, useState } from "react";
+import { SyntheticEvent, useRef } from "react";
 import { postTypes } from "./types";
 import ColorThief from "colorthief";
 import he from "he"; // decodes mongodb encoded HTML
@@ -22,85 +22,88 @@ function PostsTemplate({
 	member: string;
 	posts: postTypes[];
 }) {
-	console.log(posts);
 	const listImgRef = useRef(Array(posts?.length).fill(null));
-	const colorPlaceHolderf: Record<string, string> = {};
-	const [color, setColor] = useState(colorPlaceHolderf);
 
-	useEffect(() => {
-		/* returns color white or black depending on the image dominant color */
-		function contraster(img: HTMLImageElement) {
-			const colorThief = new ColorThief();
-			const color = colorThief.getColor(img); // dominant color
-			const brightness = Math.round(
-				(parseInt(color[0].toString()) * 299 +
-					parseInt(color[1].toString()) * 587 +
-					parseInt(color[2].toString()) * 114) /
-					1000
-			);
-			const textColor =
-				brightness > 125
-					? "text-black drop-shadow-[1px_-1px_rgba(247,247,247)]"
-					: "text-white drop-shadow-[1px_-1px_rgba(0,0,0)]";
-			return textColor;
-		}
+	/* returns color white or black depending on the image dominant color */
+	function contraster(img: HTMLImageElement) {
+		const colorThief = new ColorThief();
+		const color = colorThief.getColor(img); // dominant color
+		const brightness = Math.round(
+			(parseInt(color[0].toString()) * 299 +
+				parseInt(color[1].toString()) * 587 +
+				parseInt(color[2].toString()) * 114) /
+				1000
+		);
+		const textColor =
+			brightness > 125
+				? {
+						color: "black",
+						// text outline effect
+						shadow: "1px -1px 0 white, -1px 1px 0 white, -1px -1px 0 white, 1px 1px 0 white"
+						// eslint-disable-next-line no-mixed-spaces-and-tabs
+				  }
+				: {
+						color: "white",
+						// text outline effect
+						shadow: "1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black, -1px -1px 0 black"
+						// eslint-disable-next-line no-mixed-spaces-and-tabs
+				  };
+		return textColor;
+	}
 
-		/* the following function assigns a white color or black color 
-		to the title of all images. ex: if img is dark title's color will 
-		be white and if img is light title's color will be black */
-		async function contrastLoader() {
-			const tempColor: Record<string, string> = {};
+	console.log("iteration");
 
-			listImgRef.current.forEach((element) => {
-				tempColor[element.id] = contraster(element);
-			});
-
-			setColor(tempColor);
-		}
-		contrastLoader();
-	}, []);
+	function setTitleColor(e: SyntheticEvent<HTMLImageElement, Event>) {
+		const image = e.target as HTMLImageElement;
+		listImgRef.current.forEach((element, index) => {
+			if (element.dataset.imgid === image.id) {
+				listImgRef.current[index].style.color = contraster(image).color;
+				listImgRef.current[index].style.textShadow = contraster(image).shadow;
+			}
+		});
+	}
 
 	return (
 		<div>
 			<MenuBar member={member} />
 
 			<div className='mt-10'>
-				{/* the condition below ensures that all posts and the list of
-				 colors for titles be ready before rendering */}
-				{(posts && Object.keys(color).length) !== (undefined && false) &&
+				{posts &&
 					posts.map((post, index) => (
 						<div
-							className='max-w-screen-lg mx-auto flex flex-col md:flex-col lg:flex-row  w-3/4 p-2 sm:gap-2 md:gap-4'
+							className='max-w-screen-lg mx-auto mb-5 flex flex-col md:flex-col lg:flex-row  w-3/4 p-2 sm:gap-1 md:gap-2 lg:gap-4'
 							key={post._id}
 						>
 							<div className='w-full md:w-full lg:w-1/2 relative'>
 								{post.file !== null && (
 									<img
-										ref={(el) => (listImgRef.current[index] = el)}
+										onLoad={(e) => setTitleColor(e)}
 										id={post._id}
-										className='w-full max-h-72 object-cover'
+										className='w-full max-h-40 sm:mx-h-60 md:max-h-64 lg:max-h-72 object-cover'
 										src={`${server}${post.file.path}`}
 										crossOrigin='anonymous'
 										alt=''
 									/>
 								)}
 								<div
-									className={`${
-										color[post._id]
-									} absolute bottom-0 left-0 lg:hidden`}
+									ref={(el) => (listImgRef.current[index] = el)}
+									data-imgid={post._id}
+									className={`absolute bottom-0 left-1 lg:hidden`}
 								>
-									<h2>{he.decode(post.title)}</h2>
+									<h2 className='max-sm:text-xl'>
+										{he.decode(post.title)}
+									</h2>
 								</div>
 							</div>
 							<div className='w-full md:w-full  lg:w-1/2'>
 								<h2 className='hidden lg:block text-xl sm:text-1xl md:text-2xl lg:text-3xl mt-1 mb-2'>
 									{he.decode(post.title)}
 								</h2>
-								<span className='text-xs sm:text-sm md:text-base'>
+								<span className='text-xs sm:text-sm md:text-base lg:text-lg text-gray-500 italic'>
 									{post.date}
 								</span>
 								<div>
-									<p className='text-sm sm:text-base md:text-lg lg:text-xl'>
+									<p className='text-lg sm:text-xl md:text-1xl lg:text-2xl max-lg:mt-0'>
 										{he.decode(post.description)}
 									</p>
 								</div>
