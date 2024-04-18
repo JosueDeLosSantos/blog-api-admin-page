@@ -47,7 +47,6 @@ function CreatePost() {
 		if (jwtToken) {
 			headers["Authorization"] = `Bearer ${jwtToken}`;
 		}
-		console.log(formData);
 
 		const response = await axios
 			.postForm(apiUrl, formData, {
@@ -60,14 +59,13 @@ function CreatePost() {
 			});
 		dispatch(postsList(response.data.posts)); // update global state
 
-		navigate("/posts");
+		navigate("/");
 	}
 
 	const editorConfiguration = {
 		// Displaying the proper UI element in the toolbar.
 		toolbar: [
 			"heading",
-			"alignment",
 			"|",
 			"bold",
 			"italic",
@@ -75,8 +73,8 @@ function CreatePost() {
 			"bulletedList",
 			"numberedList",
 			"|",
-			"outdent",
 			"indent",
+			"outdent",
 			"|",
 			"blockQuote",
 			"insertTable",
@@ -138,6 +136,10 @@ function CreatePost() {
 										onChange={(_, editor) => {
 											const content = editor.getData(); // Get the updated content
 											handlePostChange(content); // Update the state
+											/* const toolbarItems = Array.from(
+												editor.ui.componentFactory.names() // display available list of toolbar editor
+											);
+											console.log(toolbarItems.sort()); */
 										}}
 									/>
 								</div>

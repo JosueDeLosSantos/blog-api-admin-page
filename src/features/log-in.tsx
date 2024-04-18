@@ -29,7 +29,7 @@ function LogIn() {
 				localStorage.setItem("accessToken", `${response.data.accessToken}`);
 				console.log(response.data.accessToken);
 
-				navigate("/posts"); // Redirect to desired page after successful login
+				navigate("/", { state: "admin" }); // Redirect to desired page after successful login
 			} else {
 				console.log(response.data.message);
 			}

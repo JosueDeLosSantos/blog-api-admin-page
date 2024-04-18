@@ -6,7 +6,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function MenuBar({ member }: { member: string }) {
@@ -17,12 +17,13 @@ export default function MenuBar({ member }: { member: string }) {
 	};
 	const navigate = useNavigate();
 	const handleClose = (e: MouseEvent) => {
-		const { innerText } = e.target;
+		const target = e.target as HTMLElement;
+		const { innerText } = target;
 
 		switch (innerText) {
 			case "Logout":
 				localStorage.removeItem("accessToken");
-				navigate("/");
+				navigate("/", { state: "user" });
 				break;
 			case "Login":
 				navigate("/log-in");
@@ -38,19 +39,34 @@ export default function MenuBar({ member }: { member: string }) {
 		}
 	};
 
+	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+	useEffect(() => {
+		const handleResize = () => {
+			setWindowWidth(window.innerWidth);
+		};
+
+		// Add event listener
+		window.addEventListener("resize", handleResize);
+
+		// Remove event listener on cleanup
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	}, []); // Empty array ensures effect is only run on mount and unmount
+
 	return (
 		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position='static'>
+			<AppBar className='bg-transparent shadow-none' position='static'>
 				<Toolbar>
 					<IconButton
 						size='large'
 						edge='start'
-						color='inherit'
 						aria-label='menu'
 						onClick={handleClick}
-						sx={{ mr: 2 }}
+						sx={{ mr: 2, color: "black" }}
 					>
-						<MenuIcon />
+						<MenuIcon fontSize={windowWidth > 350 ? "large" : "medium"} />
 					</IconButton>
 					<Menu
 						id='basic-menu'
@@ -61,13 +77,6 @@ export default function MenuBar({ member }: { member: string }) {
 							"aria-labelledby": "basic-button"
 						}}
 					>
-						{/* options change depending on the member */}
-						{/* {member === "admin" ? (
-							<MenuItem onClick={handleClose}>Logout</MenuItem>
-						) : (
-							<MenuItem onClick={handleClose}>LogIn</MenuItem>
-						)} */}
-
 						{member === "admin" && (
 							<MenuItem onClick={handleClose}>Logout</MenuItem>
 						)}
@@ -84,9 +93,12 @@ export default function MenuBar({ member }: { member: string }) {
 					<Typography
 						variant='h6'
 						component='div'
-						className='text-center w-full'
+						className='text-center w-full font-PressStart2P mx-sm:text-xl lg:text-3xl'
+						sx={{
+							color: "black"
+						}}
 					>
-						JCODER
+						{"<JCODER>"}
 					</Typography>
 				</Toolbar>
 			</AppBar>
