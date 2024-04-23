@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
-import MenuBar from "../../components/MenuBar";
+import MenuBar from "../MenuBar";
 import { SyntheticEvent, useRef } from "react";
 import { postTypes } from "./types";
 import ColorThief from "colorthief";
+import axios from "axios";
 import he from "he"; // decodes mongodb encoded HTML
 
 /* 
@@ -63,6 +64,23 @@ function PostsTemplate({
 		});
 	}
 
+	const parentRef = useRef(Array(posts?.length).fill(null));
+
+	const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+		parentRef.current.forEach((el) => {
+			// Check if the clicked element is the parent element (or a child of it)
+			if (el && el.contains(e.target)) {
+				(async function fetchPost() {
+					const server = `http://localhost:3000/user/posts/${el.id}`;
+					const response = await axios.get(server);
+					console.log(response.data.post);
+				})();
+			}
+		});
+	};
+
+	//6620685efae9940389039ad5
+
 	return (
 		<div>
 			<MenuBar member={member} />
@@ -71,6 +89,9 @@ function PostsTemplate({
 				{posts &&
 					posts.map((post, index) => (
 						<div
+							id={post._id}
+							ref={(el) => (parentRef.current[index] = el)}
+							onClick={(e) => handleClick(e)}
 							className='max-w-screen-lg mx-auto mb-5 flex flex-col md:flex-col lg:flex-row  w-3/4 p-2 sm:gap-1 md:gap-2 lg:gap-4'
 							key={post._id}
 						>
@@ -122,3 +143,11 @@ function PostsTemplate({
 }
 
 export default PostsTemplate;
+
+<parent>
+	<child>
+		<grandchild></grandchild>
+	</child>
+	<child></child>
+	<child></child>
+</parent>;

@@ -72,22 +72,54 @@ export default function MenuBar({ member }: { member: string }) {
 						id='basic-menu'
 						anchorEl={anchorEl}
 						open={open}
+						elevation={1}
 						onClose={handleClose}
 						MenuListProps={{
 							"aria-labelledby": "basic-button"
 						}}
 					>
 						{member === "admin" && (
-							<MenuItem onClick={handleClose}>Logout</MenuItem>
+							<MenuItem
+								sx={{
+									fontSize: "20px",
+									borderBottom: "1px solid #e0e0e0" // Add a bottom border to each menu item
+								}}
+								onClick={handleClose}
+							>
+								Logout
+							</MenuItem>
 						)}
 						{member === "admin" && (
-							<MenuItem onClick={handleClose}>Create post</MenuItem>
+							<MenuItem
+								sx={{
+									fontSize: "20px",
+									borderBottom: "1px solid #e0e0e0" // Add a bottom border to each menu item
+								}}
+								onClick={handleClose}
+							>
+								Create post
+							</MenuItem>
 						)}
 						{member === "user" && (
-							<MenuItem onClick={handleClose}>Login</MenuItem>
+							<MenuItem
+								sx={{
+									fontSize: "20px",
+									borderBottom: "1px solid #e0e0e0" // Add a bottom border to each menu item
+								}}
+								onClick={handleClose}
+							>
+								Login
+							</MenuItem>
 						)}
 						{member === "user" && (
-							<MenuItem onClick={handleClose}>Sign Up</MenuItem>
+							<MenuItem
+								sx={{
+									fontSize: "20px"
+								}}
+								onClick={handleClose}
+							>
+								Sign Up
+							</MenuItem>
 						)}
 					</Menu>
 					<Typography

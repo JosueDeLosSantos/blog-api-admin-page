@@ -33,7 +33,7 @@ function Index() {
 			(async function fetchPosts() {
 				try {
 					const response = await axios.get(server, {
-						headers: headers
+						headers: headers // if is admin it will display the list of users
 					});
 
 					dispatch(postsList(response.data.posts));
@@ -42,6 +42,7 @@ function Index() {
 				} catch (error) {
 					const axiosError = error as AxiosError;
 					if (axiosError.response) {
+						// if is not admin it will display the list of users anyway
 						if (axiosError.response.status === 401) {
 							type dataType = {
 								posts: postTypes[];
