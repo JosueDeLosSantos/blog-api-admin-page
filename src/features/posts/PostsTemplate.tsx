@@ -4,6 +4,7 @@ import { SyntheticEvent, useRef } from "react";
 import { postTypes } from "./types";
 import ColorThief from "colorthief";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import he from "he"; // decodes mongodb encoded HTML
 
 /* 
@@ -65,6 +66,7 @@ function PostsTemplate({
 	}
 
 	const parentRef = useRef(Array(posts?.length).fill(null));
+	const navigate = useNavigate();
 
 	const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		parentRef.current.forEach((el) => {
@@ -73,13 +75,14 @@ function PostsTemplate({
 				(async function fetchPost() {
 					const server = `http://localhost:3000/user/posts/${el.id}`;
 					const response = await axios.get(server);
-					console.log(response.data.post);
+					// console.log(response.data.post);
+					navigate(`/posts/post/${el.id}`, {
+						state: { post: response.data.post, member: member }
+					});
 				})();
 			}
 		});
 	};
-
-	//6620685efae9940389039ad5
 
 	return (
 		<div>

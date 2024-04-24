@@ -81,7 +81,7 @@ export default function MenuBar({ member }: { member: string }) {
 						{member === "admin" && (
 							<MenuItem
 								sx={{
-									fontSize: "20px",
+									fontSize: "1rem",
 									borderBottom: "1px solid #e0e0e0" // Add a bottom border to each menu item
 								}}
 								onClick={handleClose}
@@ -92,7 +92,7 @@ export default function MenuBar({ member }: { member: string }) {
 						{member === "admin" && (
 							<MenuItem
 								sx={{
-									fontSize: "20px",
+									fontSize: "1rem",
 									borderBottom: "1px solid #e0e0e0" // Add a bottom border to each menu item
 								}}
 								onClick={handleClose}
@@ -103,7 +103,7 @@ export default function MenuBar({ member }: { member: string }) {
 						{member === "user" && (
 							<MenuItem
 								sx={{
-									fontSize: "20px",
+									fontSize: "1rem",
 									borderBottom: "1px solid #e0e0e0" // Add a bottom border to each menu item
 								}}
 								onClick={handleClose}
@@ -114,7 +114,7 @@ export default function MenuBar({ member }: { member: string }) {
 						{member === "user" && (
 							<MenuItem
 								sx={{
-									fontSize: "20px"
+									fontSize: "1rem"
 								}}
 								onClick={handleClose}
 							>

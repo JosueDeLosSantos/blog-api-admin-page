@@ -5,6 +5,7 @@ import User from "../components/user";
 import CreatePost from "../components/CreatePost";
 import UpdatePost from "../components/UpdatePost";
 import ErrorPage from "../features/ErrorPage";
+import Post from "../components/Post";
 
 const Router = () => {
 	const router = createBrowserRouter([
@@ -24,6 +25,10 @@ const Router = () => {
 		{
 			path: "posts/update/:name",
 			element: <UpdatePost />
+		},
+		{
+			path: "posts/post/:name",
+			element: <Post />
 		}
 	]);
 	return <RouterProvider router={router} />;
