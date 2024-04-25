@@ -68,7 +68,7 @@ function PostsTemplate({
 	const parentRef = useRef(Array(posts?.length).fill(null));
 	const navigate = useNavigate();
 
-	const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+	const postClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		parentRef.current.forEach((el) => {
 			// Check if the clicked element is the parent element (or a child of it)
 			if (el && el.contains(e.target)) {
@@ -94,7 +94,7 @@ function PostsTemplate({
 						<div
 							id={post._id}
 							ref={(el) => (parentRef.current[index] = el)}
-							onClick={(e) => handleClick(e)}
+							onClick={(e) => postClick(e)}
 							className='max-w-screen-lg mx-auto mb-5 flex flex-col md:flex-col lg:flex-row  w-3/4 p-2 sm:gap-1 md:gap-2 lg:gap-4'
 							key={post._id}
 						>
@@ -146,11 +146,3 @@ function PostsTemplate({
 }
 
 export default PostsTemplate;
-
-<parent>
-	<child>
-		<grandchild></grandchild>
-	</child>
-	<child></child>
-	<child></child>
-</parent>;

@@ -16,7 +16,7 @@ export default function MenuBar({ member }: { member: string }) {
 		setAnchorEl(event.currentTarget);
 	};
 	const navigate = useNavigate();
-	const handleClose = (e: MouseEvent) => {
+	const handleClose = (e: MouseEvent, member: string) => {
 		const target = e.target as HTMLElement;
 		const { innerText } = target;
 
@@ -33,6 +33,13 @@ export default function MenuBar({ member }: { member: string }) {
 				break;
 			case "Create post":
 				navigate("/posts/create");
+				break;
+			case "All post":
+				if (member === "admin") {
+					navigate("/", { state: member });
+				} else {
+					navigate("/", { state: member });
+				}
 				break;
 			default:
 				setAnchorEl(null);
@@ -84,18 +91,28 @@ export default function MenuBar({ member }: { member: string }) {
 									fontSize: "1rem",
 									borderBottom: "1px solid #e0e0e0" // Add a bottom border to each menu item
 								}}
-								onClick={handleClose}
+								onClick={(e) => handleClose(e, member)}
 							>
 								Logout
 							</MenuItem>
 						)}
-						{member === "admin" && (
+						{member && (
 							<MenuItem
 								sx={{
 									fontSize: "1rem",
 									borderBottom: "1px solid #e0e0e0" // Add a bottom border to each menu item
 								}}
-								onClick={handleClose}
+								onClick={(e) => handleClose(e, member)}
+							>
+								All post
+							</MenuItem>
+						)}
+						{member === "admin" && (
+							<MenuItem
+								sx={{
+									fontSize: "1rem"
+								}}
+								onClick={(e) => handleClose(e, member)}
 							>
 								Create post
 							</MenuItem>
@@ -106,7 +123,7 @@ export default function MenuBar({ member }: { member: string }) {
 									fontSize: "1rem",
 									borderBottom: "1px solid #e0e0e0" // Add a bottom border to each menu item
 								}}
-								onClick={handleClose}
+								onClick={(e) => handleClose(e, member)}
 							>
 								Login
 							</MenuItem>
@@ -116,7 +133,7 @@ export default function MenuBar({ member }: { member: string }) {
 								sx={{
 									fontSize: "1rem"
 								}}
-								onClick={handleClose}
+								onClick={(e) => handleClose(e, member)}
 							>
 								Sign Up
 							</MenuItem>
