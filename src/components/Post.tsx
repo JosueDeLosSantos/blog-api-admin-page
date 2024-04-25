@@ -4,6 +4,21 @@ import CommentsBox from "../features/CommentsBox";
 import { onePostType } from "../features/posts/types";
 import he from "he"; // decodes mongodb encoded HTML
 import { useState } from "react";
+import ForumIcon from "@mui/icons-material/Forum";
+import Badge from "@mui/material/Badge";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { red, grey } from "@mui/material/colors";
+
+const theme = createTheme({
+	palette: {
+		primary: {
+			main: red[500]
+		},
+		secondary: {
+			main: grey[50]
+		}
+	}
+});
 
 type stateType = {
 	post: onePostType;
@@ -19,6 +34,7 @@ type commentType = {
 	post: string;
 	__v: number;
 };
+
 function Post() {
 	const { state }: { state: stateType } = useLocation();
 	const [comments, setComments] = useState(state.post.comments);
@@ -26,9 +42,20 @@ function Post() {
 	// keep comments array updated to avoid unnecessary API calls
 	function commentsAction(arg: commentType) {
 		// Change array's order to show the most recent one on the top
-		setComments([...comments, arg]);
-		// next challenge: sort them to show the most recent one
+		setComments([arg, ...comments]);
 	}
+
+	// this method is more effective than useRef for scrolling into view
+	// though is less React friendly
+	const scrollToCommentsBox = () => {
+		const commentsSection = document.getElementById("comments-box");
+		if (commentsSection) {
+			window.scrollTo({
+				top: commentsSection.offsetTop,
+				behavior: "smooth"
+			});
+		}
+	};
 
 	return (
 		<div>
@@ -82,7 +109,7 @@ function Post() {
 						commentsAction={commentsAction}
 						post_id={`${state.post._id}`}
 					/>
-					<div className='max-w-screen-md mx-auto'>
+					<div id='comments-box' className='max-w-screen-md mx-auto'>
 						{comments.map((comment) => (
 							<div className='box-border w-11/12 mb-8 mx-auto border-solid border border-slate-300 p-5 rounded-lg'>
 								<div className='flex gap-2 items-end h-5 mb-5'>
@@ -104,6 +131,15 @@ function Post() {
 					</div>
 				</article>
 			</main>
+			<span onClick={scrollToCommentsBox}>
+				<div className='p-3 bg-neutral-950 w-fit rounded-full fixed bottom-5 left-5'>
+					<ThemeProvider theme={theme}>
+						<Badge badgeContent={comments.length} color='primary'>
+							<ForumIcon fontSize='large' color='secondary' />
+						</Badge>
+					</ThemeProvider>
+				</div>
+			</span>
 		</div>
 	);
 }

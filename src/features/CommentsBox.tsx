@@ -1,5 +1,6 @@
 import { FormEvent, useState } from "react";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 
 type commentType = {
 	_id: string;
@@ -19,7 +20,7 @@ function CommentsBox({
 	commentsAction: (arg: commentType) => void;
 }) {
 	const [formData, setFormData] = useState({
-		_id: "",
+		_id: uuidv4(),
 		comment: "",
 		name: "",
 		email: "",
