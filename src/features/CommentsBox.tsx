@@ -54,7 +54,7 @@ function CommentsBox({
 	}
 
 	return (
-		<div className='box-border border-solid border-t border-r-0 border-l-0 border-b-0 border-slate-200 max-w-screen-md mx-auto flex justify-center items-center'>
+		<div className='box-border border-solid border-0 max-w-screen-md mx-auto flex justify-center items-center'>
 			<div className='box-border w-11/12 mx-auto mt-14 mb-8'>
 				<form className='box-border w-full p-4 rounded ' onSubmit={onSubmit}>
 					<h2 className='text-xl mb-4 tracking-wider font-lighter '>
@@ -68,7 +68,7 @@ function CommentsBox({
 						<textarea
 							name='comment'
 							onInput={handleInputChange}
-							className='box-border bg-slate-100 w-full px-3 py-2 mb-3 rounded-sm border dark:border-none  focus:outline-none border-solid focus:border-dashed resize-none'
+							className='box-border bg-slate-100 w-full px-3 py-2 mb-3 rounded-sm border border-solid border-slate-300  focus:outline-none  focus:border-blue-300 resize-none'
 							placeholder='Type Comment...*'
 							rows='5'
 							required
@@ -81,7 +81,7 @@ function CommentsBox({
 								type='text'
 								name='name'
 								onInput={handleInputChange}
-								className='box-border bg-slate-100 w-full px-3 py-2 rounded-sm border dark:border-none  focus:outline-none border-solid focus:border-dashed'
+								className='box-border bg-slate-100 w-full px-3 py-2 rounded-sm border border-solid border-slate-300  focus:outline-none focus:border-blue-300'
 								placeholder='Name*'
 								required
 							/>
@@ -91,7 +91,7 @@ function CommentsBox({
 								type='email'
 								name='email'
 								onInput={handleInputChange}
-								className='box-border bg-slate-100 w-full px-3 py-2 rounded-sm border dark:border-none  focus:outline-none border-solid focus:border-dashed'
+								className='box-border bg-slate-100 w-full px-3 py-2 rounded-sm border border-solid border-slate-300  focus:outline-none focus:border-blue-300'
 								placeholder='Email*'
 								required
 							/>

@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import MenuBar from "../MenuBar";
 import { SyntheticEvent, useRef } from "react";
 import { postTypes } from "./types";
@@ -85,17 +84,17 @@ function PostsTemplate({
 	};
 
 	return (
-		<div>
+		<div className='bg-slate-100 h-screen'>
 			<MenuBar member={member} />
 
-			<div className='mt-10'>
+			<div className='w-fit mx-auto pt-24'>
 				{posts &&
 					posts.map((post, index) => (
 						<div
 							id={post._id}
 							ref={(el) => (parentRef.current[index] = el)}
 							onClick={(e) => postClick(e)}
-							className='max-w-screen-lg mx-auto mb-5 flex flex-col md:flex-col lg:flex-row  w-3/4 p-2 sm:gap-1 md:gap-2 lg:gap-4'
+							className='max-w-screen-lg mx-5 mb-2 border border-solid border-slate-200 flex flex-col md:flex-col lg:flex-row p-2 sm:gap-1 md:gap-2 lg:gap-4 bg-white rounded-lg'
 							key={post._id}
 						>
 							<div className='w-full md:w-full lg:w-1/2 relative'>
@@ -135,12 +134,6 @@ function PostsTemplate({
 						</div>
 					))}
 			</div>
-			<br />
-			{member === "user" && (
-				<p>
-					if you want to create a post, <Link to='log-in'>Log in</Link> first.
-				</p>
-			)}
 		</div>
 	);
 }

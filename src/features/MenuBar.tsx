@@ -63,8 +63,11 @@ export default function MenuBar({ member }: { member: string }) {
 	}, []); // Empty array ensures effect is only run on mount and unmount
 
 	return (
-		<Box sx={{ flexGrow: 1 }}>
-			<AppBar className='bg-transparent shadow-none' position='static'>
+		<Box>
+			<AppBar
+				className='bg-white shadow-none border border-solid border-slate-200'
+				position='fixed'
+			>
 				<Toolbar>
 					<IconButton
 						size='large'
