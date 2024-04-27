@@ -1,10 +1,9 @@
 import { FormEvent, useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../app/store";
 import { postsList } from "../features/posts/postsSlice";
-
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import he from "he"; // decodes mongodb encoded HTML
@@ -39,40 +38,19 @@ function UpdatePost() {
 		trash: ""
 	});
 	const navigate = useNavigate();
+	const { state } = useLocation();
 
 	useEffect(() => {
-		(async function getInitalState() {
-			const apiUrl = `http://localhost:3000/user/posts/${name}`;
-			const jwtToken = localStorage.getItem("accessToken");
-			const headers: Record<string, string> = {};
-			if (jwtToken) {
-				headers["Authorization"] = `Bearer ${jwtToken}`;
-			}
-
-			const response = await axios
-				.get(apiUrl, {
-					headers: {
-						Authorization: `Bearer ${jwtToken}`
-					}
-				})
-				.catch((error) => {
-					return error;
-				});
-			console.log(response);
-			// Sets the inital value for the forData state. this is useful
-			// to add place holders to the form
-			const tempData = response.data.post; // temporal variable to avoid formData mutations
-			tempData.post = he.decode(response.data.post.post); // decodes encoded HTML
-			setFormData(tempData);
-			// if the initial formData value includes medatadata for any file stored in the server
-			// that filename is saved in a temporal trash state. It will be useful if
-			// a new file is uploaded so that we can command the server to delete the old one.
-			if (response.data.post.file?.filename) {
-				setTrash(response.data.post.file.filename);
-			}
-		})();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+		const tempData = state; // temporal variable to avoid formData mutations
+		tempData.post = he.decode(state.post); // decodes encoded HTML
+		setFormData(tempData);
+		// if the initial response value includes medatadata for any file stored in the server
+		// that filename is saved in a temporal trash state. It will be useful if
+		// a new file is uploaded so that we can command the server to delete the old one.
+		if (state.post.file?.filename) {
+			setTrash(state.post.file.filename);
+		}
+	}, [state]);
 
 	const handlePostChange = (arg: string): void => {
 		setFormData({ ...formData, post: arg });
@@ -116,7 +94,6 @@ function UpdatePost() {
 		// Displaying the proper UI element in the toolbar.
 		toolbar: [
 			"heading",
-			"alignment",
 			"|",
 			"bold",
 			"italic",
@@ -185,7 +162,7 @@ function UpdatePost() {
 											editor={ClassicEditor}
 											/* 
 											the value, ex: data={value} should always be set after 
-											checking the condition above if that value is the result of
+											checking the condition formData.post != "" if that value is the result of
 											an API call that need to be established as the inital value of the editor,
 											otherwise the content of the editor will misbehave
 											*/
@@ -194,6 +171,10 @@ function UpdatePost() {
 											onChange={(_, editor) => {
 												const content = editor.getData(); // Get the updated content
 												handlePostChange(content); // Update the state
+												/* const toolbarItems = Array.from(
+													editor.ui.componentFactory.names() // display available list of toolbar editor
+												);
+												console.log(toolbarItems.sort()); */
 											}}
 										/>
 									)}

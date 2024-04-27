@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import MenuBar from "../features/MenuBar";
 import { IconButton } from "@mui/material";
 import CommentsBox from "../features/CommentsBox";
@@ -69,6 +69,13 @@ function Post() {
 		}
 	}
 
+	const navigate = useNavigate();
+
+	// Redirect admin to the post's edition page
+	function EditPost(postToEdit: onePostType) {
+		navigate(`/posts/update/${postToEdit._id}`, { state: postToEdit });
+	}
+
 	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
 	useEffect(() => {
@@ -116,7 +123,7 @@ function Post() {
 								</IconButton>
 							</div>
 							<div>
-								<IconButton>
+								<IconButton onClick={() => EditPost(state.post)}>
 									<EditIcon fontSize='medium' color='secondary' />
 								</IconButton>
 							</div>

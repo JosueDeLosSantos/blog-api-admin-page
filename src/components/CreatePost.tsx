@@ -136,10 +136,10 @@ function CreatePost() {
 										onChange={(_, editor) => {
 											const content = editor.getData(); // Get the updated content
 											handlePostChange(content); // Update the state
-											const toolbarItems = Array.from(
+											/* const toolbarItems = Array.from(
 												editor.ui.componentFactory.names() // display available list of toolbar editor
 											);
-											console.log(toolbarItems.sort());
+											console.log(toolbarItems.sort()); */
 										}}
 									/>
 								</div>
