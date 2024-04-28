@@ -1,9 +1,9 @@
 import { FormEvent, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-// import { useDispatch } from "react-redux";
-// import { AppDispatch } from "../app/store";
-// import { postsList } from "../features/posts/postsSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../app/store";
+import { addPost, updatePost } from "../features/posts/postsSlice";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import he from "he"; // decodes mongodb encoded HTML
@@ -22,12 +22,12 @@ type formDataType = {
 	description: string;
 	post: string;
 	author: string;
-	file: undefined | File | fileType;
-	trash: string | undefined;
+	file: string | File | fileType;
+	trash: string;
 };
 
 function CreateUpdatePost({ operation }: { operation: string }) {
-	// const dispatch: AppDispatch = useDispatch();
+	const dispatch: AppDispatch = useDispatch();
 	const { name } = useParams();
 	const { state }: { state: onePostType | null } = useLocation();
 	const [formData, setFormData] = useState<formDataType>({
@@ -36,7 +36,7 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 		description: state !== null ? he.decode(state.description) : "",
 		post: state !== null ? he.decode(state.post) : "",
 		author: state !== null ? he.decode(state.author) : "",
-		file: undefined,
+		file: state !== null ? state.file : "",
 		// if the initial state.post.file value includes medatadata for any file stored in the server
 		// that filename is saved in a temporal trash state. It will be useful if
 		// a new file is uploaded so that we can command the server to delete the old one.
@@ -58,7 +58,11 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 
 		if (operation === "update") {
 			const updateFormData = formData;
-			updateFormData.trash = state?.file?.filename;
+			updateFormData.trash = state!.file.filename;
+
+			if (formData.file === "") {
+				updateFormData.file = state!.file;
+			}
 
 			// http://localhost:3000/user/posts/:name
 			//https://dummy-blog.adaptable.app/user/posts/:name
@@ -78,8 +82,11 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 				.catch((error) => {
 					return error;
 				});
-			console.log(response);
-			// dispatch(postsList(response.data.posts)); // update global state
+
+			delete response.data.post.post;
+			delete response.data.post.comments;
+
+			dispatch(updatePost(response.data.post)); // update global state
 		} else {
 			const apiUrl = "http://localhost:3000/user/create-post";
 			const jwtToken = localStorage.getItem("accessToken");
@@ -99,8 +106,12 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 					return error;
 				});
 
-			console.log(response);
-			// dispatch(postsList(response.data.posts)); // update global state
+			delete response.data.post.post;
+			delete response.data.post.comments;
+			// state will be updated only if an image is selected
+			if (formData.file !== "") {
+				dispatch(addPost(response.data.post)); // update global state
+			}
 		}
 
 		navigate("/", { state: "admin" });
@@ -219,12 +230,11 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 										name='file'
 										onChange={handleInputChange}
 									/>
-									{operation === "create" &&
-										formData.file === undefined && (
-											<span className='text-xs text-red-700'>
-												Selecting an image is mandatory!
-											</span>
-										)}
+									{operation === "create" && formData.file === "" && (
+										<span className='text-xs text-red-700'>
+											Selecting an image is mandatory!
+										</span>
+									)}
 								</div>
 
 								<div className='flex p-1'>

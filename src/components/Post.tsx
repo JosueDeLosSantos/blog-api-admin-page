@@ -3,6 +3,8 @@ import MenuBar from "../features/MenuBar";
 import { IconButton } from "@mui/material";
 import CommentsBox from "../features/CommentsBox";
 import { onePostType } from "../features/posts/types";
+import { deletePost } from "../features/posts/postsSlice";
+import axios from "axios";
 import he from "he"; // decodes mongodb encoded HTML
 import { useState, useEffect } from "react";
 import ForumIcon from "@mui/icons-material/Forum";
@@ -13,6 +15,8 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Badge from "@mui/material/Badge";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { red, grey } from "@mui/material/colors";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../app/store";
 
 const theme = createTheme({
 	palette: {
@@ -44,8 +48,10 @@ type commentType = {
 };
 
 function Post() {
+	const dispatch: AppDispatch = useDispatch();
 	const { state }: { state: stateType } = useLocation();
 	const [comments, setComments] = useState(state.post.comments);
+	const navigate = useNavigate();
 
 	// keep comments array updated to avoid unnecessary API calls
 	function commentsAction(arg: commentType) {
@@ -69,12 +75,34 @@ function Post() {
 		}
 	}
 
-	const navigate = useNavigate();
-
 	// Redirect admin to the post's edition page
 	function EditPost(postToEdit: onePostType) {
 		navigate(`/posts/update/${postToEdit._id}`, { state: postToEdit });
 	}
+
+	const handleDeletePost = async (postId: string) => {
+		// http://localhost:3000/user/posts
+		//https://dummy-blog.adaptable.app/user/posts
+		const API_URL = "http://localhost:3000/user/posts";
+		const jwtToken = localStorage.getItem("accessToken");
+		try {
+			const response = await axios.delete(`${API_URL}/${postId}`, {
+				headers: {
+					Authorization: `Bearer ${jwtToken}` // Include your authentication header
+				}
+			});
+
+			dispatch(deletePost(response.data.post._id)); // update global state
+
+			navigate("/", { state: "admin" });
+
+			console.log("Post deleted successfully:", response.data);
+			// handle successful deletion (e.g., remove post from UI)
+		} catch (error) {
+			console.error("Error deleting post:", error);
+			// handle errors (e.g., display error message to user)
+		}
+	};
 
 	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -96,13 +124,6 @@ function Post() {
 		<div className='bg-slate-100'>
 			<MenuBar member={state.member} />
 			<main className='pl-5 pr-5 pb-5 pt-20 flex gap-4'>
-				{/* <Box>
-					<AppBar
-						className='bg-blue-300 w-10 h-screen shadow-none border border-solid border-slate-200'
-						position='fixed'
-					></AppBar>
-				</Box> */}
-
 				{state.member === "admin" && (
 					<ThemeProvider theme={theme}>
 						<div
@@ -128,7 +149,9 @@ function Post() {
 								</IconButton>
 							</div>
 							<div>
-								<IconButton>
+								<IconButton
+									onClick={() => handleDeletePost(state.post._id)}
+								>
 									<DeleteIcon fontSize='medium' color='secondary' />
 								</IconButton>
 							</div>
