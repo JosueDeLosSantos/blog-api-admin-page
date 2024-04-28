@@ -1,31 +1,48 @@
 import { FormEvent, useState } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../app/store";
-import { postsList } from "../features/posts/postsSlice";
+// import { useDispatch } from "react-redux";
+// import { AppDispatch } from "../app/store";
+// import { postsList } from "../features/posts/postsSlice";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-// import { TextField, TextAreaField, FileField } from "./components/Fields";
+import he from "he"; // decodes mongodb encoded HTML
+import { onePostType } from "../features/posts/types";
+
+type fileType = {
+	filename: string;
+	originalname: string;
+	mimetype: string;
+	path: string;
+	size: number;
+};
 
 type formDataType = {
 	title: string;
 	description: string;
 	post: string;
 	author: string;
-	file: string | undefined;
+	file: undefined | File | fileType;
+	trash: string | undefined;
 };
 
-function CreatePost() {
-	const dispatch: AppDispatch = useDispatch();
-	const navigate = useNavigate();
+function CreateUpdatePost({ operation }: { operation: string }) {
+	// const dispatch: AppDispatch = useDispatch();
+	const { name } = useParams();
+	const { state }: { state: onePostType | null } = useLocation();
 	const [formData, setFormData] = useState<formDataType>({
-		title: "",
-		description: "",
-		post: "",
-		author: "",
-		file: undefined
+		/* mongodb do not process apostrophes and commas as humans do, so he.decode helps to fix that */
+		title: state !== null ? he.decode(state.title) : "",
+		description: state !== null ? he.decode(state.description) : "",
+		post: state !== null ? he.decode(state.post) : "",
+		author: state !== null ? he.decode(state.author) : "",
+		file: undefined,
+		// if the initial state.post.file value includes medatadata for any file stored in the server
+		// that filename is saved in a temporal trash state. It will be useful if
+		// a new file is uploaded so that we can command the server to delete the old one.
+		trash: ""
 	});
+	const navigate = useNavigate();
 
 	const handlePostChange = (arg: string): void => {
 		setFormData({ ...formData, post: arg });
@@ -39,27 +56,54 @@ function CreatePost() {
 	async function onSubmit(e: FormEvent) {
 		e.preventDefault();
 
-		// http://localhost:3000/user/sign-up
-		//https://dummy-blog.adaptable.app/user/sign-up
-		const apiUrl = "http://localhost:3000/user/create-post";
-		const jwtToken = localStorage.getItem("accessToken");
-		const headers: Record<string, string> = {};
-		if (jwtToken) {
-			headers["Authorization"] = `Bearer ${jwtToken}`;
+		if (operation === "update") {
+			const updateFormData = formData;
+			updateFormData.trash = state?.file?.filename;
+
+			// http://localhost:3000/user/posts/:name
+			//https://dummy-blog.adaptable.app/user/posts/:name
+			const apiUrl = `http://localhost:3000/user/posts/${name}`;
+			const jwtToken = localStorage.getItem("accessToken");
+			const headers: Record<string, string> = {};
+			if (jwtToken) {
+				headers["Authorization"] = `Bearer ${jwtToken}`;
+			}
+
+			const response = await axios
+				.postForm(apiUrl, updateFormData, {
+					headers: {
+						Authorization: `Bearer ${jwtToken}`
+					}
+				})
+				.catch((error) => {
+					return error;
+				});
+			console.log(response);
+			// dispatch(postsList(response.data.posts)); // update global state
+		} else {
+			const apiUrl = "http://localhost:3000/user/create-post";
+			const jwtToken = localStorage.getItem("accessToken");
+			const headers: Record<string, string> = {};
+			if (jwtToken) {
+				headers["Authorization"] = `Bearer ${jwtToken}`;
+			}
+
+			const response = await axios
+				.postForm(apiUrl, formData, {
+					headers: {
+						Authorization: `Bearer ${jwtToken}`
+					}
+				})
+				.catch((error) => {
+					console.log(error);
+					return error;
+				});
+
+			console.log(response);
+			// dispatch(postsList(response.data.posts)); // update global state
 		}
 
-		const response = await axios
-			.postForm(apiUrl, formData, {
-				headers: {
-					Authorization: `Bearer ${jwtToken}`
-				}
-			})
-			.catch((error) => {
-				return error;
-			});
-		dispatch(postsList(response.data.posts)); // update global state
-
-		navigate("/");
+		navigate("/", { state: "admin" });
 	}
 
 	const editorConfiguration = {
@@ -73,8 +117,8 @@ function CreatePost() {
 			"bulletedList",
 			"numberedList",
 			"|",
-			"indent",
 			"outdent",
+			"indent",
 			"|",
 			"blockQuote",
 			"insertTable",
@@ -137,9 +181,9 @@ function CreatePost() {
 											const content = editor.getData(); // Get the updated content
 											handlePostChange(content); // Update the state
 											/* const toolbarItems = Array.from(
-												editor.ui.componentFactory.names() // display available list of toolbar editor
-											);
-											console.log(toolbarItems.sort()); */
+													editor.ui.componentFactory.names() // display available list of toolbar editor
+												);
+												console.log(toolbarItems.sort()); */
 										}}
 									/>
 								</div>
@@ -170,10 +214,17 @@ function CreatePost() {
 									</label>
 									<input
 										type='file'
+										accept='image/jpeg, image/png'
 										className='border-2 border-gray-300 p-2 w-full'
 										name='file'
 										onChange={handleInputChange}
 									/>
+									{operation === "create" &&
+										formData.file === undefined && (
+											<span className='text-xs text-red-700'>
+												Selecting an image is mandatory!
+											</span>
+										)}
 								</div>
 
 								<div className='flex p-1'>
@@ -193,4 +244,4 @@ function CreatePost() {
 	);
 }
 
-export default CreatePost;
+export default CreateUpdatePost;

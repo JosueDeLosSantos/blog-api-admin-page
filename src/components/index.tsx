@@ -36,6 +36,8 @@ function Index() {
 						headers: headers // if is admin it will display the list of users
 					});
 
+					console.log(response);
+
 					dispatch(postsList(response.data.posts));
 					setLoadState("success");
 					setMember("admin");

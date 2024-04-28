@@ -2,8 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import Index from "../components";
 import User from "../components/user";
-import CreatePost from "../components/CreatePost";
-import UpdatePost from "../components/UpdatePost";
+import CreateUpdatePost from "../components/CreateUpdatePost";
 import ErrorPage from "../features/ErrorPage";
 import Post from "../components/Post";
 
@@ -20,11 +19,11 @@ const Router = () => {
 		},
 		{
 			path: "posts/create",
-			element: <CreatePost />
+			element: <CreateUpdatePost operation='create' />
 		},
 		{
 			path: "posts/update/:name",
-			element: <UpdatePost />
+			element: <CreateUpdatePost operation='update' />
 		},
 		{
 			path: "posts/post/:name",
