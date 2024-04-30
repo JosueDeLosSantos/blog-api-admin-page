@@ -1,12 +1,27 @@
 import MenuBar from "../MenuBar";
-import { SyntheticEvent, useRef } from "react";
+import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { postTypes } from "./types";
 import ColorThief from "colorthief";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import he from "he"; // decodes mongodb encoded HTML
+import postsAmountController from "./postsAmountController";
+
+function postsInitialValue(v: postTypes[]) {
+	if (v.length) {
+		if (v.length >= 5) {
+			return v.slice(0, 5);
+		} else {
+			return v;
+		}
+	} else {
+		return [];
+	}
+}
 
 function PostsTemplate({ server, posts }: { server: string; posts: postTypes[] }) {
+	const [postsCopy, setPostCopy] = useState(postsInitialValue(posts));
+
 	const listImgRef = useRef(Array(posts?.length).fill(null));
 
 	/* returns color white or black depending on the image dominant color */
@@ -39,7 +54,7 @@ function PostsTemplate({ server, posts }: { server: string; posts: postTypes[] }
 	function setTitleColor(e: SyntheticEvent<HTMLImageElement, Event>) {
 		const image = e.target as HTMLImageElement;
 		listImgRef.current.forEach((element, index) => {
-			if (element.dataset.imgid === image.id) {
+			if (element?.dataset.imgid === image.id) {
 				listImgRef.current[index].style.color = contraster(image).color;
 				listImgRef.current[index].style.textShadow = contraster(image).shadow;
 			}
@@ -65,13 +80,37 @@ function PostsTemplate({ server, posts }: { server: string; posts: postTypes[] }
 		});
 	};
 
+	useEffect(() => {
+		/* This function triggers when the user reaches the bottom
+		of the page. */
+		const handleScroll = () => {
+			const scrollHeight = document.documentElement.scrollHeight;
+			const scrollTop = window.scrollY;
+			const clientHeight = window.innerHeight;
+
+			const isAtBottom = scrollHeight - scrollTop === clientHeight;
+
+			if (isAtBottom) {
+				if (posts.length - postsCopy.length) {
+					const newPostsCopy = postsAmountController(postsCopy, posts);
+					setPostCopy(newPostsCopy);
+				}
+			}
+		};
+		window.addEventListener("scroll", handleScroll, { passive: true });
+
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+		};
+	}, [postsCopy, posts]);
+
 	return (
 		<div className='bg-slate-100 h-screen'>
 			<MenuBar />
 
 			<div className='w-fit mx-auto pt-24'>
 				{posts &&
-					posts.map((post, index) => (
+					postsCopy.map((post, index) => (
 						<div
 							id={post._id}
 							ref={(el) => (parentRef.current[index] = el)}

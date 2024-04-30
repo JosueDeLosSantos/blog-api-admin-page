@@ -100,6 +100,10 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 				}
 			}
 		} else {
+			// if no image is selected the submition won't work
+			if (formData.file === "") {
+				return;
+			}
 			const apiUrl = "http://localhost:3000/user/create-post";
 			if (jwtToken) {
 				headers["Authorization"] = `Bearer ${jwtToken}`;
@@ -112,11 +116,11 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 					}
 				});
 
-				delete response.data.post.post;
-				delete response.data.post.comments;
 				// state will be updated only if an image is selected
 				// and if no errors are returned from the post request
 				if (formData.file !== "" && !response.data.errors) {
+					delete response.data.post.post;
+					delete response.data.post.comments;
 					dispatch(addPost(response.data.post)); // update global state
 					navigate("/");
 				} else {
