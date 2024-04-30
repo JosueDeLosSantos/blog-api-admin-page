@@ -15,8 +15,10 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Badge from "@mui/material/Badge";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { red, grey } from "@mui/material/colors";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../app/store";
+import { switchPrivilege } from "../features/posts/privilegeSlice";
+import { RootState } from "../app/rootReducer";
 
 const theme = createTheme({
 	palette: {
@@ -34,7 +36,6 @@ const theme = createTheme({
 
 type stateType = {
 	post: onePostType;
-	member: string;
 };
 
 type commentType = {
@@ -49,6 +50,7 @@ type commentType = {
 
 function Post() {
 	const dispatch: AppDispatch = useDispatch();
+	const member = useSelector((state: RootState) => state.privilege);
 	const { state }: { state: stateType } = useLocation();
 	const [comments, setComments] = useState(state.post.comments);
 	const navigate = useNavigate();
@@ -84,12 +86,15 @@ function Post() {
 		// http://localhost:3000/user/posts
 		//https://dummy-blog.adaptable.app/user/posts
 		const API_URL = "http://localhost:3000/user/posts";
+		// get security token
 		const jwtToken = localStorage.getItem("accessToken");
+		const headers: Record<string, string> = {};
+		if (jwtToken) {
+			headers["Authorization"] = `Bearer ${jwtToken}`;
+		}
 		try {
 			const response = await axios.delete(`${API_URL}/${postId}`, {
-				headers: {
-					Authorization: `Bearer ${jwtToken}` // Include your authentication header
-				}
+				headers: headers
 			});
 
 			dispatch(deletePost(response.data.post._id)); // update global state
@@ -122,9 +127,9 @@ function Post() {
 
 	return (
 		<div className='bg-slate-100'>
-			<MenuBar member={state.member} />
+			<MenuBar />
 			<main className='pl-5 pr-5 pb-5 pt-20 flex gap-4'>
-				{state.member === "admin" && (
+				{member === "admin" && (
 					<ThemeProvider theme={theme}>
 						<div
 							className={
@@ -237,7 +242,7 @@ function Post() {
 					</div>
 				</article>
 			</main>
-			{state.member === "user" && (
+			{member === "user" && (
 				<span onClick={() => ScrollTo("comments")}>
 					<div className='p-3 bg-neutral-950 w-fit rounded-full fixed bottom-5 left-5'>
 						<ThemeProvider theme={theme}>

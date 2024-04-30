@@ -1,9 +1,10 @@
 import { FormEvent, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../app/store";
 import { addPost, updatePost } from "../features/posts/postsSlice";
+import { switchPrivilege } from "../features/posts/privilegeSlice";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import he from "he"; // decodes mongodb encoded HTML
@@ -56,6 +57,9 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 	async function onSubmit(e: FormEvent) {
 		e.preventDefault();
 
+		const jwtToken = localStorage.getItem("accessToken");
+		const headers: Record<string, string> = {};
+
 		if (operation === "update") {
 			const updateFormData = formData;
 			updateFormData.trash = state!.file.filename;
@@ -67,54 +71,69 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 			// http://localhost:3000/user/posts/:name
 			//https://dummy-blog.adaptable.app/user/posts/:name
 			const apiUrl = `http://localhost:3000/user/posts/${name}`;
-			const jwtToken = localStorage.getItem("accessToken");
-			const headers: Record<string, string> = {};
 			if (jwtToken) {
 				headers["Authorization"] = `Bearer ${jwtToken}`;
 			}
 
-			const response = await axios
-				.postForm(apiUrl, updateFormData, {
-					headers: {
-						Authorization: `Bearer ${jwtToken}`
-					}
-				})
-				.catch((error) => {
-					return error;
+			try {
+				const response = await axios.postForm(apiUrl, updateFormData, {
+					headers: headers
 				});
 
-			delete response.data.post.post;
-			delete response.data.post.comments;
-
-			dispatch(updatePost(response.data.post)); // update global state
+				if (response.data.errors) {
+					/* fix form's error management */
+					console.log(response);
+				} else {
+					delete response.data.post.post;
+					delete response.data.post.comments;
+					dispatch(updatePost(response.data.post)); // update global state
+					navigate("/");
+				}
+			} catch (error) {
+				const axiosError = error as AxiosError;
+				// if it's forbidden or unauthorized it will be logged out
+				if (axiosError.message !== "Network Error") {
+					dispatch(switchPrivilege("user")); // logout
+					navigate("/log-in");
+				} else {
+					console.log(axiosError.message); //Network Error
+				}
+			}
 		} else {
 			const apiUrl = "http://localhost:3000/user/create-post";
-			const jwtToken = localStorage.getItem("accessToken");
-			const headers: Record<string, string> = {};
 			if (jwtToken) {
 				headers["Authorization"] = `Bearer ${jwtToken}`;
 			}
 
-			const response = await axios
-				.postForm(apiUrl, formData, {
+			try {
+				const response = await axios.postForm(apiUrl, formData, {
 					headers: {
 						Authorization: `Bearer ${jwtToken}`
 					}
-				})
-				.catch((error) => {
-					console.log(error);
-					return error;
 				});
 
-			delete response.data.post.post;
-			delete response.data.post.comments;
-			// state will be updated only if an image is selected
-			if (formData.file !== "") {
-				dispatch(addPost(response.data.post)); // update global state
+				delete response.data.post.post;
+				delete response.data.post.comments;
+				// state will be updated only if an image is selected
+				// and if no errors are returned from the post request
+				if (formData.file !== "" && !response.data.errors) {
+					dispatch(addPost(response.data.post)); // update global state
+					navigate("/");
+				} else {
+					/* fix form error management */
+					console.log(response.data.errors);
+				}
+			} catch (error) {
+				const axiosError = error as AxiosError;
+				// if it's forbidden or unauthorized it will be logged out
+				if (axiosError.message !== "Network Error") {
+					dispatch(switchPrivilege("user")); // logout
+					navigate("/log-in");
+				} else {
+					console.log(axiosError.message); //Network Error
+				}
 			}
 		}
-
-		navigate("/", { state: "admin" });
 	}
 
 	const editorConfiguration = {

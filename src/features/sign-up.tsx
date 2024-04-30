@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 function SignUp() {
 	const [formData, setFormData] = useState({
@@ -25,18 +25,17 @@ function SignUp() {
 		const apiUrl = "http://localhost:3000/user/sign-up";
 		console.log(JSON.stringify(formData));
 		try {
-			const response = await axios.post(apiUrl, formData, {
-				headers: {
-					// Set any necessary headers, e.g., for authentication or content type:
-					"Content-Type": "application/json" // Example for JSON data
-				}
-			});
-			console.log(response.data);
-			if (response.data.message) {
+			const response = await axios.post(apiUrl, formData);
+
+			if (response.data.errors) {
+				/* fix form's error management */
+				console.log(response);
+			} else {
 				navigate("/log-in");
 			}
 		} catch (error) {
-			console.log(error);
+			const axiosError = error as AxiosError;
+			console.log(axiosError.message); // Network Error
 		}
 	}
 

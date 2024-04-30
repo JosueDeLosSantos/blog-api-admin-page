@@ -6,23 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import he from "he"; // decodes mongodb encoded HTML
 
-/* 
-
-	// 	dangerouslySetInnerHTML={{
-	// 		__html: he.decode(post.post) // renders decoded HTML
-	// 	}}
-	// />
-*/
-
-function PostsTemplate({
-	server,
-	member,
-	posts
-}: {
-	server: string;
-	member: string;
-	posts: postTypes[];
-}) {
+function PostsTemplate({ server, posts }: { server: string; posts: postTypes[] }) {
 	const listImgRef = useRef(Array(posts?.length).fill(null));
 
 	/* returns color white or black depending on the image dominant color */
@@ -52,8 +36,6 @@ function PostsTemplate({
 		return textColor;
 	}
 
-	console.log("iteration");
-
 	function setTitleColor(e: SyntheticEvent<HTMLImageElement, Event>) {
 		const image = e.target as HTMLImageElement;
 		listImgRef.current.forEach((element, index) => {
@@ -74,9 +56,9 @@ function PostsTemplate({
 				(async function fetchPost() {
 					const server = `http://localhost:3000/user/posts/${el.id}`;
 					const response = await axios.get(server);
-					// console.log(response.data.post);
+
 					navigate(`/posts/post/${el.id}`, {
-						state: { post: response.data.post, member: member }
+						state: { post: response.data.post }
 					});
 				})();
 			}
@@ -85,7 +67,7 @@ function PostsTemplate({
 
 	return (
 		<div className='bg-slate-100 h-screen'>
-			<MenuBar member={member} />
+			<MenuBar />
 
 			<div className='w-fit mx-auto pt-24'>
 				{posts &&

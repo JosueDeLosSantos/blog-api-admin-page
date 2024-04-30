@@ -8,22 +8,28 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { MouseEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { switchPrivilege } from "./posts/privilegeSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../app/rootReducer";
+import { AppDispatch } from "../app/store";
 
-export default function MenuBar({ member }: { member: string }) {
+export default function MenuBar() {
+	const dispatch: AppDispatch = useDispatch();
+	const member = useSelector((state: RootState) => state.privilege);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);
 	};
 	const navigate = useNavigate();
-	const handleClose = (e: MouseEvent, member: string) => {
+	const handleClose = (e: MouseEvent) => {
 		const target = e.target as HTMLElement;
 		const { innerText } = target;
 
 		switch (innerText) {
 			case "Logout":
-				localStorage.removeItem("accessToken");
-				navigate("/", { state: "user" });
+				dispatch(switchPrivilege("user"));
+				navigate("/");
 				break;
 			case "Login":
 				navigate("/log-in");
@@ -35,11 +41,7 @@ export default function MenuBar({ member }: { member: string }) {
 				navigate("/posts/create");
 				break;
 			case "All post":
-				if (member === "admin") {
-					navigate("/", { state: member });
-				} else {
-					navigate("/", { state: member });
-				}
+				navigate("/");
 				break;
 			default:
 				setAnchorEl(null);
@@ -88,24 +90,13 @@ export default function MenuBar({ member }: { member: string }) {
 							"aria-labelledby": "basic-button"
 						}}
 					>
-						{member === "admin" && (
-							<MenuItem
-								sx={{
-									fontSize: "1rem",
-									borderBottom: "1px solid #e0e0e0" // Add a bottom border to each menu item
-								}}
-								onClick={(e) => handleClose(e, member)}
-							>
-								Logout
-							</MenuItem>
-						)}
 						{member && (
 							<MenuItem
 								sx={{
 									fontSize: "1rem",
 									borderBottom: "1px solid #e0e0e0" // Add a bottom border to each menu item
 								}}
-								onClick={(e) => handleClose(e, member)}
+								onClick={(e) => handleClose(e)}
 							>
 								All post
 							</MenuItem>
@@ -113,9 +104,10 @@ export default function MenuBar({ member }: { member: string }) {
 						{member === "admin" && (
 							<MenuItem
 								sx={{
-									fontSize: "1rem"
+									fontSize: "1rem",
+									borderBottom: "1px solid #e0e0e0" // Add a bottom border to each menu item
 								}}
-								onClick={(e) => handleClose(e, member)}
+								onClick={(e) => handleClose(e)}
 							>
 								Create post
 							</MenuItem>
@@ -126,7 +118,7 @@ export default function MenuBar({ member }: { member: string }) {
 									fontSize: "1rem",
 									borderBottom: "1px solid #e0e0e0" // Add a bottom border to each menu item
 								}}
-								onClick={(e) => handleClose(e, member)}
+								onClick={(e) => handleClose(e)}
 							>
 								Login
 							</MenuItem>
@@ -136,9 +128,19 @@ export default function MenuBar({ member }: { member: string }) {
 								sx={{
 									fontSize: "1rem"
 								}}
-								onClick={(e) => handleClose(e, member)}
+								onClick={(e) => handleClose(e)}
 							>
 								Sign Up
+							</MenuItem>
+						)}
+						{member === "admin" && (
+							<MenuItem
+								sx={{
+									fontSize: "1rem"
+								}}
+								onClick={(e) => handleClose(e)}
+							>
+								Logout
 							</MenuItem>
 						)}
 					</Menu>

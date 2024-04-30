@@ -1,9 +1,13 @@
 import { FormEvent, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import codeImage from "../../public/images/safar-safarov-koOdUvfGr4c-unsplash.jpg";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../app/store";
+import { switchPrivilege } from "./posts/privilegeSlice";
 
 function LogIn() {
+	const dispatch: AppDispatch = useDispatch();
 	const [formData, setFormData] = useState({
 		username: "",
 		password: ""
@@ -28,13 +32,15 @@ function LogIn() {
 			if (response.data.accessToken) {
 				localStorage.setItem("accessToken", `${response.data.accessToken}`);
 				console.log(response.data.accessToken);
-
-				navigate("/", { state: "admin" }); // Redirect to desired page after successful login
+				dispatch(switchPrivilege("admin"));
+				navigate("/"); // Redirect to desired page after successful login
 			} else {
-				console.log(response.data.message);
+				/* fix form error management */
+				console.log(response.data);
 			}
 		} catch (error) {
-			console.log(error);
+			const axiosError = error as AxiosError;
+			console.log(axiosError.message); // Network Error
 		}
 	}
 
