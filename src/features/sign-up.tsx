@@ -42,8 +42,13 @@ function SignUp() {
 	return (
 		<div className='container mx-auto max-w-md h-full flex bg-white rounded-lg shadow overflow-hidden mt-14'>
 			<div className='w-full p-8'>
-				<h1 className='font-PressStart2P text-xl mb-10 text-center text-indigo-600 hover:text-indigo-700'>
-					<Link to='../'>{"<JCODER>"}</Link>
+				<h1 className='font-PressStart2P text-xl mb-10 text-center'>
+					<Link
+						className='text-slate-900 visited:text-slate-900 hover:text-slate-700'
+						to='../'
+					>
+						{"<JCODER>"}
+					</Link>
 				</h1>
 				<form onSubmit={onSubmit} className='mt-10'>
 					<h1 className='text-2xl font-bold'>Sign up to create an account</h1>
@@ -131,7 +136,7 @@ function SignUp() {
 
 					<div className='flex w-full mt-8'>
 						<button
-							className='w-full bg-indigo-600 hover:bg-indigo-700 text-white text-lg py-2 px-4 font-semibold rounded focus:outline-none focus:shadow-outline h-15'
+							className='w-full bg-slate-600 hover:bg-slate-700 text-white text-lg py-2 px-4 font-semibold rounded focus:outline-none focus:shadow-outline h-15'
 							type='submit'
 						>
 							Sign up

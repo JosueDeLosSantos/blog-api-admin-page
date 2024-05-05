@@ -54,8 +54,13 @@ function LogIn() {
 				/>
 			</div>
 			<div className='w-full xl:w-1/2 p-8'>
-				<h1 className='font-PressStart2P text-xl mb-10 text-center text-indigo-600 hover:text-indigo-700'>
-					<Link to='../'>{"<JCODER>"}</Link>
+				<h1 className='font-PressStart2P text-xl mb-10 text-center '>
+					<Link
+						className='text-slate-900 visited:text-slate-900 hover:text-slate-700'
+						to='../'
+					>
+						{"<JCODER>"}
+					</Link>
 				</h1>
 				<form onSubmit={onSubmit}>
 					<h1 className='text-2xl font-bold'>Sign in to your account</h1>
@@ -63,8 +68,13 @@ function LogIn() {
 						<span className='text-gray-600 text-sm'>
 							Don't have an account?
 						</span>{" "}
-						<span className='text-indigo-600 hover:text-indigo-700 text-sm font-semibold'>
-							<Link to='../sign-up'>Sign up</Link>
+						<span className='text-sm font-semibold'>
+							<Link
+								className='text-slate-900 visited:text-slate-900 hover:text-slate-700'
+								to='../sign-up'
+							>
+								Sign up
+							</Link>
 						</span>
 					</div>
 					<div className='mb-4 mt-6'>
@@ -102,7 +112,7 @@ function LogIn() {
 
 					<div className='flex w-full mt-8'>
 						<button
-							className='w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm py-2 px-4 font-semibold rounded focus:outline-none focus:shadow-outline h-10'
+							className='w-full bg-slate-600 hover:bg-slate-700 text-white text-sm py-2 px-4 font-semibold rounded focus:outline-none focus:shadow-outline h-10'
 							type='submit'
 						>
 							Sign in

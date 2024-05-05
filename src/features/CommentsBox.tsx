@@ -34,6 +34,11 @@ function CommentsBox({
 		setFormData({ ...formData, [name]: value });
 	};
 
+	const handleCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
+		const { name, value } = event.target;
+		setFormData({ ...formData, [name]: value });
+	};
+
 	async function onSubmit(e: FormEvent) {
 		e.preventDefault();
 		// http://localhost:3000/
@@ -67,10 +72,10 @@ function CommentsBox({
 					<div className='w-full'>
 						<textarea
 							name='comment'
-							onInput={handleInputChange}
+							onInput={handleCommentChange}
 							className='box-border bg-slate-100 w-full px-3 py-2 mb-3 rounded-sm border border-solid border-slate-300  focus:outline-none  focus:border-blue-300 resize-none'
 							placeholder='Type Comment...*'
-							rows='5'
+							rows={5}
 							required
 						></textarea>
 					</div>

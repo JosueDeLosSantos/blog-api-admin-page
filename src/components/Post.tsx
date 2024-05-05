@@ -17,7 +17,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { red, grey } from "@mui/material/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../app/store";
-import { switchPrivilege } from "../features/posts/privilegeSlice";
 import { RootState } from "../app/rootReducer";
 
 const theme = createTheme({
