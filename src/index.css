@@ -7,3 +7,51 @@ body {
 	margin: 0;
 	padding: 0;
 }
+
+/* Beam of light background effect */
+.bg-custom-animation-1 {
+	background: linear-gradient(
+		0.25turn,
+		rgba(226, 232, 240),
+		rgba(226, 232, 240),
+		rgba(226, 232, 240),
+		rgba(226, 232, 240),
+		rgba(226, 232, 240),
+		white,
+		rgba(226, 232, 240),
+		rgba(226, 232, 240),
+		rgba(226, 232, 240),
+		rgba(226, 232, 240),
+		rgba(226, 232, 240)
+	);
+	background-size: 800% 10%;
+	animation: gradient 1.4s linear infinite alternate;
+}
+/* Beam of light background effect */
+.bg-custom-animation-2 {
+	background: linear-gradient(
+		0.25turn,
+		rgba(203, 213, 225),
+		rgba(203, 213, 225),
+		rgba(203, 213, 225),
+		rgba(203, 213, 225),
+		rgba(203, 213, 225),
+		white,
+		rgba(203, 213, 225),
+		rgba(203, 213, 225),
+		rgba(203, 213, 225),
+		rgba(203, 213, 225),
+		rgba(203, 213, 225)
+	);
+	background-size: 800% 10%;
+	animation: gradient 1.4s linear infinite alternate;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0%;
+	}
+	100% {
+		background-position: 100%;
+	}
+}

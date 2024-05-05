@@ -7,7 +7,7 @@ import { postsList } from "../features/posts/postsSlice";
 import { switchPrivilege } from "../features/posts/privilegeSlice";
 import { RootState } from "../app/rootReducer";
 import { postTypes } from "../features/posts/types";
-import Loading from "../features/Loading";
+import SkeletonPostsPage from "../features/SkeletonPostsPage";
 import ErrorPage from "../features/ErrorPage";
 
 function Index() {
@@ -39,20 +39,18 @@ function Index() {
 					dispatch(switchPrivilege("admin"));
 					console.log(response);
 				} catch (error) {
-					console.log(error);
 					const axiosError = error as AxiosError;
-					if (axiosError.response) {
-						// if is not admin it will display the list of users anyway
-						if (axiosError.response.status === (401 | 403)) {
-							type dataType = {
-								posts: postTypes[];
-							};
-							const userData = axiosError.response.data as dataType;
-							dispatch(postsList(userData.posts));
-							setLoadState("success");
-						}
-					} else {
+
+					if (axiosError.message === "Network Error") {
 						setLoadState("error");
+					} else {
+						console.log(axiosError.message);
+						type dataType = {
+							posts: postTypes[];
+						};
+						const userData = axiosError?.response?.data as dataType;
+						dispatch(postsList(userData.posts));
+						setLoadState("success");
 					}
 				}
 			})();
@@ -64,7 +62,8 @@ function Index() {
 	return (
 		(loadState === "loading" && (
 			<>
-				<Loading />
+				{/* skeleton website */}
+				<SkeletonPostsPage />
 			</>
 		)) ||
 		(loadState === "success" && (

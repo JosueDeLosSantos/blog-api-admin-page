@@ -93,7 +93,7 @@ function PostsTemplate({ server, posts }: { server: string; posts: postTypes[] }
 			if (isAtBottom) {
 				if (posts.length - postsCopy.length) {
 					const newPostsCopy = postsAmountController(postsCopy, posts);
-					setPostCopy(newPostsCopy);
+					setPostCopy(newPostsCopy); // lazy loader
 				}
 			}
 		};
@@ -105,7 +105,7 @@ function PostsTemplate({ server, posts }: { server: string; posts: postTypes[] }
 	}, [postsCopy, posts]);
 
 	return (
-		<div className='bg-slate-100 h-screen'>
+		<div className='bg-slate-100 h-auto'>
 			<MenuBar />
 
 			<div className='w-fit mx-auto pt-24'>
