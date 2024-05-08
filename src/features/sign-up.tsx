@@ -18,18 +18,54 @@ function SignUp() {
 		setFormData({ ...formData, [name]: value });
 	};
 
+	const [errors, setErrors] = useState({
+		first_name: "",
+		last_name: "",
+		username: "",
+		password: "",
+		passwordConfirmation: ""
+	});
+
 	async function onSubmit(e: FormEvent) {
 		e.preventDefault();
 		// http://localhost:3000/user/sign-up
 		//https://dummy-blog.adaptable.app/user/sign-up
 		const apiUrl = "http://localhost:3000/user/sign-up";
-		console.log(JSON.stringify(formData));
 		try {
 			const response = await axios.post(apiUrl, formData);
 
 			if (response.data.errors) {
 				/* fix form's error management */
-				console.log(response);
+				const newErrors = {
+					first_name: "",
+					last_name: "",
+					username: "",
+					password: "",
+					passwordConfirmation: ""
+				};
+				while (response.data.errors.length > 0) {
+					const error = response.data.errors.shift();
+					switch (error.path) {
+						case "first_name":
+							newErrors.first_name = error.msg;
+							break;
+						case "last_name":
+							newErrors.last_name = error.msg;
+							break;
+						case "username":
+							newErrors.username = error.msg;
+							break;
+						case "password":
+							newErrors.password = error.msg;
+							break;
+						case "passwordConfirmation":
+							newErrors.passwordConfirmation = error.msg;
+							break;
+						default:
+							break;
+					}
+				}
+				setErrors(newErrors);
 			} else {
 				navigate("/log-in");
 			}
@@ -53,22 +89,6 @@ function SignUp() {
 				<form onSubmit={onSubmit} className='mt-10'>
 					<h1 className='text-2xl font-bold'>Sign up to create an account</h1>
 
-					<div className='mb-4 mt-10'>
-						<label
-							className='block text-gray-700 text-base font-semibold mb-2'
-							htmlFor='last_name'
-						>
-							Last Name
-						</label>
-						<input
-							className='text-base appearance-none rounded w-full py-5 px-3 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10'
-							name='last_name'
-							type='text'
-							placeholder='Your last name'
-							onInput={handleInputChange}
-							value={formData.last_name}
-						/>
-					</div>
 					<div className='mb-4 mt-6'>
 						<label
 							className='block text-gray-700 text-base font-semibold mb-2'
@@ -84,6 +104,28 @@ function SignUp() {
 							onInput={handleInputChange}
 							value={formData.first_name}
 						/>
+						<span className='text-red-600 max-sm:text-xs sm:text-sm'>
+							{errors.first_name}
+						</span>
+					</div>
+					<div className='mb-4 mt-10'>
+						<label
+							className='block text-gray-700 text-base font-semibold mb-2'
+							htmlFor='last_name'
+						>
+							Last Name
+						</label>
+						<input
+							className='text-base appearance-none rounded w-full py-5 px-3 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10'
+							name='last_name'
+							type='text'
+							placeholder='Your last name'
+							onInput={handleInputChange}
+							value={formData.last_name}
+						/>
+						<span className='text-red-600 max-sm:text-xs sm:text-sm'>
+							{errors.last_name}
+						</span>
 					</div>
 					<div className='mb-4 mt-6'>
 						<label
@@ -100,6 +142,9 @@ function SignUp() {
 							onInput={handleInputChange}
 							value={formData.username}
 						/>
+						<span className='text-red-600 max-sm:text-xs sm:text-sm'>
+							{errors.username}
+						</span>
 					</div>
 					<div className='mb-6 mt-6'>
 						<label
@@ -116,6 +161,9 @@ function SignUp() {
 							onInput={handleInputChange}
 							value={formData.password}
 						/>
+						<span className='text-red-600 max-sm:text-xs sm:text-sm'>
+							{errors.password}
+						</span>
 					</div>
 					<div className='mb-6 mt-6'>
 						<label
@@ -132,6 +180,9 @@ function SignUp() {
 							onInput={handleInputChange}
 							value={formData.passwordConfirmation}
 						/>
+						<span className='text-red-600 max-sm:text-xs sm:text-sm'>
+							{errors.passwordConfirmation}
+						</span>
 					</div>
 
 					<div className='flex w-full mt-8'>

@@ -39,23 +39,61 @@ function CommentsBox({
 		setFormData({ ...formData, [name]: value });
 	};
 
+	const [errors, setErrors] = useState({
+		email: "",
+		name: "",
+		comment: ""
+	});
+
 	async function onSubmit(e: FormEvent) {
 		e.preventDefault();
 		// http://localhost:3000/
-		// https://dummy-blog.adaptable.app/user/log-in
-		const apiUrl = "http://localhost:3000/";
+		// https://dummy-blog.adaptable.app/comments
+		const apiUrl = "http://localhost:3000/comments";
 		try {
 			const response = await axios.post(apiUrl, formData);
-			console.log(response);
-			// Add a date to the most recent added comment to keep the page updated
-			formData.date = response.data.date;
-			// update comments array to avoid unnecessary API calls
-			commentsAction(formData);
+
+			/* If no errors are returned, add a date to the most recent added comment to keep 
+			the page updated */
+			if (!response.data.errors) {
+				formData.date = response.data.date;
+				// update comments array to avoid unnecessary API calls
+				commentsAction(formData);
+				// clear form fields
+				setFormData({
+					_id: uuidv4(),
+					comment: "",
+					name: "",
+					email: "",
+					date: "",
+					post: post_id,
+					__v: 0
+				});
+				// clear errors
+				setErrors({ email: "", name: "", comment: "" });
+			} else {
+				const newErrors = { email: "", name: "", comment: "" };
+				while (response.data.errors.length > 0) {
+					const error = response.data.errors.shift();
+					switch (error.path) {
+						case "email":
+							newErrors.email = error.msg;
+							break;
+						case "name":
+							newErrors.name = error.msg;
+							break;
+						case "comment":
+							newErrors.comment = error.msg;
+							break;
+						default:
+							break;
+					}
+				}
+				setErrors(newErrors);
+			}
 		} catch (error) {
 			console.log(error);
 		}
-
-		console.log(formData);
 	}
 
 	return (
@@ -76,8 +114,12 @@ function CommentsBox({
 							className='box-border bg-slate-100 w-full px-3 py-2 mb-3 rounded-sm border border-solid border-slate-300  focus:outline-none  focus:border-blue-300 resize-none'
 							placeholder='Type Comment...*'
 							rows={5}
+							value={formData.comment}
 							required
 						></textarea>
+						<span className='text-red-600 max-sm:text-xs sm:text-sm'>
+							{errors.comment}
+						</span>
 					</div>
 
 					<div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
@@ -88,8 +130,12 @@ function CommentsBox({
 								onInput={handleInputChange}
 								className='box-border bg-slate-100 w-full px-3 py-2 rounded-sm border border-solid border-slate-300  focus:outline-none focus:border-blue-300'
 								placeholder='Name*'
+								value={formData.name}
 								required
 							/>
+							<span className='text-red-600 max-sm:text-xs sm:text-sm'>
+								{errors.name}
+							</span>
 						</div>
 						<div className='mb-1'>
 							<input
@@ -98,8 +144,12 @@ function CommentsBox({
 								onInput={handleInputChange}
 								className='box-border bg-slate-100 w-full px-3 py-2 rounded-sm border border-solid border-slate-300  focus:outline-none focus:border-blue-300'
 								placeholder='Email*'
+								value={formData.email}
 								required
 							/>
+							<span className='text-red-600 max-sm:text-xs sm:text-sm'>
+								{errors.email}
+							</span>
 						</div>
 					</div>
 					<div className='box-border flex'>

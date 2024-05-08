@@ -5,6 +5,7 @@ import codeImage from "../../public/images/safar-safarov-koOdUvfGr4c-unsplash.jp
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../app/store";
 import { switchPrivilege } from "./posts/privilegeSlice";
+import { Password } from "@mui/icons-material";
 
 function LogIn() {
 	const dispatch: AppDispatch = useDispatch();
@@ -21,6 +22,12 @@ function LogIn() {
 		setFormData({ ...formData, [name]: value });
 	};
 
+	const [credentials, setCredentials] = useState("");
+	const [errors, setErrors] = useState({
+		username: "",
+		password: ""
+	});
+
 	async function onSubmit(e: FormEvent) {
 		e.preventDefault();
 		// http://localhost:3000/
@@ -31,16 +38,38 @@ function LogIn() {
 
 			if (response.data.accessToken) {
 				localStorage.setItem("accessToken", `${response.data.accessToken}`);
-				console.log(response.data.accessToken);
 				dispatch(switchPrivilege("admin"));
 				navigate("/"); // Redirect to desired page after successful login
 			} else {
-				/* fix form error management */
-				console.log(response.data);
+				if (response.data.errors) {
+					const newErrors = { username: "", password: "" };
+					while (response.data.errors.length > 0) {
+						const error = response.data.errors.shift();
+						switch (error.path) {
+							case "username":
+								newErrors.username = error.msg;
+								break;
+							case "password":
+								newErrors.password = error.msg;
+								break;
+
+							default:
+								break;
+						}
+					}
+					setErrors(newErrors);
+					if (credentials !== "") {
+						setCredentials("");
+					}
+				}
+				if (response.data.message) {
+					setCredentials(response.data.message);
+					setErrors({ username: "", password: "" });
+				}
 			}
 		} catch (error) {
 			const axiosError = error as AxiosError;
-			console.log(axiosError.message); // Network Error
+			console.log(axiosError); // Network Error
 		}
 	}
 
@@ -91,7 +120,11 @@ function LogIn() {
 							placeholder='Your username'
 							onInput={handleInputChange}
 							value={formData.username}
+							required
 						/>
+						<span className='text-red-600 max-sm:text-xs sm:text-sm'>
+							{errors.username}
+						</span>
 					</div>
 					<div className='mb-6 mt-6'>
 						<label
@@ -107,7 +140,15 @@ function LogIn() {
 							placeholder='Your password'
 							onInput={handleInputChange}
 							value={formData.password}
+							required
 						/>
+						<span className='text-red-600 max-sm:text-xs sm:text-sm'>
+							{errors.password}
+						</span>
+					</div>
+
+					<div className='text-red-600 max-sm:text-xs sm:text-sm'>
+						<span>{credentials}</span>
 					</div>
 
 					<div className='flex w-full mt-8'>

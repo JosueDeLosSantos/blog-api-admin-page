@@ -54,6 +54,9 @@ function Post() {
 	const [comments, setComments] = useState(state.post.comments);
 	const navigate = useNavigate();
 
+	// position the scroll at the top of the page
+	window.scrollTo(0, 0);
+
 	// keep comments array updated to avoid unnecessary API calls
 	function commentsAction(arg: commentType) {
 		// Change array's order to show the most recent one on the top
@@ -220,16 +223,19 @@ function Post() {
 						post_id={`${state.post._id}`}
 					/>
 					<div id='comments-box' className='max-w-screen-md mx-auto'>
-						{comments.map((comment) => (
-							<div className='box-border w-11/12 mb-8 mx-auto border-solid border border-slate-300 p-5 rounded-lg'>
-								<div className='flex gap-2 items-end h-5 mb-5'>
-									<div className='text-slate-500 text-sm'>
+						{comments.map((comment, i) => (
+							<div
+								key={i}
+								className='box-border w-11/12 mb-8 mx-auto border-solid border border-slate-300 p-5 rounded-lg'
+							>
+								<div className='max-[370px]:flex-col max-[370px]:gap-0 flex gap-2 items-end h-5 mb-5'>
+									<div className='max-sm:text-xs sm:text-sm text-slate-500'>
 										{comment.name}
 									</div>
-									<div className='text-slate-400 text-4xl'>
+									<div className='max-[370px]:hidden max-sm:text-2xl sm:text-4xl text-slate-400 '>
 										<div>.</div>
 									</div>
-									<div className='text-slate-500 text-sm'>
+									<div className='max-sm:text-[0.70rem] max-sm:leading-[1.390] sm:text-[0.80rem] sm:leading-snug text-slate-500'>
 										{comment.date}
 									</div>
 								</div>

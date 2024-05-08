@@ -69,6 +69,7 @@ function PostsTemplate({ server, posts }: { server: string; posts: postTypes[] }
 		parentRef.current.forEach((el) => {
 			// Check if the clicked element is the parent element (or a child of it)
 			if (el && el.contains(e.target)) {
+				// fetch the post data
 				(async function fetchPost() {
 					const server = `http://localhost:3000/user/posts/${el.id}`;
 					const response = await axios.get(server);
@@ -86,7 +87,9 @@ function PostsTemplate({ server, posts }: { server: string; posts: postTypes[] }
 		of the page. */
 		const handleScroll = () => {
 			const scrollHeight = document.documentElement.scrollHeight;
+
 			const scrollTop = window.scrollY;
+
 			const clientHeight = window.innerHeight;
 
 			const isAtBottom = scrollHeight - scrollTop === clientHeight;
@@ -106,7 +109,7 @@ function PostsTemplate({ server, posts }: { server: string; posts: postTypes[] }
 	}, [postsCopy, posts]);
 
 	return (
-		<div className='bg-slate-100 h-auto'>
+		<div className='bg-slate-100 min-h-screen max-h-auto'>
 			<MenuBar />
 
 			<div className='w-fit mx-auto pt-24'>
