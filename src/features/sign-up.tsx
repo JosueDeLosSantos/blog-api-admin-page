@@ -18,6 +18,8 @@ function SignUp() {
 		setFormData({ ...formData, [name]: value });
 	};
 
+	const [Unauthorized, setUnauthorized] = useState("");
+
 	const [errors, setErrors] = useState({
 		first_name: "",
 		last_name: "",
@@ -71,7 +73,20 @@ function SignUp() {
 			}
 		} catch (error) {
 			const axiosError = error as AxiosError;
-			console.log(axiosError.message); // Network Error
+			if (axiosError.response) {
+				type notAutorized = { message: string };
+				const errorResponse = axiosError.response.data as notAutorized;
+				setUnauthorized(errorResponse.message);
+				setErrors({
+					first_name: "",
+					last_name: "",
+					username: "",
+					password: "",
+					passwordConfirmation: ""
+				});
+			} else {
+				navigate("/server-error");
+			}
 		}
 	}
 
@@ -89,6 +104,12 @@ function SignUp() {
 				<form onSubmit={onSubmit} className='mt-10'>
 					<h1 className='text-2xl font-bold'>Sign up to create an account</h1>
 
+					<div>
+						<span className='text-red-600 max-sm:text-xs sm:text-sm'>
+							{Unauthorized}
+						</span>
+					</div>
+
 					<div className='mb-4 mt-6'>
 						<label
 							className='block text-gray-700 text-base font-semibold mb-2'
@@ -97,7 +118,7 @@ function SignUp() {
 							First Name
 						</label>
 						<input
-							className='text-base appearance-none rounded w-full py-5 px-3 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10'
+							className='text-base box-border border appearance-none rounded w-full py-4 px-2 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10'
 							name='first_name'
 							type='text'
 							placeholder='Your first name'
@@ -108,7 +129,7 @@ function SignUp() {
 							{errors.first_name}
 						</span>
 					</div>
-					<div className='mb-4 mt-10'>
+					<div className='mb-4 mt-6'>
 						<label
 							className='block text-gray-700 text-base font-semibold mb-2'
 							htmlFor='last_name'
@@ -116,7 +137,7 @@ function SignUp() {
 							Last Name
 						</label>
 						<input
-							className='text-base appearance-none rounded w-full py-5 px-3 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10'
+							className='text-base box-border border appearance-none rounded w-full py-4 px-2 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10'
 							name='last_name'
 							type='text'
 							placeholder='Your last name'
@@ -135,7 +156,7 @@ function SignUp() {
 							Username
 						</label>
 						<input
-							className='text-base appearance-none rounded w-full py-5 px-3 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10'
+							className='text-base box-border border appearance-none rounded w-full py-4 px-2 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10'
 							name='username'
 							type='text'
 							placeholder='Your username'
@@ -154,7 +175,7 @@ function SignUp() {
 							Password
 						</label>
 						<input
-							className='text-base bg-gray-200 appearance-none rounded w-full py-5 px-3 text-gray-700 mb-1 leading-tight focus:outline-none focus:shadow-outline h-10'
+							className='text-base box-border border bg-gray-200 appearance-none rounded w-full py-4 px-2 text-gray-700 mb-1 leading-tight focus:outline-none focus:shadow-outline h-10'
 							name='password'
 							type='password'
 							placeholder='Your password'
@@ -173,7 +194,7 @@ function SignUp() {
 							Confirm Password
 						</label>
 						<input
-							className='text-base bg-gray-200 appearance-none rounded w-full py-5 px-3 text-gray-700 mb-1 leading-tight focus:outline-none focus:shadow-outline h-10'
+							className='text-base border box-border bg-gray-200 appearance-none rounded w-full py-4 px-2 text-gray-700 mb-1 leading-tight focus:outline-none focus:shadow-outline h-10'
 							name='passwordConfirmation'
 							type='password'
 							placeholder='Confirm your password'
@@ -187,7 +208,7 @@ function SignUp() {
 
 					<div className='flex w-full mt-8'>
 						<button
-							className='w-full bg-slate-600 hover:bg-slate-700 text-white text-lg py-2 px-4 font-semibold rounded focus:outline-none focus:shadow-outline h-15'
+							className='w-full box-content bg-slate-600 hover:bg-slate-700 text-white text-lg  font-semibold rounded focus:outline-none focus:shadow-outline h-10'
 							type='submit'
 						>
 							Sign up

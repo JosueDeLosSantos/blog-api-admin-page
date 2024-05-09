@@ -5,7 +5,6 @@ import codeImage from "../../public/images/safar-safarov-koOdUvfGr4c-unsplash.jp
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../app/store";
 import { switchPrivilege } from "./posts/privilegeSlice";
-import { Password } from "@mui/icons-material";
 
 function LogIn() {
 	const dispatch: AppDispatch = useDispatch();
@@ -68,8 +67,7 @@ function LogIn() {
 				}
 			}
 		} catch (error) {
-			const axiosError = error as AxiosError;
-			console.log(axiosError); // Network Error
+			navigate("/server-error"); // Network Error
 		}
 	}
 
@@ -106,7 +104,7 @@ function LogIn() {
 							</Link>
 						</span>
 					</div>
-					<div className='mb-4 mt-6'>
+					<div className='w-full box-border mb-4 mt-6'>
 						<label
 							className='block text-gray-700 text-sm font-semibold mb-2'
 							htmlFor='username'
@@ -114,7 +112,7 @@ function LogIn() {
 							Username
 						</label>
 						<input
-							className='text-sm appearance-none rounded w-full py-2 px-3 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10'
+							className='text-sm box-border appearance-none rounded w-full border py px-2 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10'
 							name='username'
 							type='text'
 							placeholder='Your username'
@@ -126,7 +124,7 @@ function LogIn() {
 							{errors.username}
 						</span>
 					</div>
-					<div className='mb-6 mt-6'>
+					<div className='w-full box-border mb-6 mt-6'>
 						<label
 							className='block text-gray-700 text-sm font-semibold mb-2'
 							htmlFor='password'
@@ -134,7 +132,7 @@ function LogIn() {
 							Password
 						</label>
 						<input
-							className='text-sm bg-gray-200 appearance-none rounded w-full py-2 px-3 text-gray-700 mb-1 leading-tight focus:outline-none focus:shadow-outline h-10'
+							className='text-sm box-border bg-gray-200 appearance-none rounded w-full border py px-2 text-gray-700 mb-1 leading-tight focus:outline-none focus:shadow-outline h-10'
 							name='password'
 							type='password'
 							placeholder='Your password'
@@ -153,7 +151,7 @@ function LogIn() {
 
 					<div className='flex w-full mt-8'>
 						<button
-							className='w-full bg-slate-600 hover:bg-slate-700 text-white text-sm py-2 px-4 font-semibold rounded focus:outline-none focus:shadow-outline h-10'
+							className='w-full bg-slate-600 hover:bg-slate-700 text-white text-sm py px-2 font-semibold rounded focus:outline-none focus:shadow-outline h-10'
 							type='submit'
 						>
 							Sign in

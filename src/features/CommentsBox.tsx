@@ -1,4 +1,5 @@
 import { FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 
@@ -19,6 +20,7 @@ function CommentsBox({
 	post_id: string;
 	commentsAction: (arg: commentType) => void;
 }) {
+	const navigate = useNavigate();
 	const [formData, setFormData] = useState({
 		_id: uuidv4(),
 		comment: "",
@@ -92,7 +94,7 @@ function CommentsBox({
 				setErrors(newErrors);
 			}
 		} catch (error) {
-			console.log(error);
+			navigate("/server-error");
 		}
 	}
 

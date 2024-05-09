@@ -147,7 +147,7 @@ export default function MenuBar() {
 					<Typography
 						variant='h6'
 						component='div'
-						className='text-center w-full font-PressStart2P mx-sm:text-xl lg:text-3xl'
+						className='text-center w-full font-PressStart2P mx-sm:text-xl lg:text-2xl'
 						sx={{
 							color: "black"
 						}}

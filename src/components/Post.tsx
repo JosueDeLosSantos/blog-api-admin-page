@@ -100,14 +100,9 @@ function Post() {
 			});
 
 			dispatch(deletePost(response.data.post._id)); // update global state
-
 			navigate("/", { state: "admin" });
-
-			console.log("Post deleted successfully:", response.data);
-			// handle successful deletion (e.g., remove post from UI)
 		} catch (error) {
-			console.error("Error deleting post:", error);
-			// handle errors (e.g., display error message to user)
+			navigate("/server-error");
 		}
 	};
 
@@ -130,7 +125,7 @@ function Post() {
 	return (
 		<div className='bg-slate-100'>
 			<MenuBar />
-			<main className='pl-5 pr-5 pb-5 pt-20 flex gap-4'>
+			<main className='pl-5 pr-5 pb-5 pt-24 flex gap-4'>
 				{member === "admin" && (
 					<ThemeProvider theme={theme}>
 						<div

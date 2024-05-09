@@ -54,6 +54,55 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 		setFormData({ ...formData, [name]: files?.length ? files[0] : value });
 	};
 
+	const [errors, setErrors] = useState({
+		title: "",
+		description: "",
+		post: "",
+		author: "",
+		file: ""
+	});
+
+	type ErrorsArrayType = {
+		location: string;
+		msg: string;
+		path: string;
+		type: string;
+		value: string;
+	};
+
+	function errorHandler(errorsArray: ErrorsArrayType[]) {
+		const errorsInitialState = {
+			title: "",
+			description: "",
+			post: "",
+			author: "",
+			file: ""
+		};
+		while (errorsArray.length > 0) {
+			const error = errorsArray.shift() as ErrorsArrayType;
+			switch (error.path) {
+				case "title":
+					errorsInitialState.title = error.msg;
+					break;
+				case "description":
+					errorsInitialState.description = error.msg;
+					break;
+				case "post":
+					errorsInitialState.post = error.msg;
+					break;
+				case "author":
+					errorsInitialState.author = error.msg;
+					break;
+				case "file":
+					errorsInitialState.file = error.msg;
+					break;
+				default:
+					break;
+			}
+		}
+		setErrors(errorsInitialState);
+	}
+
 	async function onSubmit(e: FormEvent) {
 		e.preventDefault();
 
@@ -81,8 +130,8 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 				});
 
 				if (response.data.errors) {
-					/* fix form's error management */
-					console.log(response);
+					const errorsArray = response.data.errors as ErrorsArrayType[];
+					errorHandler(errorsArray);
 				} else {
 					delete response.data.post.post;
 					delete response.data.post.comments;
@@ -96,14 +145,10 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 					dispatch(switchPrivilege("user")); // logout
 					navigate("/log-in");
 				} else {
-					console.log(axiosError.message); //Network Error
+					navigate("/server-error"); //Network Error
 				}
 			}
 		} else {
-			// if no image is selected the submition won't work
-			if (formData.file === "") {
-				return;
-			}
 			const apiUrl = "http://localhost:3000/user/create-post";
 			if (jwtToken) {
 				headers["Authorization"] = `Bearer ${jwtToken}`;
@@ -116,25 +161,23 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 					}
 				});
 
-				// state will be updated only if an image is selected
-				// and if no errors are returned from the post request
-				if (formData.file !== "" && !response.data.errors) {
+				if (response.data.errors) {
+					const errorsArray = response.data.errors as ErrorsArrayType[];
+					errorHandler(errorsArray);
+				} else {
 					delete response.data.post.post;
 					delete response.data.post.comments;
 					dispatch(addPost(response.data.post)); // update global state
 					navigate("/");
-				} else {
-					/* fix form error management */
-					console.log(response.data.errors);
 				}
 			} catch (error) {
 				const axiosError = error as AxiosError;
-				// if it's forbidden or unauthorized it will be logged out
-				if (axiosError.message !== "Network Error") {
+
+				if (axiosError.message === "Network Error") {
+					navigate("/server-error");
+				} else {
 					dispatch(switchPrivilege("user")); // logout
 					navigate("/log-in");
-				} else {
-					console.log(axiosError.message); //Network Error
 				}
 			}
 		}
@@ -183,6 +226,9 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 										value={formData.title}
 										required
 									/>
+									<span className='text-red-600 max-sm:text-xs sm:text-sm'>
+										{errors.title}
+									</span>
 								</div>
 
 								<div className='mb-4'>
@@ -200,6 +246,9 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 										onInput={handleInputChange}
 										value={formData.description}
 									/>
+									<span className='text-red-600 max-sm:text-xs sm:text-sm'>
+										{errors.description}
+									</span>
 								</div>
 
 								<div className='mb-8'>
@@ -220,6 +269,9 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 												console.log(toolbarItems.sort()); */
 										}}
 									/>
+									<span className='text-red-600 max-sm:text-xs sm:text-sm'>
+										{errors.post}
+									</span>
 								</div>
 
 								<div className='mb-4'>
@@ -237,6 +289,9 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 										value={formData.author}
 										required
 									/>
+									<span className='text-red-600 max-sm:text-xs sm:text-sm'>
+										{errors.author}
+									</span>
 								</div>
 
 								<div className='mb-4'>
@@ -248,16 +303,14 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 									</label>
 									<input
 										type='file'
-										accept='image/jpeg, image/png'
+										/* accept='image/jpeg, image/png' */
 										className='border-2 border-gray-300 p-2 w-full'
 										name='file'
 										onChange={handleInputChange}
 									/>
-									{operation === "create" && formData.file === "" && (
-										<span className='text-xs text-red-700'>
-											Selecting an image is mandatory!
-										</span>
-									)}
+									<span className='text-red-600 max-sm:text-xs sm:text-sm'>
+										{errors.file}
+									</span>
 								</div>
 
 								<div className='flex p-1'>

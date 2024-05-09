@@ -3,15 +3,20 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Index from "../components";
 import User from "../components/user";
 import CreateUpdatePost from "../components/CreateUpdatePost";
-import ErrorPage from "../features/ErrorPage";
+import NotFound from "../features/NotFound";
 import Post from "../components/Post";
+import ServerError from "../features/ServerError";
 
 const Router = () => {
 	const router = createBrowserRouter([
 		{
 			path: "/",
 			element: <Index />,
-			errorElement: <ErrorPage />
+			errorElement: <NotFound />
+		},
+		{
+			path: "server-error",
+			element: <ServerError />
 		},
 		{
 			path: ":name",
