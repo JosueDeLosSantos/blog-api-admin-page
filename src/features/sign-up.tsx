@@ -32,7 +32,7 @@ function SignUp() {
 		e.preventDefault();
 		// http://localhost:3000/user/sign-up
 		//https://dummy-blog.adaptable.app/user/sign-up
-		const apiUrl = "http://localhost:3000/user/sign-up";
+		const apiUrl = "http://localhost:3000/user/admin/sign-up";
 		try {
 			const response = await axios.post(apiUrl, formData);
 
@@ -74,8 +74,8 @@ function SignUp() {
 		} catch (error) {
 			const axiosError = error as AxiosError;
 			if (axiosError.response) {
-				type notAutorized = { message: string };
-				const errorResponse = axiosError.response.data as notAutorized;
+				type notAuthorized = { message: string };
+				const errorResponse = axiosError.response.data as notAuthorized;
 				setUnauthorized(errorResponse.message);
 				setErrors({
 					first_name: "",

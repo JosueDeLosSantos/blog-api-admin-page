@@ -4,7 +4,7 @@ import { IconButton } from "@mui/material";
 import CommentsBox from "../features/CommentsBox";
 import { onePostType } from "../features/posts/types";
 import { deletePost } from "../features/posts/postsSlice";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import he from "he"; // decodes mongodb encoded HTML
 import { useState, useEffect } from "react";
 import ForumIcon from "@mui/icons-material/Forum";
@@ -18,6 +18,7 @@ import { red, grey } from "@mui/material/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../app/store";
 import { RootState } from "../app/rootReducer";
+import { switchPrivilege } from "../features/posts/privilegeSlice";
 
 const theme = createTheme({
 	palette: {
@@ -100,9 +101,19 @@ function Post() {
 			});
 
 			dispatch(deletePost(response.data.post._id)); // update global state
-			navigate("/", { state: "admin" });
+			navigate("/");
 		} catch (error) {
-			navigate("/server-error");
+			const axiosError = error as AxiosError;
+			if (
+				axiosError?.response?.status === 403 ||
+				axiosError?.response?.status === 401
+			) {
+				// if it's forbidden or unauthorized it will be logged out
+				dispatch(switchPrivilege("user")); // logout
+				navigate("/log-in");
+			} else {
+				navigate("/server-error");
+			}
 		}
 	};
 

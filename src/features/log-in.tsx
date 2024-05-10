@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import codeImage from "../../public/images/safar-safarov-koOdUvfGr4c-unsplash.jpg";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../app/store";
@@ -31,7 +31,7 @@ function LogIn() {
 		e.preventDefault();
 		// http://localhost:3000/
 		// https://dummy-blog.adaptable.app/user/log-in
-		const apiUrl = "http://localhost:3000/user/log-in";
+		const apiUrl = "http://localhost:3000/user/admin/log-in";
 		try {
 			const response = await axios.post(apiUrl, formData);
 
@@ -67,7 +67,7 @@ function LogIn() {
 				}
 			}
 		} catch (error) {
-			navigate("/server-error"); // Network Error
+			navigate("/server-error");
 		}
 	}
 

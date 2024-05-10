@@ -36,22 +36,26 @@ function Index() {
 
 					dispatch(switchPrivilege("admin"));
 
-					if (response.data.message === undefined) {
+					if (response.data.posts) {
 						dispatch(postsList(response.data.posts));
-						setLoadState("success");
-					} else {
-						// here no posts were found
-						setLoadState("success");
 					}
+					setLoadState("success");
 				} catch (error) {
 					const axiosError = error as AxiosError;
 
-					if (axiosError?.response?.status === 401) {
+					if (
+						axiosError?.response?.status === 403 ||
+						axiosError?.response?.status === 401
+					) {
 						type dataType = {
 							posts: postTypes[];
 						};
 						const userData = axiosError?.response?.data as dataType;
-						dispatch(postsList(userData.posts));
+
+						if (userData.posts) {
+							dispatch(postsList(userData.posts));
+						}
+						setLoadState("success");
 					} else {
 						setLoadState("error");
 					}

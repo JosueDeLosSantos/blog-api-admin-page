@@ -125,7 +125,7 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 			}
 
 			try {
-				const response = await axios.postForm(apiUrl, updateFormData, {
+				const response = await axios.patch(apiUrl, updateFormData, {
 					headers: headers
 				});
 
@@ -140,12 +140,15 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 				}
 			} catch (error) {
 				const axiosError = error as AxiosError;
-				// if it's forbidden or unauthorized it will be logged out
-				if (axiosError.message !== "Network Error") {
+				if (
+					axiosError?.response?.status === 403 ||
+					axiosError?.response?.status === 401
+				) {
+					// if it's forbidden or unauthorized it will be logged out
 					dispatch(switchPrivilege("user")); // logout
 					navigate("/log-in");
 				} else {
-					navigate("/server-error"); //Network Error
+					navigate("/server-error");
 				}
 			}
 		} else {
@@ -173,11 +176,15 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 			} catch (error) {
 				const axiosError = error as AxiosError;
 
-				if (axiosError.message === "Network Error") {
-					navigate("/server-error");
-				} else {
+				if (
+					axiosError?.response?.status === 403 ||
+					axiosError?.response?.status === 401
+				) {
+					// if it's forbidden or unauthorized it will be logged out
 					dispatch(switchPrivilege("user")); // logout
 					navigate("/log-in");
+				} else {
+					navigate("/server-error");
 				}
 			}
 		}
