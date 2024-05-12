@@ -39,3 +39,21 @@ export type onePostType = {
 	}[];
 	__v: number;
 };
+
+export type editPostType = {
+	_id: string;
+	title: string;
+	description: string;
+	date: string;
+	author: string;
+	post: string;
+	file: {
+		filename: string;
+		originalname: string;
+		mimetype: string;
+		path: string;
+		size: number;
+	};
+	comments: string[];
+	__v: number;
+};

@@ -1,7 +1,6 @@
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
+import axios, { AxiosError } from "axios";
 
 type commentType = {
 	_id: string;
@@ -22,7 +21,7 @@ function CommentsBox({
 }) {
 	const navigate = useNavigate();
 	const [formData, setFormData] = useState({
-		_id: uuidv4(),
+		_id: "",
 		comment: "",
 		name: "",
 		email: "",
@@ -51,19 +50,29 @@ function CommentsBox({
 		e.preventDefault();
 		// http://localhost:3000/
 		// https://dummy-blog.adaptable.app/comments
-		const apiUrl = "http://localhost:3000/comments";
+		const apiUrl = "http://localhost:3000/user/comments";
 		try {
-			const response = await axios.post(apiUrl, formData);
+			// get security token
+			const jwtToken = localStorage.getItem("accessToken");
+			const headers: Record<string, string> = {};
+			if (jwtToken) {
+				headers["Authorization"] = `Bearer ${jwtToken}`;
+			}
 
-			/* If no errors are returned, add a date to the most recent added comment to keep 
+			const response = await axios.post(apiUrl, formData, {
+				headers: headers
+			});
+
+			/* If no errors are returned, add a date and id to the most recent added comment to keep 
 			the page updated */
 			if (!response.data.errors) {
-				formData.date = response.data.date;
-				// update comments array to avoid unnecessary API calls
+				formData.date = response.data.post.comments[0].date;
+				formData._id = response.data.post.comments[0]._id;
+				// update comments array
 				commentsAction(formData);
 				// clear form fields
 				setFormData({
-					_id: uuidv4(),
+					_id: "",
 					comment: "",
 					name: "",
 					email: "",
@@ -94,7 +103,16 @@ function CommentsBox({
 				setErrors(newErrors);
 			}
 		} catch (error) {
-			navigate("/server-error");
+			const axiosError = error as AxiosError;
+
+			if (
+				axiosError?.response?.status === 403 ||
+				axiosError?.response?.status === 401
+			) {
+				navigate("/log-in");
+			} else {
+				navigate("/server-error");
+			}
 		}
 	}
 

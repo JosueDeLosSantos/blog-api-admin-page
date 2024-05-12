@@ -8,7 +8,7 @@ import { switchPrivilege } from "../features/posts/privilegeSlice";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import he from "he"; // decodes mongodb encoded HTML
-import { onePostType } from "../features/posts/types";
+import { editPostType } from "../features/posts/types";
 
 type fileType = {
 	filename: string;
@@ -23,6 +23,7 @@ type formDataType = {
 	description: string;
 	post: string;
 	author: string;
+	comments: string[];
 	file: string | File | fileType;
 	trash: string;
 };
@@ -30,18 +31,19 @@ type formDataType = {
 function CreateUpdatePost({ operation }: { operation: string }) {
 	const dispatch: AppDispatch = useDispatch();
 	const { name } = useParams();
-	const { state }: { state: onePostType | null } = useLocation();
+	const { state }: { state: editPostType | null } = useLocation();
 	const [formData, setFormData] = useState<formDataType>({
 		/* mongodb do not process apostrophes and commas as humans do, so he.decode helps to fix that */
 		title: state !== null ? he.decode(state.title) : "",
 		description: state !== null ? he.decode(state.description) : "",
 		post: state !== null ? he.decode(state.post) : "",
 		author: state !== null ? he.decode(state.author) : "",
+		comments: state !== null ? state.comments : [],
 		file: state !== null ? state.file : "",
-		// if the initial state.post.file value includes medatadata for any file stored in the server
+		// if the initial state.post.file value includes metadata for any file stored in the server
 		// that filename is saved in a temporal trash state. It will be useful if
 		// a new file is uploaded so that we can command the server to delete the old one.
-		trash: ""
+		trash: state !== null ? state.file.filename : ""
 	});
 	const navigate = useNavigate();
 
@@ -110,11 +112,12 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 		const headers: Record<string, string> = {};
 
 		if (operation === "update") {
-			const updateFormData = formData;
-			updateFormData.trash = state!.file.filename;
-
+			/* the condition bellow fixes unexpected behavior when
+			an image file is selected and then deselected,
+			to make sure that the file property is always filled,
+			since no post without image should be submitted */
 			if (formData.file === "") {
-				updateFormData.file = state!.file;
+				formData.file = state!.file;
 			}
 
 			// http://localhost:3000/user/posts/:name
@@ -125,7 +128,7 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 			}
 
 			try {
-				const response = await axios.patch(apiUrl, updateFormData, {
+				const response = await axios.putForm(apiUrl, formData, {
 					headers: headers
 				});
 

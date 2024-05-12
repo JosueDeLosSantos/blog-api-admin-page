@@ -67,17 +67,8 @@ function PostsTemplate({ server, posts }: { server: string; posts: postTypes[] }
 
 	const postClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		parentRef.current.forEach((el) => {
-			// Check if the clicked element is the parent element (or a child of it)
 			if (el && el.contains(e.target)) {
-				// fetch the post data
-				(async function fetchPost() {
-					const server = `http://localhost:3000/user/posts/${el.id}`;
-					const response = await axios.get(server);
-
-					navigate(`/posts/post/${el.id}`, {
-						state: { post: response.data.post }
-					});
-				})();
+				navigate(`/posts/post/${el.id}`);
 			}
 		});
 	};

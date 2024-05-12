@@ -29,6 +29,7 @@ export default function MenuBar() {
 		switch (innerText) {
 			case "Logout":
 				dispatch(switchPrivilege("user"));
+				localStorage.removeItem("accessToken");
 				navigate("/");
 				break;
 			case "Login":
