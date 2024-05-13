@@ -47,7 +47,8 @@ type commentType = {
 function Post() {
 	const dispatch: AppDispatch = useDispatch();
 	const member = useSelector((state: RootState) => state.privilege);
-	const [post, setPost] = useState<onePostType | null>(null);
+	const initialPost = null as unknown as onePostType;
+	const [post, setPost] = useState<onePostType>(initialPost);
 	const navigate = useNavigate();
 
 	// position the scroll at the top of the page
@@ -79,6 +80,7 @@ function Post() {
 
 	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+	// MARK: fetch post
 	useEffect(() => {
 		(async function fetchPost() {
 			const url = window.location.href;
@@ -126,7 +128,7 @@ function Post() {
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
+	// MARK: Edit post
 	// Redirect admin to the post's edition page
 	function EditPost(postToEdit: onePostType) {
 		const postWithFormattedComments = {
@@ -138,7 +140,7 @@ function Post() {
 		// console.log(postWithFormattedComments);
 		navigate(`/posts/update/${postToEdit._id}`, { state: postWithFormattedComments });
 	}
-
+	// MARK: Delete post
 	const handleDeletePost = async (postId: string) => {
 		// http://localhost:3000/user/posts
 		//https://dummy-blog.adaptable.app/user/posts
@@ -172,7 +174,8 @@ function Post() {
 	};
 
 	return (
-		<div className='bg-slate-100'>
+		<div className='bg-slate-100 min-h-screen'>
+			{/* MARK: Toolbar */}
 			<MenuBar />
 			<main className='pl-5 pr-5 pb-5 pt-24 flex gap-4'>
 				{member === "admin" && (
@@ -226,6 +229,7 @@ function Post() {
 				)}
 
 				<article className='bg-white sm:max-lg:w-9/12 mx-auto rounded-lg pb-3 border border-solid border-slate-200'>
+					{/* MARK: Post's header */}
 					<header id='post-header'>
 						<div
 							className='md:mb-0 w-full  mx-auto relative'
@@ -261,7 +265,7 @@ function Post() {
 							</div>
 						</div>
 					</header>
-					{/* Post's content */}
+					{/* MARK: Post's content */}
 					{post?.post && (
 						<div
 							className='max-w-screen-md border-b-[0.5px] border-t-0 border-l-0 border-r-0 border-solid border-slate-200 mx-auto sm:mt-5 md:mt-8 p-5'
@@ -279,9 +283,12 @@ function Post() {
 						/>
 					)}
 					<div id='comments-box' className='max-w-screen-md mx-auto'>
-						<div className='text-center mx-auto'>
-							<h2>Comments</h2>
-						</div>
+						{post?.comments?.length > 0 && (
+							<div className='text-center mx-auto'>
+								<h2>Comments</h2>
+							</div>
+						)}
+
 						{member === "user" && (
 							<div className='mx-auto w-11/12 pt-5 pr-5 pl-5 pb-10 text-slate-600'>
 								If you want to leave a comment{" "}
@@ -293,6 +300,7 @@ function Post() {
 								</Link>
 							</div>
 						)}
+						{/* MARK: Comments */}
 						{post?.comments.map((comment) => (
 							<div
 								key={comment._id}

@@ -150,7 +150,7 @@ export default function MenuBar() {
 						component='div'
 						className='text-center w-full font-PressStart2P mx-sm:text-xl lg:text-2xl'
 						sx={{
-							color: "black"
+							color: "#721ea3"
 						}}
 					>
 						{"<JCODER>"}

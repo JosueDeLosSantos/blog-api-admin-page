@@ -30,22 +30,13 @@ function CommentsBox({
 		__v: 0
 	});
 
-	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		const { name, value } = event.target;
-		setFormData({ ...formData, [name]: value });
-	};
-
 	const handleCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
 		const { name, value } = event.target;
 		setFormData({ ...formData, [name]: value });
 	};
 
-	const [errors, setErrors] = useState({
-		email: "",
-		name: "",
-		comment: ""
-	});
-
+	const [commentError, setCommentError] = useState("");
+	// MARK: onSubmit
 	async function onSubmit(e: FormEvent) {
 		e.preventDefault();
 		// http://localhost:3000/
@@ -68,39 +59,25 @@ function CommentsBox({
 			if (!response.data.errors) {
 				formData.date = response.data.post.comments[0].date;
 				formData._id = response.data.post.comments[0]._id;
+				formData.name = `${response.data.post.user.first_name} ${response.data.post.user.last_name}`;
+				formData.email = response.data.post.user.email;
+
 				// update comments array
 				commentsAction(formData);
 				// clear form fields
 				setFormData({
 					_id: "",
 					comment: "",
-					name: "",
-					email: "",
+					name: `${response.data.post.user.first_name} ${response.data.post.user.last_name}`,
+					email: response.data.post.user.email,
 					date: "",
 					post: post_id,
 					__v: 0
 				});
 				// clear errors
-				setErrors({ email: "", name: "", comment: "" });
+				setCommentError("");
 			} else {
-				const newErrors = { email: "", name: "", comment: "" };
-				while (response.data.errors.length > 0) {
-					const error = response.data.errors.shift();
-					switch (error.path) {
-						case "email":
-							newErrors.email = error.msg;
-							break;
-						case "name":
-							newErrors.name = error.msg;
-							break;
-						case "comment":
-							newErrors.comment = error.msg;
-							break;
-						default:
-							break;
-					}
-				}
-				setErrors(newErrors);
+				setCommentError(response.data.errors[0].msg);
 			}
 		} catch (error) {
 			const axiosError = error as AxiosError;
@@ -115,7 +92,7 @@ function CommentsBox({
 			}
 		}
 	}
-
+	// MARK: Form
 	return (
 		<div className='box-border border-solid border-0 max-w-screen-md mx-auto flex justify-center items-center'>
 			<div className='box-border w-11/12 mx-auto mt-14 mb-8'>
@@ -123,10 +100,6 @@ function CommentsBox({
 					<h2 className='text-xl mb-4 tracking-wider font-lighter '>
 						Leave a Comment
 					</h2>
-					<p className='text-gray-600 mb-4'>
-						Your email address will not be published. Required fields are
-						marked *
-					</p>
 					<div className='w-full'>
 						<textarea
 							name='comment'
@@ -138,40 +111,10 @@ function CommentsBox({
 							required
 						></textarea>
 						<span className='text-red-600 max-sm:text-xs sm:text-sm'>
-							{errors.comment}
+							{commentError}
 						</span>
 					</div>
 
-					<div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
-						<div className='mb-1'>
-							<input
-								type='text'
-								name='name'
-								onInput={handleInputChange}
-								className='box-border bg-slate-100 w-full px-3 py-2 rounded-sm border border-solid border-slate-300  focus:outline-none focus:border-blue-300'
-								placeholder='Name*'
-								value={formData.name}
-								required
-							/>
-							<span className='text-red-600 max-sm:text-xs sm:text-sm'>
-								{errors.name}
-							</span>
-						</div>
-						<div className='mb-1'>
-							<input
-								type='email'
-								name='email'
-								onInput={handleInputChange}
-								className='box-border bg-slate-100 w-full px-3 py-2 rounded-sm border border-solid border-slate-300  focus:outline-none focus:border-blue-300'
-								placeholder='Email*'
-								value={formData.email}
-								required
-							/>
-							<span className='text-red-600 max-sm:text-xs sm:text-sm'>
-								{errors.email}
-							</span>
-						</div>
-					</div>
 					<div className='box-border flex'>
 						<button
 							type='submit'

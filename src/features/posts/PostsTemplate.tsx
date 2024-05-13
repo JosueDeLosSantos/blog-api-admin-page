@@ -143,7 +143,7 @@ function PostsTemplate({ server, posts }: { server: string; posts: postTypes[] }
 										{post.date}
 									</span>
 									<div>
-										<p className='text-lg sm:text-xl md:text-1xl lg:text-2xl max-lg:mt-0'>
+										<p className='text-lg line-clamp-4 sm:text-xl md:text-1xl lg:text-2xl max-lg:mt-0'>
 											{he.decode(post.description)}
 										</p>
 									</div>

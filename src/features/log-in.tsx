@@ -72,7 +72,7 @@ function LogIn() {
 	}
 
 	return (
-		<div className='container max-w-md mx-auto xl:max-w-3xl h-full flex bg-white rounded-lg shadow overflow-hidden'>
+		<div className='container mt-16 max-w-md mx-auto xl:max-w-3xl h-full flex bg-white rounded-lg shadow overflow-hidden'>
 			<div className='relative hidden xl:block xl:w-1/2 h-full'>
 				<img
 					className='absolute h-auto w-full object-cover'
@@ -83,7 +83,7 @@ function LogIn() {
 			<div className='w-full xl:w-1/2 p-8'>
 				<h1 className='font-PressStart2P text-xl mb-10 text-center '>
 					<Link
-						className='text-slate-900 visited:text-slate-900 hover:text-slate-700'
+						className='text-[#721ea3] visited:text-[#540d7d] hover:text-[#721ea3]'
 						to='../'
 					>
 						{"<JCODER>"}
@@ -97,7 +97,7 @@ function LogIn() {
 						</span>{" "}
 						<span className='text-sm font-semibold'>
 							<Link
-								className='text-slate-900 visited:text-slate-900 hover:text-slate-700'
+								className='text-[#721ea3] visited:text-[#540d7d] hover:text-[#721ea3]'
 								to='../sign-up'
 							>
 								Sign up
@@ -112,7 +112,7 @@ function LogIn() {
 							Username
 						</label>
 						<input
-							className='text-sm box-border appearance-none rounded w-full border py px-2 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10'
+							className='text-sm box-border appearance-none rounded w-full border border-[#461c5f]  py px-2 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10'
 							name='username'
 							type='text'
 							placeholder='Your username'
@@ -132,7 +132,7 @@ function LogIn() {
 							Password
 						</label>
 						<input
-							className='text-sm box-border bg-gray-200 appearance-none rounded w-full border py px-2 text-gray-700 mb-1 leading-tight focus:outline-none focus:shadow-outline h-10'
+							className='text-sm box-border bg-gray-200 appearance-none rounded w-full border border-[#461c5f] py px-2 text-gray-700 mb-1 leading-tight focus:outline-none focus:shadow-outline h-10'
 							name='password'
 							type='password'
 							placeholder='Your password'
@@ -151,7 +151,7 @@ function LogIn() {
 
 					<div className='flex w-full mt-8'>
 						<button
-							className='w-full bg-slate-600 hover:bg-slate-700 text-white text-sm py px-2 font-semibold rounded focus:outline-none focus:shadow-outline h-10'
+							className='w-full bg-[#721ea3] hover:bg-[#540d7d] border border-[#461c5f] text-white text-sm py px-2 font-semibold rounded h-10'
 							type='submit'
 						>
 							Sign in

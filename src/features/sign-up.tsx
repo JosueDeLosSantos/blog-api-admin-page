@@ -6,6 +6,7 @@ function SignUp() {
 	const [formData, setFormData] = useState({
 		first_name: "",
 		last_name: "",
+		email: "",
 		username: "",
 		password: "",
 		passwordConfirmation: ""
@@ -23,11 +24,12 @@ function SignUp() {
 	const [errors, setErrors] = useState({
 		first_name: "",
 		last_name: "",
+		email: "",
 		username: "",
 		password: "",
 		passwordConfirmation: ""
 	});
-
+	// MARK: onSubmit
 	async function onSubmit(e: FormEvent) {
 		e.preventDefault();
 		// http://localhost:3000/user/sign-up
@@ -41,6 +43,7 @@ function SignUp() {
 				const newErrors = {
 					first_name: "",
 					last_name: "",
+					email: "",
 					username: "",
 					password: "",
 					passwordConfirmation: ""
@@ -53,6 +56,9 @@ function SignUp() {
 							break;
 						case "last_name":
 							newErrors.last_name = error.msg;
+							break;
+						case "email":
+							newErrors.email = error.msg;
 							break;
 						case "username":
 							newErrors.username = error.msg;
@@ -74,12 +80,13 @@ function SignUp() {
 		} catch (error) {
 			const axiosError = error as AxiosError;
 			if (axiosError.response) {
-				type notAuthorized = { message: string };
-				const errorResponse = axiosError.response.data as notAuthorized;
+				type notAutorized = { message: string };
+				const errorResponse = axiosError.response.data as notAutorized;
 				setUnauthorized(errorResponse.message);
 				setErrors({
 					first_name: "",
 					last_name: "",
+					email: "",
 					username: "",
 					password: "",
 					passwordConfirmation: ""
@@ -89,13 +96,13 @@ function SignUp() {
 			}
 		}
 	}
-
+	// MARK: return
 	return (
 		<div className='container mx-auto max-w-md h-full flex bg-white rounded-lg shadow overflow-hidden mt-14'>
 			<div className='w-full p-8'>
 				<h1 className='font-PressStart2P text-xl mb-10 text-center'>
 					<Link
-						className='text-slate-900 visited:text-slate-900 hover:text-slate-700'
+						className='text-[#721ea3] visited:text-[#540d7d] hover:text-[#721ea3]'
 						to='../'
 					>
 						{"<JCODER>"}
@@ -118,7 +125,7 @@ function SignUp() {
 							First Name
 						</label>
 						<input
-							className='text-base box-border border appearance-none rounded w-full py-4 px-2 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10'
+							className='text-base box-border border border-[#461c5f] appearance-none rounded w-full py-4 px-2 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10'
 							name='first_name'
 							type='text'
 							placeholder='Your first name'
@@ -137,7 +144,7 @@ function SignUp() {
 							Last Name
 						</label>
 						<input
-							className='text-base box-border border appearance-none rounded w-full py-4 px-2 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10'
+							className='text-base box-border border border-[#461c5f] appearance-none rounded w-full py-4 px-2 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10'
 							name='last_name'
 							type='text'
 							placeholder='Your last name'
@@ -151,12 +158,31 @@ function SignUp() {
 					<div className='mb-4 mt-6'>
 						<label
 							className='block text-gray-700 text-base font-semibold mb-2'
+							htmlFor='email'
+						>
+							Email
+						</label>
+						<input
+							className='text-base box-border border border-[#461c5f] appearance-none rounded w-full py-4 px-2 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10'
+							name='email'
+							type='text'
+							placeholder='Your email address'
+							onInput={handleInputChange}
+							value={formData.email}
+						/>
+						<span className='text-red-600 max-sm:text-xs sm:text-sm'>
+							{errors.email}
+						</span>
+					</div>
+					<div className='mb-4 mt-6'>
+						<label
+							className='block text-gray-700 text-base font-semibold mb-2'
 							htmlFor='username'
 						>
 							Username
 						</label>
 						<input
-							className='text-base box-border border appearance-none rounded w-full py-4 px-2 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10'
+							className='text-base box-border border border-[#461c5f] appearance-none rounded w-full py-4 px-2 text-gray-700 bg-gray-200 leading-tight focus:outline-none focus:shadow-outline h-10'
 							name='username'
 							type='text'
 							placeholder='Your username'
@@ -175,7 +201,7 @@ function SignUp() {
 							Password
 						</label>
 						<input
-							className='text-base box-border border bg-gray-200 appearance-none rounded w-full py-4 px-2 text-gray-700 mb-1 leading-tight focus:outline-none focus:shadow-outline h-10'
+							className='text-base box-border border border-[#461c5f] bg-gray-200 appearance-none rounded w-full py-4 px-2 text-gray-700 mb-1 leading-tight focus:outline-none focus:shadow-outline h-10'
 							name='password'
 							type='password'
 							placeholder='Your password'
@@ -194,7 +220,7 @@ function SignUp() {
 							Confirm Password
 						</label>
 						<input
-							className='text-base border box-border bg-gray-200 appearance-none rounded w-full py-4 px-2 text-gray-700 mb-1 leading-tight focus:outline-none focus:shadow-outline h-10'
+							className='text-base border border-[#461c5f] box-border bg-gray-200 appearance-none rounded w-full py-4 px-2 text-gray-700 mb-1 leading-tight focus:outline-none focus:shadow-outline h-10'
 							name='passwordConfirmation'
 							type='password'
 							placeholder='Confirm your password'
@@ -208,7 +234,7 @@ function SignUp() {
 
 					<div className='flex w-full mt-8'>
 						<button
-							className='w-full box-content bg-slate-600 hover:bg-slate-700 text-white text-lg  font-semibold rounded focus:outline-none focus:shadow-outline h-10'
+							className='w-full bg-[#721ea3] hover:bg-[#540d7d] border border-[#461c5f] text-white text-sm py px-2 font-semibold rounded h-10'
 							type='submit'
 						>
 							Sign up
