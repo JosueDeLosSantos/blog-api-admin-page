@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import MenuBar from "../features/MenuBar";
-import { IconButton } from "@mui/material";
+import { IconButton, Menu, MenuItem } from "@mui/material";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CommentsBox from "../features/CommentsBox";
@@ -78,7 +79,19 @@ function Post() {
 		}
 	}
 
+	type userType = {
+		email: string;
+		exp: number;
+		first_name: string;
+		iat: number;
+		last_name: string;
+		username: string;
+		__v: number;
+		_id: string;
+	};
 	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+	const [user, setUser] = useState<userType>({} as userType);
 
 	// MARK: fetch post
 	useEffect(() => {
@@ -97,6 +110,7 @@ function Post() {
 				});
 
 				dispatch(switchPrivilege("admin"));
+				setUser(response.data.user);
 				setPost(response.data.post);
 			} catch (error) {
 				const axiosError = error as AxiosError;
@@ -172,6 +186,56 @@ function Post() {
 			}
 		}
 	};
+
+	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+	const open = Boolean(anchorEl);
+	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+		setAnchorEl(event.currentTarget);
+	};
+	const handleClose = (e: React.MouseEvent<Element, MouseEvent>) => {
+		const target = e.target as HTMLElement;
+		const { innerText } = target;
+
+		switch (innerText) {
+			case "Delete":
+				deleteComment(anchorEl!.id);
+				break;
+			case "Edit":
+				console.log("Edited");
+				break;
+			default:
+				setAnchorEl(null);
+		}
+	};
+
+	// MARK: delete comment
+
+	async function deleteComment(commentId: string) {
+		const apiUrl = `http://localhost:3000/user/comments/${commentId}`;
+		try {
+			const jwtToken = localStorage.getItem("accessToken");
+			const headers: Record<string, string> = {};
+			if (jwtToken) {
+				headers["Authorization"] = `Bearer ${jwtToken}`;
+			}
+			const response = await axios.delete(apiUrl, {
+				headers: headers
+			});
+			setAnchorEl(null);
+			setPost(response.data.post);
+		} catch (error) {
+			const axiosError = error as AxiosError;
+
+			if (
+				axiosError?.response?.status === 403 ||
+				axiosError?.response?.status === 401
+			) {
+				navigate("/log-in");
+			} else {
+				navigate("/server-error");
+			}
+		}
+	}
 
 	return (
 		<div className='bg-slate-100 min-h-screen'>
@@ -268,7 +332,7 @@ function Post() {
 					{/* MARK: Post's content */}
 					{post?.post && (
 						<div
-							className='max-w-screen-md border-b-[0.5px] border-t-0 border-l-0 border-r-0 border-solid border-slate-200 mx-auto sm:mt-5 md:mt-8 p-5'
+							className='prose max-w-screen-md border-b-[0.5px] border-t-0 border-l-0 border-r-0 border-solid border-slate-200 mx-auto sm:mt-5 md:mt-8 p-5'
 							dangerouslySetInnerHTML={{
 								__html: he.decode(post.post) // renders decoded HTML
 							}}
@@ -306,7 +370,7 @@ function Post() {
 								key={comment._id}
 								className='box-border w-11/12 mb-8 mx-auto border-solid border border-slate-300 p-5 rounded-lg'
 							>
-								<div className='max-[370px]:flex-col max-[370px]:gap-0 flex gap-2 items-end h-5 mb-5'>
+								<div className='max-[370px]:flex-col max-[370px]:items-start max-[370px]:gap-0 flex gap-2 items-end h-5 mb-5 relative'>
 									<div className='max-sm:text-xs sm:text-sm text-slate-500'>
 										{comment.name}
 									</div>
@@ -316,6 +380,42 @@ function Post() {
 									<div className='max-sm:text-[0.70rem] max-sm:leading-[1.390] sm:text-[0.80rem] sm:leading-snug text-slate-500'>
 										{comment.date}
 									</div>
+									{member === "admin" && (
+										<div>
+											<IconButton
+												id={comment._id}
+												className='absolute top-[-15px] right-[-15px]'
+												onClick={handleClick}
+											>
+												<MoreHorizIcon />
+											</IconButton>
+											<Menu
+												id='basic-menu'
+												anchorEl={anchorEl}
+												open={open}
+												elevation={1}
+												onClose={handleClose}
+												MenuListProps={{
+													"aria-labelledby": "basic-button"
+												}}
+											>
+												<MenuItem
+													onClick={(e: React.MouseEvent) => {
+														handleClose(e);
+													}}
+												>
+													Delete
+												</MenuItem>
+												<MenuItem
+													onClick={(e: React.MouseEvent) => {
+														handleClose(e);
+													}}
+												>
+													Edit
+												</MenuItem>
+											</Menu>
+										</div>
+									)}
 								</div>
 								<div className='text-base'>
 									{he.decode(comment.comment)}

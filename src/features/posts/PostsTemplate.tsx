@@ -99,6 +99,8 @@ function PostsTemplate({ server, posts }: { server: string; posts: postTypes[] }
 		};
 	}, [postsCopy, posts]);
 
+	// MARK: return
+
 	return (
 		<div className='bg-slate-100 min-h-screen max-h-auto'>
 			<MenuBar />
@@ -143,7 +145,7 @@ function PostsTemplate({ server, posts }: { server: string; posts: postTypes[] }
 										{post.date}
 									</span>
 									<div>
-										<p className='text-lg line-clamp-4 sm:text-xl md:text-1xl lg:text-2xl max-lg:mt-0'>
+										<p className='prose text-lg line-clamp-4 sm:text-xl md:text-1xl lg:text-2xl max-lg:mt-0'>
 											{he.decode(post.description)}
 										</p>
 									</div>

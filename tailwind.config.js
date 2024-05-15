@@ -8,7 +8,8 @@ export default {
 			PressStart2P: ['"Press Start 2P"']
 		}
 	},
-	plugins: [],
+	// eslint-disable-next-line no-undef
+	plugins: [require("@tailwindcss/typography")],
 	corePlugins: {
 		preflight: false
 	}
