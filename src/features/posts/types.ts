@@ -31,6 +31,7 @@ export type onePostType = {
 	comments: {
 		_id: string;
 		comment: string;
+		author: string;
 		date: string;
 		email: string;
 		name: string;

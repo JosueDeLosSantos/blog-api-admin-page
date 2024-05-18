@@ -2,7 +2,6 @@ import MenuBar from "../MenuBar";
 import { SyntheticEvent, useEffect, useRef, useState, Suspense } from "react";
 import { postTypes } from "./types";
 import ColorThief from "colorthief";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import he from "he"; // decodes mongodb encoded HTML
 import postsAmountController from "./postsAmountController";

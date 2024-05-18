@@ -1,13 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import MenuBar from "../features/MenuBar";
-import { IconButton, Menu, MenuItem } from "@mui/material";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import EditIcon from "@mui/icons-material/Edit";
+import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import CommentsBox from "../features/CommentsBox";
 import { onePostType } from "../features/posts/types";
 import he from "he"; // decodes mongodb encoded HTML
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ForumIcon from "@mui/icons-material/Forum";
 import ForumOutlinedIcon from "@mui/icons-material/ForumOutlined";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -35,9 +34,10 @@ const theme = createTheme({
 	}
 });
 
-type commentType = {
+export type commentType = {
 	_id: string;
 	comment: string;
+	author: string;
 	date: string;
 	email: string;
 	name: string;
@@ -51,12 +51,23 @@ function Post() {
 	const initialPost = null as unknown as onePostType;
 	const [post, setPost] = useState<onePostType>(initialPost);
 	const navigate = useNavigate();
+	const [isEditing, setIsEditing] = useState(false);
+	const [commentToEdit, setCommentToEdit] = useState<commentType>({
+		_id: "",
+		comment: "",
+		author: "",
+		name: "",
+		email: "",
+		date: "",
+		post: "",
+		__v: 0
+	});
 
 	// position the scroll at the top of the page
-	window.scrollTo(0, 0);
+	// window.scrollTo(0, 0);
 
 	// keep comments array updated to avoid unnecessary API calls
-	function commentsAction(arg: commentType) {
+	function addComment(arg: commentType) {
 		// Change array's order to show the most recent one on the top
 		if (post) {
 			setPost({ ...post, comments: [arg, ...post.comments] });
@@ -112,6 +123,7 @@ function Post() {
 				dispatch(switchPrivilege("admin"));
 				setUser(response.data.user);
 				setPost(response.data.post);
+				setCommentToEdit({ ...commentToEdit, post: response.data.post._id });
 			} catch (error) {
 				const axiosError = error as AxiosError;
 
@@ -187,26 +199,45 @@ function Post() {
 		}
 	};
 
-	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-	const open = Boolean(anchorEl);
-	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-		setAnchorEl(event.currentTarget);
-	};
-	const handleClose = (e: React.MouseEvent<Element, MouseEvent>) => {
-		const target = e.target as HTMLElement;
-		const { innerText } = target;
+	const deleteRef = useRef(Array(post?.comments.length).fill(null));
+	const editRef = useRef(Array(post?.comments.length).fill(null));
 
-		switch (innerText) {
-			case "Delete":
-				deleteComment(anchorEl!.id);
-				break;
-			case "Edit":
-				console.log("Edited");
-				break;
-			default:
-				setAnchorEl(null);
-		}
+	const handleDeletion = (e: React.MouseEvent<HTMLButtonElement>) => {
+		const target = e.target as HTMLButtonElement;
+		// console.log(target);
+		deleteRef.current.forEach((el) => {
+			if (el && el.contains(target)) {
+				deleteComment(el.dataset.deleteid);
+			}
+		});
+		// deleteComment(target.id);
 	};
+	const handleEdition = (e: React.MouseEvent<HTMLButtonElement>) => {
+		const target = e.target as HTMLButtonElement;
+
+		editRef.current.forEach((el) => {
+			if (el && el.contains(target)) {
+				editComment(el.dataset.editid);
+			}
+		});
+		// editComment(el.dataset.editid);
+	};
+
+	// MARK: edit comment
+	function editComment(commentId: string) {
+		const selectedComment = post.comments.filter(
+			(comment) => comment._id === commentId
+		)[0];
+		setIsEditing(true);
+		setCommentToEdit(selectedComment);
+		console.log(selectedComment);
+
+		const commentsBoxSection = document.getElementById("edit-comment-box");
+		window.scrollTo({
+			top: commentsBoxSection?.offsetTop,
+			behavior: "smooth"
+		});
+	}
 
 	// MARK: delete comment
 
@@ -221,7 +252,6 @@ function Post() {
 			const response = await axios.delete(apiUrl, {
 				headers: headers
 			});
-			setAnchorEl(null);
 			setPost(response.data.post);
 		} catch (error) {
 			const axiosError = error as AxiosError;
@@ -248,7 +278,7 @@ function Post() {
 							className={
 								windowWidth > 770
 									? "pt-10 w-fit h-screen fixed flex flex-col gap-8"
-									: "bg-white p-2 fixed bottom-0 left-0 w-screen shadow-[0px_-0.5px_5px_rgb(148,163,184)] flex justify-around"
+									: "bg-white z-50 p-2 fixed bottom-0 left-0 w-screen shadow-[0px_-0.5px_5px_rgb(148,163,184)] flex justify-around"
 							}
 						>
 							<div>
@@ -342,7 +372,11 @@ function Post() {
 					{/* Comment's box */}
 					{member === "admin" && post?.post && (
 						<CommentsBox
-							commentsAction={commentsAction}
+							formData={commentToEdit}
+							setFormData={setCommentToEdit}
+							setIsEditing={setIsEditing}
+							isEditing={isEditing}
+							addComment={addComment}
 							post_id={`${post._id}`}
 						/>
 					)}
@@ -365,55 +399,45 @@ function Post() {
 							</div>
 						)}
 						{/* MARK: Comments */}
-						{post?.comments.map((comment) => (
+						{post?.comments.map((comment, index) => (
 							<div
 								key={comment._id}
 								className='box-border w-11/12 mb-8 mx-auto border-solid border border-slate-300 p-5 rounded-lg'
 							>
-								<div className='max-[370px]:flex-col max-[370px]:items-start max-[370px]:gap-0 flex gap-2 items-end h-5 mb-5 relative'>
+								<div className='flex-col flex sm:gap-2 items-start sm:flex-row h-5 mb-5 relative'>
 									<div className='max-sm:text-xs sm:text-sm text-slate-500'>
 										{comment.name}
 									</div>
-									<div className='max-[370px]:hidden max-sm:text-2xl sm:text-4xl text-slate-400 '>
-										<div>.</div>
+									<div className='relative bottom-5 max-sm:hidden max-sm:text-2xl sm:text-4xl text-slate-400'>
+										.
 									</div>
-									<div className='max-sm:text-[0.70rem] max-sm:leading-[1.390] sm:text-[0.80rem] sm:leading-snug text-slate-500'>
+									<div className='max-sm:text-[0.70rem] sm:self-center max-sm:leading-[1.390] sm:text-[0.80rem] sm:leading-snug text-slate-500'>
 										{comment.date}
 									</div>
 									{member === "admin" && (
-										<div>
+										<div className='absolute flex flex-row-reverse top-[-15px] right-[-15px]'>
 											<IconButton
-												id={comment._id}
-												className='absolute top-[-15px] right-[-15px]'
-												onClick={handleClick}
+												ref={(el) =>
+													(deleteRef.current[index] = el)
+												}
+												data-deleteid={comment._id}
+												data-author={comment.author}
+												onClick={handleDeletion}
 											>
-												<MoreHorizIcon />
+												<DeleteIcon fontSize='small' />
 											</IconButton>
-											<Menu
-												id='basic-menu'
-												anchorEl={anchorEl}
-												open={open}
-												elevation={1}
-												onClose={handleClose}
-												MenuListProps={{
-													"aria-labelledby": "basic-button"
-												}}
-											>
-												<MenuItem
-													onClick={(e: React.MouseEvent) => {
-														handleClose(e);
-													}}
+											{comment.author === user._id && (
+												<IconButton
+													ref={(el) =>
+														(editRef.current[index] = el)
+													}
+													data-editid={comment._id}
+													data-author={comment.author}
+													onClick={handleEdition}
 												>
-													Delete
-												</MenuItem>
-												<MenuItem
-													onClick={(e: React.MouseEvent) => {
-														handleClose(e);
-													}}
-												>
-													Edit
-												</MenuItem>
-											</Menu>
+													<EditIcon fontSize='small' />
+												</IconButton>
+											)}
 										</div>
 									)}
 								</div>
