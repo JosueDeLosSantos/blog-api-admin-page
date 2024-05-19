@@ -230,7 +230,6 @@ function Post() {
 		)[0];
 		setIsEditing(true);
 		setCommentToEdit(selectedComment);
-		console.log(selectedComment);
 
 		const commentsBoxSection = document.getElementById("edit-comment-box");
 		window.scrollTo({

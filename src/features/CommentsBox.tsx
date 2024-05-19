@@ -46,7 +46,54 @@ function CommentsBox({
 					__v: 0
 				});
 			} else {
-				console.log(formData);
+				// http://localhost:3000/
+				// https://dummy-blog.adaptable.app/comments
+				const apiUrl = "http://localhost:3000/user/comments";
+				try {
+					// get security token
+					const jwtToken = localStorage.getItem("accessToken");
+					const headers: Record<string, string> = {};
+					if (jwtToken) {
+						headers["Authorization"] = `Bearer ${jwtToken}`;
+					}
+
+					const response = await axios.put(apiUrl, formData, {
+						headers: headers
+					});
+
+					console.log(response, formData);
+
+					/* If no errors are returned, add a date and id to the most recent added comment to keep 
+					the page updated */
+					if (!response.data.errors) {
+						// clear form fields
+						setFormData({
+							_id: "",
+							comment: "",
+							author: "",
+							name: "",
+							email: "",
+							date: "",
+							post: post_id,
+							__v: 0
+						});
+						// clear errors
+						setCommentError("");
+					} else {
+						setCommentError(response.data.errors[0].msg);
+					}
+				} catch (error) {
+					const axiosError = error as AxiosError;
+
+					if (
+						axiosError?.response?.status === 403 ||
+						axiosError?.response?.status === 401
+					) {
+						navigate("/log-in");
+					} else {
+						navigate("/server-error");
+					}
+				}
 			}
 		} else {
 			// http://localhost:3000/
@@ -64,14 +111,16 @@ function CommentsBox({
 					headers: headers
 				});
 
+				console.log(response);
+
 				/* If no errors are returned, add a date and id to the most recent added comment to keep 
 				the page updated */
 				if (!response.data.errors) {
 					formData.date = response.data.post.comments[0].date;
 					formData.author = response.data.user._id;
 					formData._id = response.data.post.comments[0]._id;
-					formData.name = `${response.data.post.user.first_name} ${response.data.post.user.last_name}`;
-					formData.email = response.data.post.user.email;
+					formData.name = `${response.data.user.first_name} ${response.data.user.last_name}`;
+					formData.email = response.data.user.email;
 
 					// update comments array
 					addComment(formData);
@@ -79,9 +128,9 @@ function CommentsBox({
 					setFormData({
 						_id: "",
 						comment: "",
-						author: `${response.data.user._id}`,
-						name: `${response.data.post.user.first_name} ${response.data.post.user.last_name}`,
-						email: response.data.post.user.email,
+						author: "",
+						name: "",
+						email: "",
 						date: "",
 						post: post_id,
 						__v: 0
