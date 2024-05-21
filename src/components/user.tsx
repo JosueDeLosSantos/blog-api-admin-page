@@ -4,8 +4,14 @@ import SignUp from "../features/sign-up";
 import NotFound from "../features/NotFound";
 
 function User() {
-	const { name } = useParams();
-	return name === "log-in" ? <LogIn /> : name === "sign-up" ? <SignUp /> : <NotFound />;
+  const { name } = useParams();
+  return name === "log-in" ? (
+    <LogIn />
+  ) : name === "sign-up" ? (
+    <SignUp />
+  ) : (
+    <NotFound />
+  );
 }
 
 export default User;
