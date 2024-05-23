@@ -74,7 +74,7 @@ function LogIn() {
   }
 
   return (
-    <div className="container mx-auto mt-16 flex h-full max-w-md overflow-hidden rounded-lg bg-white shadow xl:max-w-3xl">
+    <div className="container mx-auto mt-16 flex h-full max-w-md overflow-hidden rounded-lg bg-white shadow xl:max-w-3xl dark:bg-slate-700">
       <div className="relative hidden h-full xl:block xl:w-1/2">
         <img
           className="absolute h-auto w-full object-cover"
@@ -85,7 +85,7 @@ function LogIn() {
       <div className="w-full p-8 xl:w-1/2">
         <h1 className="mb-10 text-center font-PressStart2P text-xl ">
           <Link
-            className="text-[#721ea3] visited:text-[#540d7d] hover:text-[#721ea3]"
+            className="logo text-[#721ea3] no-underline visited:text-[#540d7d] hover:text-[#721ea3]"
             to="../"
           >
             {"<JCODER>"}
@@ -94,12 +94,12 @@ function LogIn() {
         <form onSubmit={onSubmit}>
           <h1 className="text-2xl font-bold">Sign in to your account</h1>
           <div>
-            <span className="text-sm text-gray-600">
+            <span className="text-sm text-gray-600 dark:text-gray-300">
               Don't have an account?
             </span>{" "}
             <span className="text-sm font-semibold">
               <Link
-                className="text-[#721ea3] visited:text-[#540d7d] hover:text-[#721ea3]"
+                className="text-[#721ea3] visited:text-[#540d7d] hover:text-[#721ea3] dark:text-purple-200 dark:visited:text-purple-300 dark:hover:text-purple-100"
                 to="../sign-up"
               >
                 Sign up
@@ -108,13 +108,13 @@ function LogIn() {
           </div>
           <div className="mb-4 mt-6 box-border w-full">
             <label
-              className="mb-2 block text-sm font-semibold text-gray-700"
+              className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-200"
               htmlFor="username"
             >
               Username
             </label>
             <input
-              className="py focus:shadow-outline box-border h-10 w-full appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:outline-none"
+              className="py focus:shadow-outline box-border  h-10 w-full appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
               name="username"
               type="text"
               placeholder="Your username"
@@ -122,19 +122,19 @@ function LogIn() {
               value={formData.username}
               required
             />
-            <span className="text-red-600 max-sm:text-xs sm:text-sm">
+            <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
               {errors.username}
             </span>
           </div>
           <div className="mb-6 mt-6 box-border w-full">
             <label
-              className="mb-2 block text-sm font-semibold text-gray-700"
+              className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-200"
               htmlFor="password"
             >
               Password
             </label>
             <input
-              className="py focus:shadow-outline mb-1 box-border h-10 w-full appearance-none rounded border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:outline-none"
+              className="py focus:shadow-outline box-border  h-10 w-full appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
               name="password"
               type="password"
               placeholder="Your password"
@@ -142,18 +142,18 @@ function LogIn() {
               value={formData.password}
               required
             />
-            <span className="text-red-600 max-sm:text-xs sm:text-sm">
+            <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
               {errors.password}
             </span>
           </div>
 
-          <div className="text-red-600 max-sm:text-xs sm:text-sm">
+          <div className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
             <span>{credentials}</span>
           </div>
 
           <div className="mt-8 flex w-full">
             <button
-              className="py h-10 w-full rounded border border-[#461c5f] bg-[#721ea3] px-2 text-sm font-semibold text-white hover:bg-[#540d7d]"
+              className="py h-10 w-full rounded border border-[#461c5f] bg-[#721ea3] px-2 text-sm font-semibold text-white hover:bg-[#540d7d] dark:bg-purple-500 dark:hover:bg-purple-600"
               type="submit"
             >
               Sign in

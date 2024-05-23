@@ -4,54 +4,106 @@
 @tailwind utilities;
 
 body {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+html {
+  color-scheme: light dark;
 }
 
 /* Beam of light background effect */
 .bg-custom-animation-1 {
-	background: linear-gradient(
-		0.25turn,
-		rgba(226, 232, 240),
-		rgba(226, 232, 240),
-		rgba(226, 232, 240),
-		rgba(226, 232, 240),
-		rgba(226, 232, 240),
-		white,
-		rgba(226, 232, 240),
-		rgba(226, 232, 240),
-		rgba(226, 232, 240),
-		rgba(226, 232, 240),
-		rgba(226, 232, 240)
-	);
-	background-size: 800% 10%;
-	animation: gradient 1.4s linear infinite alternate;
+  background: linear-gradient(
+    0.25turn,
+    rgba(226, 232, 240),
+    rgba(226, 232, 240),
+    rgba(226, 232, 240),
+    rgba(226, 232, 240),
+    rgba(226, 232, 240),
+    white,
+    rgba(226, 232, 240),
+    rgba(226, 232, 240),
+    rgba(226, 232, 240),
+    rgba(226, 232, 240),
+    rgba(226, 232, 240)
+  );
+  background-size: 800% 10%;
+  animation: gradient 1.4s linear infinite alternate;
 }
 /* Beam of light background effect */
 .bg-custom-animation-2 {
-	background: linear-gradient(
-		0.25turn,
-		rgba(203, 213, 225),
-		rgba(203, 213, 225),
-		rgba(203, 213, 225),
-		rgba(203, 213, 225),
-		rgba(203, 213, 225),
-		white,
-		rgba(203, 213, 225),
-		rgba(203, 213, 225),
-		rgba(203, 213, 225),
-		rgba(203, 213, 225),
-		rgba(203, 213, 225)
-	);
-	background-size: 800% 10%;
-	animation: gradient 1.4s linear infinite alternate;
+  background: linear-gradient(
+    0.25turn,
+    rgba(203, 213, 225),
+    rgba(203, 213, 225),
+    rgba(203, 213, 225),
+    rgba(203, 213, 225),
+    rgba(203, 213, 225),
+    white,
+    rgba(203, 213, 225),
+    rgba(203, 213, 225),
+    rgba(203, 213, 225),
+    rgba(203, 213, 225),
+    rgba(203, 213, 225)
+  );
+  background-size: 800% 10%;
+  animation: gradient 1.4s linear infinite alternate;
+}
+
+/* Light mode */
+@media (prefers-color-scheme: light) {
+  h1,
+  h2:not(.except),
+  h3,
+  h4,
+  .icons {
+    color: #333 !important; /* Example color for light mode */
+  }
+
+  .logo {
+    color: #721ea3 !important;
+  }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  strong,
+  blockquote,
+  a,
+  h1,
+  h2:not(.except),
+  h3,
+  h4,
+  .icons,
+  .css-1yuf3k2-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+    color: #fff !important;
+  }
+
+  .logo {
+    color: #e0abff !important;
+  }
+
+  .css-1yuf3k2-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+    background-color: rgb(34, 47, 65) !important;
+    border-bottom: 1px solid #777676 !important;
+  }
+
+  .css-kt4sq3-MuiButtonBase-root-MuiMenuItem-root {
+    border-bottom: 1px solid #777676 !important;
+  }
+
+  .toolbarBorder {
+    border-top: 1px solid rgb(15, 23, 42, 1) !important;
+  }
 }
 
 @keyframes gradient {
-	0% {
-		background-position: 0%;
-	}
-	100% {
-		background-position: 100%;
-	}
+  0% {
+    background-position: 0%;
+  }
+  100% {
+    background-position: 100%;
+  }
 }

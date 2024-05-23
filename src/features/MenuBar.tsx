@@ -65,14 +65,17 @@ export default function MenuBar() {
     };
   }, []); // Empty array ensures effect is only run on mount and unmount
 
+  // MARK: return
+
   return (
     <Box>
       <AppBar
-        className="border border-solid border-slate-200 bg-white shadow-none"
+        className="border border-solid border-slate-200 bg-white shadow-none dark:border-slate-900 dark:bg-slate-800"
         position="fixed"
       >
         <Toolbar>
           <IconButton
+            className="icons"
             size="large"
             edge="start"
             aria-label="menu"
@@ -148,7 +151,7 @@ export default function MenuBar() {
           <Typography
             variant="h6"
             component="div"
-            className="mx-sm:text-xl w-full text-center font-PressStart2P lg:text-2xl"
+            className="logo mx-sm:text-xl w-full text-center font-PressStart2P lg:text-2xl"
             sx={{
               color: "#721ea3",
             }}

@@ -136,7 +136,7 @@ function Post() {
           dispatch(switchPrivilege("user"));
           setPost(userData.post);
         } else {
-          // navigate("/server-error");
+          navigate("/server-error");
         }
       }
     })();
@@ -269,7 +269,7 @@ function Post() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100">
+    <div className="min-h-screen bg-slate-100 dark:bg-slate-950">
       {/* MARK: Toolbar */}
       <MenuBar />
 
@@ -280,40 +280,56 @@ function Post() {
               className={
                 windowWidth > 770
                   ? "fixed flex h-screen w-fit flex-col gap-8 pt-10"
-                  : "fixed bottom-0 left-0 z-50 flex w-screen justify-around bg-white p-2 shadow-[0px_-0.5px_5px_rgb(148,163,184)]"
+                  : "toolbarBorder fixed bottom-0 left-0 z-50 flex w-screen justify-around bg-white p-2 shadow-[0px_-0.5px_5px_rgb(148,163,184)] dark:bg-slate-800 dark:shadow-none"
               }
             >
               <div>
                 <IconButton onClick={() => ScrollTo("comments")}>
                   <Badge badgeContent={post?.comments.length} color="primary">
-                    <ForumOutlinedIcon fontSize="medium" color="secondary" />
+                    <ForumOutlinedIcon
+                      className="icons"
+                      fontSize="medium"
+                      color="secondary"
+                    />
                   </Badge>
                 </IconButton>
               </div>
               {post && (
                 <div>
                   <IconButton onClick={() => EditPost(post)}>
-                    <EditIcon fontSize="medium" color="secondary" />
+                    <EditIcon
+                      className="icons"
+                      fontSize="medium"
+                      color="secondary"
+                    />
                   </IconButton>
                 </div>
               )}
               {post && (
                 <div>
                   <IconButton onClick={() => handleDeletePost(post._id)}>
-                    <DeleteIcon fontSize="medium" color="secondary" />
+                    <DeleteIcon
+                      className="icons"
+                      fontSize="medium"
+                      color="secondary"
+                    />
                   </IconButton>
                 </div>
               )}
               <div>
                 <IconButton onClick={() => ScrollTo("posts")}>
-                  <KeyboardArrowUpIcon fontSize="medium" color="secondary" />
+                  <KeyboardArrowUpIcon
+                    className="icons"
+                    fontSize="medium"
+                    color="secondary"
+                  />
                 </IconButton>
               </div>
             </div>
           </ThemeProvider>
         )}
 
-        <article className="mx-auto rounded-lg border border-solid border-slate-200 bg-white pb-3 sm:max-lg:w-9/12">
+        <article className="mx-auto max-w-[900px] rounded-lg border border-solid border-slate-200 bg-white pb-3 sm:w-9/12 dark:border-slate-950 dark:bg-slate-800">
           {/* MARK: Post's header */}
           <header id="post-header">
             <div
@@ -338,7 +354,7 @@ function Post() {
               )}
 
               <div className="absolute bottom-0 left-0 z-20 p-4">
-                <h2 className="text-3xl font-semibold leading-tight text-gray-100 sm:text-4xl">
+                <h2 className="except text-3xl font-semibold leading-tight text-gray-100 sm:text-4xl">
                   {post?.title && he.decode(post.title)}
                 </h2>
                 <div className="mt-3 flex">
@@ -360,7 +376,7 @@ function Post() {
 
           {post?.post && (
             <div
-              className="prose mx-auto max-w-screen-md border-b-[0.5px] border-l-0 border-r-0 border-t-0 border-solid border-slate-200 p-5 sm:mt-5 md:mt-8"
+              className="prose mx-auto max-w-screen-md border-b-[0.5px] border-l-0 border-r-0 border-t-0 border-solid border-slate-200 p-5 sm:mt-5 md:mt-8 dark:border-slate-600 dark:text-white"
               dangerouslySetInnerHTML={{
                 __html: he.decode(post.post), // renders decoded HTML
               }}
@@ -369,17 +385,17 @@ function Post() {
 
           {/* Skeleton post */}
           {!post && (
-            <div className="mx-auto max-w-screen-md border-b-[0.5px] border-l-0 border-r-0 border-t-0 border-solid border-slate-200 p-5 sm:mt-5 md:mt-8">
+            <div className="mx-auto max-w-screen-md animate-pulse border-b-[0.5px] border-l-0 border-r-0 border-t-0 border-solid border-slate-200 p-5 sm:mt-5 md:mt-8">
               {Array.from({ length: 7 }).map((_, i) => (
                 <>
                   <div
                     key={i}
-                    className="bg-custom-animation-2 mt-6 h-7 w-1/2 rounded-full"
+                    className="mt-6 h-7 w-1/2 rounded-full bg-slate-600"
                   />
                   {Array.from({ length: 7 }).map((_, index) => (
                     <div
                       key={index}
-                      className="bg-custom-animation-1 mt-3 h-4 w-11/12 rounded-full"
+                      className="mt-3 h-4 w-11/12 rounded-full bg-slate-500"
                     />
                   ))}
                 </>
@@ -407,10 +423,10 @@ function Post() {
             )}
 
             {member === "user" && (
-              <div className="mx-auto w-11/12 pb-10 pl-5 pr-5 pt-5 text-slate-600">
+              <div className="mx-auto w-11/12 pb-10 pl-5 pr-5 pt-5 text-slate-600 dark:text-slate-300">
                 If you want to leave a comment{" "}
                 <Link
-                  className="font-bold text-slate-800 no-underline"
+                  className="font-bold text-slate-800 no-underline dark:text-white"
                   to="/log-in"
                 >
                   Log in
@@ -421,21 +437,22 @@ function Post() {
             {post?.comments.map((comment, index) => (
               <div
                 key={comment._id}
-                className="mx-auto mb-8 box-border w-11/12 rounded-lg border border-solid border-slate-300 p-5"
+                className="mx-auto mb-8 box-border w-11/12 rounded-lg border border-solid border-slate-300 p-5 dark:border-slate-600"
               >
                 <div className="relative mb-5 flex h-5 flex-col items-start sm:flex-row sm:gap-2">
-                  <div className="font-bold text-slate-500 max-sm:text-xs sm:text-sm">
+                  <div className="font-bold text-slate-500 max-sm:text-xs sm:text-sm dark:text-slate-300">
                     {comment.name}
                   </div>
-                  <div className="relative bottom-5 text-slate-400 max-sm:hidden max-sm:text-2xl sm:text-4xl">
+                  <div className="relative bottom-5 text-slate-400 max-sm:hidden max-sm:text-2xl sm:text-4xl dark:text-slate-200">
                     .
                   </div>
-                  <div className="text-slate-500 max-sm:text-[0.70rem] max-sm:leading-[1.390] sm:self-center sm:text-[0.80rem] sm:leading-snug">
+                  <div className="text-slate-500 max-sm:text-[0.70rem] max-sm:leading-[1.390] sm:self-center sm:text-[0.80rem] sm:leading-snug dark:text-slate-300">
                     {comment.date}
                   </div>
                   {member === "admin" && (
                     <div className="absolute right-[-15px] top-[-15px] flex flex-row-reverse">
                       <IconButton
+                        className="icons"
                         ref={(el) => (deleteRef.current[index] = el)}
                         data-deleteid={comment._id}
                         data-author={comment.author}
@@ -445,6 +462,7 @@ function Post() {
                       </IconButton>
                       {comment.author === user._id && (
                         <IconButton
+                          className="icons"
                           ref={(el) => (editRef.current[index] = el)}
                           data-editid={comment._id}
                           data-author={comment.author}
@@ -465,7 +483,7 @@ function Post() {
 
       {member === "user" && (
         <span onClick={() => ScrollTo("comments")}>
-          <div className="fixed bottom-5 left-5 w-fit rounded-full bg-neutral-950 p-3">
+          <div className="fixed bottom-5 left-5 w-fit rounded-full bg-neutral-950 p-3 dark:bg-purple-700">
             <ThemeProvider theme={theme}>
               {post?.comments && (
                 <Badge badgeContent={post.comments.length} color="primary">
