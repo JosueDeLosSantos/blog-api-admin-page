@@ -7,8 +7,10 @@ import { addPost, updatePost } from "../features/posts/postsSlice";
 import { switchPrivilege } from "../features/posts/privilegeSlice";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import "./editor.css";
 import he from "he"; // decodes mongodb encoded HTML
 import { editPostType } from "../features/posts/types";
+import MenuBar from "../features/MenuBar";
 
 type fileType = {
   filename: string;
@@ -107,6 +109,7 @@ function CreateUpdatePost({ operation }: { operation: string }) {
     setErrors(errorsInitialState);
   }
 
+  // MARK: onSubmit
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
 
@@ -216,26 +219,43 @@ function CreateUpdatePost({ operation }: { operation: string }) {
     ],
   };
 
+  // MARK: return
+
   return (
     <>
-      <div className="py-12">
-        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-            <div className="border-b border-gray-200 bg-white p-6">
+      <MenuBar />
+      <div className="py-12 max-sm:mt-5 sm:mt-8">
+        <div className="mx-auto max-w-[900px] sm:px-6 lg:px-8">
+          <div className="overflow-hidden shadow-sm sm:rounded-lg ">
+            <div className="min-h-[80vh] border-b border-gray-200  bg-white p-6 dark:bg-slate-700">
               <form onSubmit={onSubmit}>
-                <div className="mb-4">
-                  <label htmlFor="title" className="text-xl text-gray-600">
-                    Title <span className="text-red-500">*</span>
+                {operation === "update" && (
+                  <h1 className="text-center text-2xl font-bold sm:text-3xl">
+                    Update post
+                  </h1>
+                )}
+                {operation !== "update" && (
+                  <h1 className="text-center text-2xl font-bold sm:text-3xl">
+                    Create post
+                  </h1>
+                )}
+                <div className="mb-4 mt-10">
+                  <label
+                    htmlFor="title"
+                    className="text-xl text-gray-700 dark:text-gray-200"
+                  >
+                    Title{" "}
+                    <span className="text-red-500 dark:text-red-300">*</span>
                   </label>
                   <input
                     type="text"
-                    className="w-full border-2 border-gray-300 p-2"
+                    className="py focus:shadow-outline box-border  h-10 w-full appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
                     name="title"
                     onInput={handleInputChange}
                     value={formData.title}
                     required
                   />
-                  <span className="text-red-600 max-sm:text-xs sm:text-sm">
+                  <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
                     {errors.title}
                   </span>
                 </div>
@@ -243,25 +263,27 @@ function CreateUpdatePost({ operation }: { operation: string }) {
                 <div className="mb-4">
                   <label
                     htmlFor="description"
-                    className="text-xl text-gray-600"
+                    className="text-xl text-gray-700 dark:text-gray-200"
                   >
-                    Description <span className="text-red-500">*</span>
+                    Description{" "}
+                    <span className="text-red-500 dark:text-red-300">*</span>
                   </label>
                   <input
                     type="text"
-                    className="w-full border-2 border-gray-300 p-2"
+                    className="py focus:shadow-outline box-border  h-10 w-full appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
                     name="description"
                     onInput={handleInputChange}
                     value={formData.description}
                   />
-                  <span className="text-red-600 max-sm:text-xs sm:text-sm">
+                  <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
                     {errors.description}
                   </span>
                 </div>
 
                 <div className="mb-8">
-                  <label className="text-xl text-gray-600">
-                    Content <span className="text-red-500">*</span>
+                  <label className="text-xl text-gray-700 dark:text-gray-200">
+                    Content{" "}
+                    <span className="text-red-500 dark:text-red-300">*</span>
                   </label>
 
                   <CKEditor
@@ -277,51 +299,70 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 												console.log(toolbarItems.sort()); */
                     }}
                   />
-                  <span className="text-red-600 max-sm:text-xs sm:text-sm">
+                  <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
                     {errors.post}
                   </span>
                 </div>
 
                 <div className="mb-4">
-                  <label htmlFor="author" className="text-xl text-gray-600">
-                    Author <span className="text-red-500">*</span>
+                  <label
+                    htmlFor="author"
+                    className="text-xl text-gray-700 dark:text-gray-200"
+                  >
+                    Author{" "}
+                    <span className="text-red-500 dark:text-red-300">*</span>
                   </label>
                   <input
                     type="text"
-                    className="w-full border-2 border-gray-300 p-2"
+                    className="py focus:shadow-outline box-border h-10 w-full appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
                     name="author"
                     onInput={handleInputChange}
                     value={formData.author}
                     required
                   />
-                  <span className="text-red-600 max-sm:text-xs sm:text-sm">
+                  <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
                     {errors.author}
                   </span>
                 </div>
 
                 <div className="mb-4">
-                  <label htmlFor="file" className="text-xl text-gray-600">
-                    Image <span className="text-red-500">*</span>
+                  <label
+                    htmlFor="file"
+                    className="text-xl text-gray-700 dark:text-gray-200"
+                  >
+                    Image
                   </label>
+                  <span className="text-red-500 dark:text-red-300">*</span>
                   <input
                     type="file"
-                    /* accept='image/jpeg, image/png' */
-                    className="w-full border-2 border-gray-300 p-2"
+                    className="stroke w-[98%] bg-slate-300 p-2 font-bold text-slate-600 max-sm:pr-0 dark:bg-slate-600 dark:text-slate-300"
                     name="file"
                     onChange={handleInputChange}
                   />
-                  <span className="text-red-600 max-sm:text-xs sm:text-sm">
+                  <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
                     {errors.file}
                   </span>
                 </div>
 
-                <div className="flex p-1">
-                  <button
-                    role="submit"
-                    className="bg-blue-500 p-3 text-white hover:bg-blue-400"
-                  >
-                    Submit
-                  </button>
+                <div className="mt-10 flex w-full gap-5">
+                  <div className="w-1/2">
+                    <button
+                      role="submit"
+                      className="py mx-auto h-10 w-full rounded border border-[#461c5f] bg-purple-600 text-sm font-semibold text-white hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600"
+                    >
+                      Submit
+                    </button>
+                  </div>
+
+                  <div className="w-1/2">
+                    <button
+                      onClick={() => navigate("/")}
+                      className="py mx-auto h-10 w-full cursor-pointer rounded border-none bg-white px-2 text-sm font-semibold text-slate-500 ring-1 ring-slate-400 hover:bg-slate-100 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
+                      type="button"
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </div>
               </form>
             </div>

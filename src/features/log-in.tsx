@@ -73,6 +73,8 @@ function LogIn() {
     }
   }
 
+  // MARK: return
+
   return (
     <div className="container mx-auto mt-16 flex h-full max-w-md overflow-hidden rounded-lg bg-white shadow xl:max-w-3xl dark:bg-slate-700">
       <div className="relative hidden h-full xl:block xl:w-1/2">
