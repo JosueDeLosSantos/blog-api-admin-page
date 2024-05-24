@@ -6,12 +6,13 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import { MouseEvent, useEffect, useState } from "react";
+import { MouseEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { switchPrivilege } from "./posts/privilegeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
 import { AppDispatch } from "../app/store";
+import useWindowSize from "../features/windowSize";
 
 export default function MenuBar() {
   const dispatch: AppDispatch = useDispatch();
@@ -49,23 +50,9 @@ export default function MenuBar() {
     }
   };
 
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    // Add event listener
-    window.addEventListener("resize", handleResize);
-
-    // Remove event listener on cleanup
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []); // Empty array ensures effect is only run on mount and unmount
-
   // MARK: return
+
+  const { windowWidth } = useWindowSize();
 
   return (
     <Box>

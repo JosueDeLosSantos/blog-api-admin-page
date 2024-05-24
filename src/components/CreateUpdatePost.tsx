@@ -348,7 +348,7 @@ function CreateUpdatePost({ operation }: { operation: string }) {
                   <div className="w-1/2">
                     <button
                       role="submit"
-                      className="py mx-auto h-10 w-full rounded border border-[#461c5f] bg-purple-600 text-sm font-semibold text-white hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600"
+                      className="py mx-auto h-10 w-full cursor-pointer rounded border border-[#461c5f] bg-purple-600 text-sm font-semibold text-white hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600"
                     >
                       Submit
                     </button>

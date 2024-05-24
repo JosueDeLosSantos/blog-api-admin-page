@@ -155,10 +155,19 @@ function LogIn() {
 
           <div className="mt-8 flex w-full">
             <button
-              className="py h-10 w-full rounded border border-[#461c5f] bg-[#721ea3] px-2 text-sm font-semibold text-white hover:bg-[#540d7d] dark:bg-purple-500 dark:hover:bg-purple-600"
+              className="py h-10 w-full cursor-pointer rounded border border-[#461c5f] bg-[#721ea3] px-2 text-sm font-semibold text-white hover:bg-[#540d7d] dark:bg-purple-500 dark:hover:bg-purple-600"
               type="submit"
             >
               Sign in
+            </button>
+          </div>
+          <div className="mt-5 flex w-full">
+            <button
+              onClick={() => navigate("/")}
+              className="py h-10 w-full cursor-pointer rounded border-none bg-white px-2 text-sm font-semibold text-slate-500 ring-1 ring-slate-400 hover:bg-slate-100 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
+              type="button"
+            >
+              Cancel
             </button>
           </div>
         </form>

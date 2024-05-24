@@ -1,23 +1,9 @@
 import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useState, useEffect } from "react";
+import useWindowSize from "../features/windowSize";
 
 function SkeletonPostsPage() {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    // Add event listener
-    window.addEventListener("resize", handleResize);
-
-    // Remove event listener on cleanup
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []); // Empty array ensures effect is only run on mount and unmount
+  const { windowWidth } = useWindowSize();
 
   return (
     <div className="max-h-auto min-h-screen bg-slate-100 dark:bg-slate-950">
