@@ -11,6 +11,8 @@ import "./editor.css";
 import he from "he"; // decodes mongodb encoded HTML
 import { editPostType } from "../features/posts/types";
 import MenuBar from "../features/MenuBar";
+import MenuBarLarge from "../features/MenuBarLarge";
+import useWindowSize from "../features/windowSize";
 
 type fileType = {
   filename: string;
@@ -58,6 +60,19 @@ function CreateUpdatePost({ operation }: { operation: string }) {
   ): void => {
     const { name, value, files } = event.target;
     setFormData({ ...formData, [name]: files?.length ? files[0] : value });
+  };
+
+  const [textAreaHeight, setTextAreaHeight] = useState(90);
+
+  const handleCommentChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>,
+  ): void => {
+    const { name, value, scrollHeight } = event.target;
+    setFormData({ ...formData, [name]: value });
+    const regex = /\w+/g; // must contain at least one alphanumeric character
+    const height = scrollHeight > 90 && regex.test(value) ? scrollHeight : 90;
+    setTextAreaHeight(height);
+    console.log(value.length);
   };
 
   const [errors, setErrors] = useState({
@@ -219,11 +234,15 @@ function CreateUpdatePost({ operation }: { operation: string }) {
     ],
   };
 
+  const { windowWidth } = useWindowSize();
+
   // MARK: return
 
   return (
     <>
-      <MenuBar />
+      {windowWidth < 769 && <MenuBar />}
+      {windowWidth > 768 && <MenuBarLarge />}
+
       <div className="py-12 max-sm:mt-5 sm:mt-8">
         <div className="mx-auto max-w-[900px] sm:px-6 lg:px-8">
           <div className="overflow-hidden shadow-sm sm:rounded-lg ">
@@ -249,12 +268,15 @@ function CreateUpdatePost({ operation }: { operation: string }) {
                   </label>
                   <input
                     type="text"
+                    maxLength={170}
                     className="py focus:shadow-outline box-border  h-10 w-full appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
                     name="title"
                     onInput={handleInputChange}
                     value={formData.title}
                     required
                   />
+                  <span className="text-sm text-gray-400">{`${formData.title.length}/170`}</span>
+                  <br />
                   <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
                     {errors.title}
                   </span>
@@ -266,15 +288,21 @@ function CreateUpdatePost({ operation }: { operation: string }) {
                     className="text-xl text-gray-700 dark:text-gray-200"
                   >
                     Description{" "}
-                    <span className="text-red-500 dark:text-red-300">*</span>
                   </label>
-                  <input
-                    type="text"
-                    className="py focus:shadow-outline box-border  h-10 w-full appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+                  <textarea
+                    maxLength={370}
+                    style={{
+                      height: `${textAreaHeight}px`,
+                      overflow: "hidden",
+                    }}
+                    rows={2}
+                    className="py focus:shadow-outline box-border w-full resize-none appearance-none rounded border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
                     name="description"
-                    onInput={handleInputChange}
+                    onInput={handleCommentChange}
                     value={formData.description}
                   />
+                  <span className="text-sm text-gray-400">{`${formData.description.length}/370`}</span>
+                  <br />
                   <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
                     {errors.description}
                   </span>
@@ -299,29 +327,10 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 												console.log(toolbarItems.sort()); */
                     }}
                   />
+                  <span className="text-sm text-gray-400">{`${formData.post.length}/100000`}</span>
+                  <br />
                   <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
                     {errors.post}
-                  </span>
-                </div>
-
-                <div className="mb-4">
-                  <label
-                    htmlFor="author"
-                    className="text-xl text-gray-700 dark:text-gray-200"
-                  >
-                    Author{" "}
-                    <span className="text-red-500 dark:text-red-300">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="py focus:shadow-outline box-border h-10 w-full appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
-                    name="author"
-                    onInput={handleInputChange}
-                    value={formData.author}
-                    required
-                  />
-                  <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
-                    {errors.author}
                   </span>
                 </div>
 

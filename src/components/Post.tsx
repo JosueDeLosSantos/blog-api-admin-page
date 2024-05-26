@@ -20,6 +20,7 @@ import { RootState } from "../app/rootReducer";
 import axios, { AxiosError } from "axios";
 import { deletePost } from "../features/posts/postsSlice";
 import useWindowSize from "../features/windowSize";
+import MenuBarLarge from "../features/MenuBarLarge";
 
 const theme = createTheme({
   palette: {
@@ -101,8 +102,6 @@ function Post() {
     __v: number;
     _id: string;
   };
-
-  const { windowWidth } = useWindowSize();
 
   const [user, setUser] = useState<userType>({} as userType);
 
@@ -197,13 +196,11 @@ function Post() {
 
   const handleDeletion = (e: React.MouseEvent<HTMLButtonElement>) => {
     const target = e.target as HTMLButtonElement;
-    // console.log(target);
     deleteRef.current.forEach((el) => {
       if (el && el.contains(target)) {
         deleteComment(el.dataset.deleteid);
       }
     });
-    // deleteComment(target.id);
   };
   const handleEdition = (e: React.MouseEvent<HTMLButtonElement>) => {
     const target = e.target as HTMLButtonElement;
@@ -213,8 +210,9 @@ function Post() {
         editComment(el.dataset.editid);
       }
     });
-    // editComment(el.dataset.editid);
   };
+
+  const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
   // MARK: edit comment
   function editComment(commentId: string) {
@@ -224,15 +222,21 @@ function Post() {
     setIsEditing(true);
     setCommentToEdit(selectedComment);
 
+    /* Scroll to comments box */
     const commentsBoxSection = document.getElementById("edit-comment-box");
     window.scrollTo({
       top: commentsBoxSection?.offsetTop,
       behavior: "smooth",
     });
+
+    /* Modify the initial textArea height */
+    const commentLineBreaks = selectedComment.comment.split("\n").length;
+    if (textAreaRef?.current) {
+      textAreaRef.current.style.height = `${commentLineBreaks * 50 + 100}px`;
+    }
   }
 
   // MARK: delete comment
-
   async function deleteComment(commentId: string) {
     const apiUrl = `http://localhost:3000/user/comments/${commentId}`;
     try {
@@ -259,10 +263,14 @@ function Post() {
     }
   }
 
+  const { windowWidth } = useWindowSize();
+
+  // MARK: return
+
   return (
     <div className="min-h-screen bg-slate-100 dark:bg-slate-950">
-      {/* MARK: Toolbar */}
-      <MenuBar />
+      {windowWidth < 769 && <MenuBar />}
+      {windowWidth > 768 && <MenuBarLarge />}
 
       <main className="flex gap-4 pb-5 pl-5 pr-5 pt-24">
         {member === "admin" && (
@@ -397,6 +405,7 @@ function Post() {
           {/* Comment's box */}
           {member === "admin" && post?.post && (
             <CommentsBox
+              textAreaRef={textAreaRef}
               formData={commentToEdit}
               setFormData={setCommentToEdit}
               setIsEditing={setIsEditing}
@@ -465,7 +474,12 @@ function Post() {
                     </div>
                   )}
                 </div>
-                <div className="text-base">{he.decode(comment.comment)}</div>
+                <div className="truncate text-pretty text-base">
+                  {/* Converts avery \n into a paragraph */}
+                  {comment.comment.split("\n").map((line, i) => (
+                    <p key={`${comment._id}${i}`}>{he.decode(line)}</p>
+                  ))}
+                </div>
               </div>
             ))}
           </div>

@@ -126,10 +126,10 @@ function PostsTemplate({
                 id={post._id}
                 ref={(el) => (parentRef.current[index] = el)}
                 onClick={(e) => postClick(e)}
-                className="sm:mx-h-60 mx-5 mb-2 flex max-h-40 max-w-screen-lg cursor-pointer flex-col rounded-lg border border-solid border-slate-200 bg-white p-2 sm:gap-1 md:max-h-64 md:flex-col md:gap-2 lg:flex-row lg:gap-4 dark:border-slate-950 dark:bg-slate-800"
+                className="mx-5 mb-2 flex max-w-screen-lg cursor-pointer flex-col rounded-lg border border-solid border-slate-200 bg-white p-2 sm:gap-1 md:flex-col md:gap-2 lg:flex-row lg:gap-4 dark:border-slate-950 dark:bg-slate-800"
                 key={post._id}
               >
-                <div className="sm:mx-h-60 relative max-h-40 w-full md:max-h-64 lg:w-1/2">
+                <div className="relative w-full lg:w-1/2">
                   {post.file !== null && (
                     <img
                       onLoad={(e) => setTitleColor(e)}
@@ -157,8 +157,8 @@ function PostsTemplate({
                   <span className="text-xs italic text-gray-500 md:text-base dark:text-gray-300">
                     {post.date}
                   </span>
-                  <div className="mt-2">
-                    <p className="md:text-1xl prose line-clamp-6 text-lg max-lg:mt-0 sm:text-xl dark:text-white">
+                  <div className="max-lg:mt-2">
+                    <p className="md:text-1xl prose mb-0 line-clamp-6 text-lg max-lg:mt-0 sm:text-xl dark:text-white">
                       {he.decode(post.description)}
                     </p>
                   </div>

@@ -9,6 +9,7 @@ function CommentsBox({
   post_id,
   formData,
   isEditing,
+  textAreaRef,
   addComment,
   setFormData,
   setIsEditing,
@@ -17,6 +18,7 @@ function CommentsBox({
   post_id: string;
   formData: commentType;
   isEditing: boolean;
+  textAreaRef: React.RefObject<HTMLTextAreaElement>;
   addComment: (arg: commentType) => void;
   setFormData: (arg: commentType) => void;
   setIsEditing: (arg: boolean) => void;
@@ -24,12 +26,16 @@ function CommentsBox({
 }) {
   const navigate = useNavigate();
   // MARK: State
+  const [textAreaHeight, setTextAreaHeight] = useState(100);
 
   const handleCommentChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>,
   ): void => {
-    const { name, value } = event.target;
+    const { name, value, scrollHeight } = event.target;
     setFormData({ ...formData, [name]: value });
+    const regex = /\w+/g; // must contain at least one alphanumeric character
+    const height = scrollHeight > 100 && regex.test(value) ? scrollHeight : 100;
+    setTextAreaHeight(height);
   };
 
   const [commentError, setCommentError] = useState("");
@@ -62,6 +68,7 @@ function CommentsBox({
           __v: 0,
         });
         setCommentError("");
+        setTextAreaHeight(100);
       } else {
         try {
           const response = await axios.put(apiUrl, formData, {
@@ -87,6 +94,7 @@ function CommentsBox({
               post: post_id,
               __v: 0,
             });
+            setTextAreaHeight(100);
           } else {
             setCommentError(response.data.errors[0].msg);
           }
@@ -163,14 +171,19 @@ function CommentsBox({
           </h2>
           <div className="w-full">
             <textarea
+              ref={textAreaRef}
+              maxLength={3000}
+              style={{ height: `${textAreaHeight}px` }}
               name="comment"
               onInput={handleCommentChange}
-              className="mb-3 box-border w-full resize-none rounded-sm border border-solid border-slate-300 bg-slate-100 px-3  py-2  focus:border-blue-300 focus:outline-none dark:bg-slate-950"
+              className="box-border w-full resize-y rounded-sm border border-solid border-slate-300 bg-slate-100 px-3 py-2  focus:border-blue-300 focus:outline-none dark:bg-slate-950"
               placeholder="Type Comment...*"
-              rows={5}
+              rows={50}
               value={he.decode(formData.comment)}
               required
             ></textarea>
+            <span className="text-sm text-gray-400">{`${formData.comment.length}/3000`}</span>
+            <br />
             <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
               {commentError}
             </span>
@@ -187,7 +200,7 @@ function CommentsBox({
             </div>
           )}
           {isEditing && (
-            <div className="box-border flex gap-2 sm:gap-3">
+            <div className="mt-4 box-border flex gap-2 sm:gap-3">
               <button
                 onClick={onSubmit}
                 type="button"
