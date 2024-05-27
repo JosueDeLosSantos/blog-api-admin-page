@@ -1,7 +1,28 @@
 @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  /* h1 {
+    @apply text-3xl;
+    @apply font-bold;
+  } */
+
+  h2 {
+    @apply text-2xl;
+    @apply font-bold;
+  }
+  h3 {
+    @apply text-xl;
+    @apply font-bold;
+  }
+  h4 {
+    @apply text-lg;
+    @apply font-bold;
+  }
+}
 
 body {
   margin: 0;
@@ -11,6 +32,12 @@ body {
 
 html {
   color-scheme: light dark;
+}
+
+.roboto-bold {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: normal;
 }
 
 /* Beam of light background effect */
@@ -33,23 +60,8 @@ html {
   animation: gradient 1.4s linear infinite alternate;
 }
 /* Beam of light background effect */
-.bg-custom-animation-2 {
-  background: linear-gradient(
-    0.25turn,
-    rgba(203, 213, 225),
-    rgba(203, 213, 225),
-    rgba(203, 213, 225),
-    rgba(203, 213, 225),
-    rgba(203, 213, 225),
-    white,
-    rgba(203, 213, 225),
-    rgba(203, 213, 225),
-    rgba(203, 213, 225),
-    rgba(203, 213, 225),
-    rgba(203, 213, 225)
-  );
-  background-size: 800% 10%;
-  animation: gradient 1.4s linear infinite alternate;
+.bg-custom-animation {
+  animation: animated-bg 120s linear infinite;
 }
 
 /* Light mode */
@@ -115,5 +127,14 @@ html {
   }
   100% {
     background-position: 100%;
+  }
+}
+
+@keyframes animated-bg {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-50%);
   }
 }

@@ -122,6 +122,7 @@ function LogIn() {
               placeholder="Your username"
               onInput={handleInputChange}
               value={formData.username}
+              maxLength={80}
               required
             />
             <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
@@ -142,6 +143,7 @@ function LogIn() {
               placeholder="Your password"
               onInput={handleInputChange}
               value={formData.password}
+              maxLength={70}
               required
             />
             <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">

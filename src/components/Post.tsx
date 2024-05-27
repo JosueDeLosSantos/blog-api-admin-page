@@ -212,8 +212,6 @@ function Post() {
     });
   };
 
-  const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
-
   // MARK: edit comment
   function editComment(commentId: string) {
     const selectedComment = post.comments.filter(
@@ -228,12 +226,6 @@ function Post() {
       top: commentsBoxSection?.offsetTop,
       behavior: "smooth",
     });
-
-    /* Modify the initial textArea height */
-    const commentLineBreaks = selectedComment.comment.split("\n").length;
-    if (textAreaRef?.current) {
-      textAreaRef.current.style.height = `${commentLineBreaks * 50 + 100}px`;
-    }
   }
 
   // MARK: delete comment
@@ -272,7 +264,7 @@ function Post() {
       {windowWidth < 769 && <MenuBar />}
       {windowWidth > 768 && <MenuBarLarge />}
 
-      <main className="flex gap-4 pb-5 pl-5 pr-5 pt-24">
+      <main className="flex gap-4 px-5 pb-5 pt-24">
         {member === "admin" && (
           <ThemeProvider theme={theme}>
             <div
@@ -405,7 +397,6 @@ function Post() {
           {/* Comment's box */}
           {member === "admin" && post?.post && (
             <CommentsBox
-              textAreaRef={textAreaRef}
               formData={commentToEdit}
               setFormData={setCommentToEdit}
               setIsEditing={setIsEditing}

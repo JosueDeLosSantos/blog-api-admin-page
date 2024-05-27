@@ -133,6 +133,7 @@ function SignUp() {
               placeholder="Your first name"
               onInput={handleInputChange}
               value={formData.first_name}
+              maxLength={40}
             />
             <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
               {errors.first_name}
@@ -152,6 +153,7 @@ function SignUp() {
               placeholder="Your last name"
               onInput={handleInputChange}
               value={formData.last_name}
+              maxLength={70}
             />
             <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
               {errors.last_name}
@@ -171,6 +173,7 @@ function SignUp() {
               placeholder="Your email address"
               onInput={handleInputChange}
               value={formData.email}
+              maxLength={120}
             />
             <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
               {errors.email}
@@ -190,6 +193,7 @@ function SignUp() {
               placeholder="Your username"
               onInput={handleInputChange}
               value={formData.username}
+              maxLength={80}
             />
             <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
               {errors.username}
@@ -209,6 +213,7 @@ function SignUp() {
               placeholder="Your password"
               onInput={handleInputChange}
               value={formData.password}
+              maxLength={70}
             />
             <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
               {errors.password}
@@ -228,6 +233,7 @@ function SignUp() {
               placeholder="Confirm your password"
               onInput={handleInputChange}
               value={formData.passwordConfirmation}
+              maxLength={70}
             />
             <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
               {errors.passwordConfirmation}

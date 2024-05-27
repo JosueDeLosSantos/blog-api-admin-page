@@ -13,6 +13,7 @@ import { editPostType } from "../features/posts/types";
 import MenuBar from "../features/MenuBar";
 import MenuBarLarge from "../features/MenuBarLarge";
 import useWindowSize from "../features/windowSize";
+import TextareaAutosize from "react-textarea-autosize";
 
 type fileType = {
   filename: string;
@@ -62,17 +63,11 @@ function CreateUpdatePost({ operation }: { operation: string }) {
     setFormData({ ...formData, [name]: files?.length ? files[0] : value });
   };
 
-  const [textAreaHeight, setTextAreaHeight] = useState(90);
-
   const handleCommentChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>,
   ): void => {
-    const { name, value, scrollHeight } = event.target;
+    const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
-    const regex = /\w+/g; // must contain at least one alphanumeric character
-    const height = scrollHeight > 90 && regex.test(value) ? scrollHeight : 90;
-    setTextAreaHeight(height);
-    console.log(value.length);
   };
 
   const [errors, setErrors] = useState({
@@ -289,13 +284,9 @@ function CreateUpdatePost({ operation }: { operation: string }) {
                   >
                     Description{" "}
                   </label>
-                  <textarea
+                  <TextareaAutosize
                     maxLength={370}
-                    style={{
-                      height: `${textAreaHeight}px`,
-                      overflow: "hidden",
-                    }}
-                    rows={2}
+                    minRows={2}
                     className="py focus:shadow-outline box-border w-full resize-none appearance-none rounded border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
                     name="description"
                     onInput={handleCommentChange}

@@ -42,8 +42,8 @@ export default function MenuBar() {
       case "Create post":
         navigate("/posts/create");
         break;
-      case "All post":
-        navigate("/");
+      case "All Posts":
+        navigate("/posts");
         break;
       default:
         setAnchorEl(null);
@@ -69,7 +69,7 @@ export default function MenuBar() {
             onClick={handleClick}
             sx={{ mr: 2, color: "black" }}
           >
-            <MenuIcon fontSize={windowWidth > 350 ? "large" : "medium"} />
+            <MenuIcon fontSize={windowWidth >= 640 ? "large" : "medium"} />
           </IconButton>
           <Menu
             id="basic-menu"
@@ -138,7 +138,7 @@ export default function MenuBar() {
           <Typography
             variant="h6"
             component="div"
-            className="logo mx-sm:text-xl w-full text-center font-PressStart2P lg:text-2xl"
+            className="logo w-full text-center font-PressStart2P text-xs sm:text-sm"
             sx={{
               color: "#721ea3",
             }}

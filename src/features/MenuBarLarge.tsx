@@ -21,7 +21,7 @@ export default function MenuBar() {
       case "Logout":
         dispatch(switchPrivilege("user"));
         localStorage.removeItem("accessToken");
-        navigate("/");
+        navigate("/posts");
         break;
       case "Login":
         navigate("/log-in");
@@ -32,7 +32,10 @@ export default function MenuBar() {
       case "Create post":
         navigate("/posts/create");
         break;
-      case "All post":
+      case "All Posts":
+        navigate("/posts");
+        break;
+      case "Home":
         navigate("/");
         break;
       default:
@@ -50,9 +53,17 @@ export default function MenuBar() {
       >
         <Toolbar className="flex justify-between">
           <div className="logo mx-sm:text-xl font-PressStart2P text-[#721ea3] lg:text-2xl">
-            {"<JCODER>"}
+            {"<J>"}
           </div>
           <div className="flex w-1/2 justify-between divide-x divide-y-0 divide-solid text-center text-black dark:divide-slate-50 dark:text-slate-100">
+            {member === "user" && (
+              <div
+                className="flex-1 cursor-pointer font-bold hover:bg-slate-100 dark:hover:bg-slate-700"
+                onClick={(e) => handleClick(e)}
+              >
+                Home
+              </div>
+            )}
             {member && (
               <div
                 className="flex-1 cursor-pointer font-bold hover:bg-slate-100 dark:hover:bg-slate-700"

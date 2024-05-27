@@ -115,8 +115,8 @@ function PostsTemplate({
 
   return (
     <div className="max-h-auto min-h-screen bg-slate-100 dark:bg-slate-950">
-      {windowWidth < 769 && <MenuBar />}
-      {windowWidth > 768 && <MenuBarLarge />}
+      {windowWidth <= 768 && <MenuBar />}
+      {windowWidth >= 769 && <MenuBarLarge />}
 
       <div className="mx-auto w-fit pt-24">
         <Suspense fallback={<SkeletonPostsPage />}>

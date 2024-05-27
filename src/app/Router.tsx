@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import Index from "../components";
+import Posts from "../components/Posts";
+import Home from "../components/Home";
 import User from "../components/user";
 import CreateUpdatePost from "../components/CreateUpdatePost";
 import NotFound from "../features/NotFound";
@@ -11,8 +12,12 @@ const Router = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Index />,
+      element: <Home />,
       errorElement: <NotFound />,
+    },
+    {
+      path: "posts",
+      element: <Posts />,
     },
     {
       path: "server-error",
