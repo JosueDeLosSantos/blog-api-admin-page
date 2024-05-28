@@ -406,7 +406,7 @@ function Post() {
               post_id={`${post._id}`}
             />
           )}
-          <div id="comments-box" className="mx-auto max-w-screen-md">
+          <div id="comments-box" className="mx-auto mt-10 max-w-screen-md">
             {post?.comments?.length > 0 && (
               <div className="mx-auto text-center">
                 <h2>Comments</h2>
@@ -414,7 +414,7 @@ function Post() {
             )}
 
             {member === "user" && (
-              <div className="mx-auto w-11/12 pb-10 pl-5 pr-5 pt-5 text-slate-600 dark:text-slate-300">
+              <div className="mx-auto w-11/12 pb-10 pl-5 pr-5 pt-10 text-slate-600 dark:text-slate-300">
                 If you want to leave a comment{" "}
                 <Link
                   className="font-bold text-slate-800 no-underline dark:text-white"
@@ -467,9 +467,15 @@ function Post() {
                 </div>
                 <div className="truncate text-pretty text-base">
                   {/* Converts avery \n into a paragraph */}
-                  {comment.comment.split("\n").map((line, i) => (
-                    <p key={`${comment._id}${i}`}>{he.decode(line)}</p>
-                  ))}
+                  {comment.comment
+                    .split("\n")
+                    .map((line, i) =>
+                      line === "" ? (
+                        <br key={`${comment._id}${i}`} />
+                      ) : (
+                        <p key={`${comment._id}${i}`}>{he.decode(line)}</p>
+                      ),
+                    )}
                 </div>
               </div>
             ))}

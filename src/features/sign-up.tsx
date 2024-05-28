@@ -100,7 +100,7 @@ function SignUp() {
   }
   // MARK: return
   return (
-    <div className="container mx-auto mt-14 flex h-full max-w-md overflow-hidden rounded-lg bg-white shadow dark:bg-slate-700">
+    <div className="container mx-auto flex h-full max-w-md overflow-hidden rounded-lg bg-white shadow xl:mt-14 dark:bg-slate-700">
       <div className="w-full p-8">
         <h1 className="mb-10 text-center font-PressStart2P text-xl">
           <Link

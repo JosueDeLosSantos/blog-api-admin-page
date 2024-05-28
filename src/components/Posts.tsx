@@ -18,6 +18,7 @@ function Index() {
   // http://localhost:3000/
   // https://dummy-blog.adaptable.app/
   const server = "http://localhost:3000/";
+  // MARK: get posts
   // request all posts
   useEffect(() => {
     // make an API call only if the state array is empty
@@ -65,7 +66,7 @@ function Index() {
       setLoadState("success");
     }
   }, [posts, dispatch]);
-
+  // MARK: render
   return (
     (loadState === "loading" && (
       <>

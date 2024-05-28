@@ -76,7 +76,7 @@ function LogIn() {
   // MARK: return
 
   return (
-    <div className="container mx-auto mt-16 flex h-full max-w-md overflow-hidden rounded-lg bg-white shadow xl:max-w-3xl dark:bg-slate-700">
+    <div className="container absolute left-[50%] top-[50%] mx-auto flex max-w-md translate-x-[-50%] translate-y-[-70%] overflow-hidden rounded-lg bg-white shadow xl:max-w-3xl dark:bg-slate-700">
       <div className="relative hidden h-full xl:block xl:w-1/2">
         <img
           className="absolute h-auto w-full object-cover"
@@ -137,7 +137,7 @@ function LogIn() {
               Password
             </label>
             <input
-              className="py focus:shadow-outline box-border  h-10 w-full appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+              className="py focus:shadow-outline box-border  h-10 w-full appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-400 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
               name="password"
               type="password"
               placeholder="Your password"
