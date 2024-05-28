@@ -175,7 +175,7 @@ function Post() {
       });
 
       dispatch(deletePost(response.data.post._id)); // update global state
-      navigate("/");
+      navigate("/posts");
     } catch (error) {
       const axiosError = error as AxiosError;
       if (

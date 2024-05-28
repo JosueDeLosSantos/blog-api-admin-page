@@ -25,24 +25,26 @@ export default function MenuBar() {
   const navigate = useNavigate();
   const handleClose = (e: MouseEvent) => {
     const target = e.target as HTMLElement;
-    const { innerText } = target;
 
-    switch (innerText) {
-      case "Logout":
-        dispatch(switchPrivilege("user"));
-        localStorage.removeItem("accessToken");
+    switch (target.dataset.menuitem) {
+      case "0": // Home
         navigate("/");
         break;
-      case "Login":
-        navigate("/log-in");
+      case "1": // All Posts
+        navigate("/posts");
         break;
-      case "Sign Up":
-        navigate("/sign-up");
-        break;
-      case "Create post":
+      case "2": // Create post
         navigate("/posts/create");
         break;
-      case "All Posts":
+      case "3": // Login
+        navigate("/log-in");
+        break;
+      case "4": // Sign Up
+        navigate("/sign-up");
+        break;
+      case "5": // Logout
+        dispatch(switchPrivilege("user"));
+        localStorage.removeItem("accessToken");
         navigate("/posts");
         break;
       default:
@@ -81,30 +83,45 @@ export default function MenuBar() {
               "aria-labelledby": "basic-button",
             }}
           >
+            {member === "user" && (
+              <MenuItem
+                data-menuitem="0"
+                sx={{
+                  fontSize: "1rem",
+                  borderBottom: "1px solid #e0e0e0",
+                }}
+                onClick={(e) => handleClose(e)}
+              >
+                Home
+              </MenuItem>
+            )}
             {member && (
               <MenuItem
+                data-menuitem="1"
                 sx={{
                   fontSize: "1rem",
                   borderBottom: "1px solid #e0e0e0", // Add a bottom border to each menu item
                 }}
                 onClick={(e) => handleClose(e)}
               >
-                All post
+                All Posts
               </MenuItem>
             )}
             {member === "admin" && (
               <MenuItem
+                data-menuitem="2"
                 sx={{
                   fontSize: "1rem",
                   borderBottom: "1px solid #e0e0e0", // Add a bottom border to each menu item
                 }}
                 onClick={(e) => handleClose(e)}
               >
-                Create post
+                Create Post
               </MenuItem>
             )}
             {member === "user" && (
               <MenuItem
+                data-menuitem="3"
                 sx={{
                   fontSize: "1rem",
                   borderBottom: "1px solid #e0e0e0", // Add a bottom border to each menu item
@@ -116,6 +133,7 @@ export default function MenuBar() {
             )}
             {member === "user" && (
               <MenuItem
+                data-menuitem="4"
                 sx={{
                   fontSize: "1rem",
                 }}
@@ -126,6 +144,7 @@ export default function MenuBar() {
             )}
             {member === "admin" && (
               <MenuItem
+                data-menuitem="5"
                 sx={{
                   fontSize: "1rem",
                 }}

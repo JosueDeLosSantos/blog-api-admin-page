@@ -154,7 +154,7 @@ function CreateUpdatePost({ operation }: { operation: string }) {
           delete response.data.post.post;
           delete response.data.post.comments;
           dispatch(updatePost(response.data.post)); // update global state
-          navigate("/");
+          navigate("/posts");
         }
       } catch (error) {
         const axiosError = error as AxiosError;
@@ -189,7 +189,7 @@ function CreateUpdatePost({ operation }: { operation: string }) {
           delete response.data.post.post;
           delete response.data.post.comments;
           dispatch(addPost(response.data.post)); // update global state
-          navigate("/");
+          navigate("/posts");
         }
       } catch (error) {
         const axiosError = error as AxiosError;
@@ -356,7 +356,7 @@ function CreateUpdatePost({ operation }: { operation: string }) {
 
                   <div className="w-1/2">
                     <button
-                      onClick={() => navigate("/")}
+                      onClick={() => navigate("/posts")}
                       className="py mx-auto h-10 w-full cursor-pointer rounded border-none bg-white px-2 text-sm font-semibold text-slate-500 ring-1 ring-slate-400 hover:bg-slate-100 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
                       type="button"
                     >

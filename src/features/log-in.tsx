@@ -40,7 +40,7 @@ function LogIn() {
       if (response.data.accessToken) {
         localStorage.setItem("accessToken", `${response.data.accessToken}`);
         dispatch(switchPrivilege("admin"));
-        navigate("/"); // Redirect to desired page after successful login
+        navigate("/posts"); // Redirect to desired page after successful login
       } else {
         if (response.data.errors) {
           const newErrors = { username: "", password: "" };
@@ -165,7 +165,7 @@ function LogIn() {
           </div>
           <div className="mt-5 flex w-full">
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/posts")}
               className="py h-10 w-full cursor-pointer rounded border-none bg-white px-2 text-sm font-semibold text-slate-500 ring-1 ring-slate-400 hover:bg-slate-100 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
               type="button"
             >
