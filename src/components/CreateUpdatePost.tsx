@@ -14,6 +14,8 @@ import MenuBar from "../features/MenuBar";
 import MenuBarLarge from "../features/MenuBarLarge";
 import useWindowSize from "../features/windowSize";
 import TextareaAutosize from "react-textarea-autosize";
+import ImageUploader from "../features/ImageUploader";
+import { ImageType } from "react-images-uploading";
 
 type fileType = {
   filename: string;
@@ -23,13 +25,12 @@ type fileType = {
   size: number;
 };
 
-type formDataType = {
+export type formDataType = {
   title: string;
   description: string;
   post: string;
-  author: string;
   comments: string[];
-  file: string | File | fileType;
+  file: string | File | fileType | ImageType | undefined;
   trash: string;
 };
 
@@ -42,7 +43,6 @@ function CreateUpdatePost({ operation }: { operation: string }) {
     title: state !== null ? he.decode(state.title) : "",
     description: state !== null ? he.decode(state.description) : "",
     post: state !== null ? he.decode(state.post) : "",
-    author: state !== null ? he.decode(state.author) : "",
     comments: state !== null ? state.comments : [],
     file: state !== null ? state.file : "",
     // if the initial state.post.file value includes metadata for any file stored in the server
@@ -52,29 +52,28 @@ function CreateUpdatePost({ operation }: { operation: string }) {
   });
   const navigate = useNavigate();
 
-  const handlePostChange = (arg: string): void => {
-    setFormData({ ...formData, post: arg });
-  };
-
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ): void => {
-    const { name, value, files } = event.target;
-    setFormData({ ...formData, [name]: files?.length ? files[0] : value });
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleCommentChange = (
+  const handleDescriptionChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>,
   ): void => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  const handlePostChange = (arg: string): void => {
+    setFormData({ ...formData, post: arg });
+  };
+
   const [errors, setErrors] = useState({
     title: "",
     description: "",
     post: "",
-    author: "",
     file: "",
   });
 
@@ -91,7 +90,6 @@ function CreateUpdatePost({ operation }: { operation: string }) {
       title: "",
       description: "",
       post: "",
-      author: "",
       file: "",
     };
     while (errorsArray.length > 0) {
@@ -106,9 +104,6 @@ function CreateUpdatePost({ operation }: { operation: string }) {
         case "post":
           errorsInitialState.post = error.msg;
           break;
-        case "author":
-          errorsInitialState.author = error.msg;
-          break;
         case "file":
           errorsInitialState.file = error.msg;
           break;
@@ -122,6 +117,8 @@ function CreateUpdatePost({ operation }: { operation: string }) {
   // MARK: onSubmit
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
+
+    console.log(e);
 
     const jwtToken = localStorage.getItem("accessToken");
     const headers: Record<string, string> = {};
@@ -253,10 +250,10 @@ function CreateUpdatePost({ operation }: { operation: string }) {
                     Create post
                   </h1>
                 )}
-                <div className="mb-4 mt-10">
+                <div className="mb-4 mt-16">
                   <label
                     htmlFor="title"
-                    className="text-xl text-gray-700 dark:text-gray-200"
+                    className="text-xl font-bold text-gray-700 lg:text-2xl dark:text-gray-200"
                   >
                     Title{" "}
                     <span className="text-red-500 dark:text-red-300">*</span>
@@ -264,7 +261,7 @@ function CreateUpdatePost({ operation }: { operation: string }) {
                   <input
                     type="text"
                     maxLength={170}
-                    className="py focus:shadow-outline box-border  h-10 w-full appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+                    className="py focus:shadow-outline mt-3 box-border h-10 w-full appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
                     name="title"
                     onInput={handleInputChange}
                     value={formData.title}
@@ -280,16 +277,16 @@ function CreateUpdatePost({ operation }: { operation: string }) {
                 <div className="mb-4">
                   <label
                     htmlFor="description"
-                    className="text-xl text-gray-700 dark:text-gray-200"
+                    className="text-xl font-bold text-gray-700 lg:text-2xl dark:text-gray-200"
                   >
                     Description{" "}
                   </label>
                   <TextareaAutosize
                     maxLength={370}
                     minRows={2}
-                    className="py focus:shadow-outline box-border w-full resize-none appearance-none rounded border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+                    className="focus:shadow-outline mt-3 box-border w-full resize-none appearance-none rounded border border-[#461c5f] bg-gray-200 px-2 py-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
                     name="description"
-                    onInput={handleCommentChange}
+                    onInput={handleDescriptionChange}
                     value={formData.description}
                   />
                   <span className="text-sm text-gray-400">{`${formData.description.length}/370`}</span>
@@ -299,8 +296,8 @@ function CreateUpdatePost({ operation }: { operation: string }) {
                   </span>
                 </div>
 
-                <div className="mb-8">
-                  <label className="text-xl text-gray-700 dark:text-gray-200">
+                <div className="mb-4 space-y-3">
+                  <label className="text-xl font-bold text-gray-700 lg:text-2xl dark:text-gray-200">
                     Content{" "}
                     <span className="text-red-500 dark:text-red-300">*</span>
                   </label>
@@ -325,20 +322,30 @@ function CreateUpdatePost({ operation }: { operation: string }) {
                   </span>
                 </div>
 
-                <div className="mb-4">
+                <div className="mb-4 space-y-3">
                   <label
                     htmlFor="file"
-                    className="text-xl text-gray-700 dark:text-gray-200"
+                    className="text-xl font-bold text-gray-700 lg:text-2xl dark:text-gray-200"
                   >
                     Image
                   </label>
                   <span className="text-red-500 dark:text-red-300">*</span>
-                  <input
-                    type="file"
-                    className="stroke w-[98%] bg-slate-300 p-2 font-bold text-slate-600 max-sm:pr-0 dark:bg-slate-600 dark:text-slate-300"
-                    name="file"
-                    onChange={handleInputChange}
-                  />
+
+                  {operation === "update" && (
+                    <ImageUploader
+                      formData={formData}
+                      setFormData={setFormData}
+                      operation="update"
+                      url={`http://localhost:3000/${state?.file.path}`}
+                    />
+                  )}
+
+                  {operation === "create" && (
+                    <ImageUploader
+                      formData={formData}
+                      setFormData={setFormData}
+                    />
+                  )}
                   <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
                     {errors.file}
                   </span>
@@ -348,7 +355,7 @@ function CreateUpdatePost({ operation }: { operation: string }) {
                   <div className="w-1/2">
                     <button
                       role="submit"
-                      className="py mx-auto h-10 w-full cursor-pointer rounded border border-[#461c5f] bg-purple-600 text-sm font-semibold text-white hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600"
+                      className="py mx-auto h-10 w-full cursor-pointer rounded border border-[#461c5f] bg-purple-600 font-semibold text-white hover:bg-purple-700 xl:text-xl dark:bg-purple-500 dark:hover:bg-purple-600"
                     >
                       Submit
                     </button>
@@ -357,7 +364,7 @@ function CreateUpdatePost({ operation }: { operation: string }) {
                   <div className="w-1/2">
                     <button
                       onClick={() => navigate("/posts")}
-                      className="py mx-auto h-10 w-full cursor-pointer rounded border-none bg-white px-2 text-sm font-semibold text-slate-500 ring-1 ring-slate-400 hover:bg-slate-100 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
+                      className="py mx-auto h-10 w-full cursor-pointer rounded border-none bg-white px-2 font-semibold text-slate-500 ring-1 ring-slate-400 hover:bg-slate-100 xl:text-xl dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
                       type="button"
                     >
                       Cancel

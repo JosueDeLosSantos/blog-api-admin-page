@@ -84,6 +84,11 @@ function PostsTemplate({
   };
 
   useEffect(() => {
+    // position the scroll at the top of the page
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     /* This function triggers when the user reaches the bottom
 		of the page. */
     const handleScroll = () => {

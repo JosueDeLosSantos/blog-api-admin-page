@@ -65,9 +65,6 @@ function Post() {
     __v: 0,
   });
 
-  // position the scroll at the top of the page
-  // window.scrollTo(0, 0);
-
   // keep comments array updated to avoid unnecessary API calls
   function addComment(arg: commentType) {
     // Change array's order to show the most recent one on the top
@@ -107,6 +104,9 @@ function Post() {
 
   // MARK: fetch post
   useEffect(() => {
+    // position the scroll at the top of the page
+    window.scrollTo(0, 0);
+
     (async function fetchPost() {
       const url = window.location.href;
       const urlId = url.split("/")[5];
@@ -324,7 +324,7 @@ function Post() {
           {/* MARK: Post's header */}
           <header id="post-header">
             <div
-              className="relative mx-auto  w-full md:mb-0"
+              className="relative mx-auto w-full md:mb-0"
               style={{ height: "24em" }}
             >
               <div
@@ -428,7 +428,7 @@ function Post() {
             {post?.comments.map((comment, index) => (
               <div
                 key={comment._id}
-                className="mx-auto mb-8 box-border w-11/12 rounded-lg border border-solid border-slate-300 p-5 dark:border-slate-600"
+                className="mx-auto mb-8 box-border max-h-[1600px] w-11/12 truncate rounded-lg border border-solid border-slate-300 p-5 dark:border-slate-600"
               >
                 <div className="relative mb-5 flex h-5 flex-col items-start sm:flex-row sm:gap-2">
                   <div className="font-bold text-slate-500 max-sm:text-xs sm:text-sm dark:text-slate-300">
