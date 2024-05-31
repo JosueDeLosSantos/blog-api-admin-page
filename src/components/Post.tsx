@@ -378,18 +378,18 @@ function Post() {
           {!post && (
             <div className="mx-auto max-w-screen-md animate-pulse border-b-[0.5px] border-l-0 border-r-0 border-t-0 border-solid border-slate-200 p-5 sm:mt-5 md:mt-8">
               {Array.from({ length: 7 }).map((_, i) => (
-                <>
+                <div key={`skeleton-card-${i}`}>
                   <div
-                    key={i}
+                    key={`fake-title-${i}`}
                     className="mt-6 h-7 w-1/2 rounded-full bg-slate-600"
                   />
                   {Array.from({ length: 7 }).map((_, index) => (
                     <div
-                      key={index}
+                      key={`fake-text${i}-${index}`}
                       className="mt-3 h-4 w-11/12 rounded-full bg-slate-500"
                     />
                   ))}
-                </>
+                </div>
               ))}
             </div>
           )}

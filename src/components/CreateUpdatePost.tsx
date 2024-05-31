@@ -14,7 +14,7 @@ import MenuBar from "../features/MenuBar";
 import MenuBarLarge from "../features/MenuBarLarge";
 import useWindowSize from "../features/windowSize";
 import TextareaAutosize from "react-textarea-autosize";
-import ImageUploader from "../features/ImageUploader";
+import ImageUploader from "../features/image-uploader/ImageUploader";
 import { ImageType } from "react-images-uploading";
 
 type fileType = {
