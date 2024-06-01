@@ -13,14 +13,18 @@ import "react-image-crop/dist/ReactCrop.css";
 
 // This is to demonstate how to make and center a % aspect crop
 // which is a bit trickier so we use some helper functions.
-function centerAspectCrop(mediaWidth: number, mediaHeight: number) {
+function centerAspectCrop(
+  mediaWidth: number,
+  mediaHeight: number,
+  aspect: number,
+) {
   return centerCrop(
     makeAspectCrop(
       {
         unit: "%",
         width: 90,
       },
-      16 / 9,
+      aspect,
       mediaWidth,
       mediaHeight,
     ),
@@ -70,7 +74,7 @@ export default function App({
   // MARK: onImageLoad
   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
     const { width, height } = e.currentTarget;
-    setCrop(centerAspectCrop(width, height));
+    setCrop(centerAspectCrop(width, height, aspect));
     setImageContainer("none"); // hides fake image container
   }
 
@@ -201,7 +205,7 @@ export default function App({
                     crop={crop}
                     onChange={(_, percentCrop) => setCrop(percentCrop)}
                     onComplete={(c) => setCompletedCrop(c)}
-                    aspect={16 / 9}
+                    aspect={aspect}
                     // minWidth={400}
                     minHeight={100}
                     // circularCrop
