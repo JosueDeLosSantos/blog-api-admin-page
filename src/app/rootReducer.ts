@@ -1,10 +1,10 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import posts from "../features/posts/postsSlice";
-import privilege from "../features/posts/privilegeSlice";
+import posts from "../modules/posts/utils/postsSlice";
+import privilege from "../modules/posts/utils/privilegeSlice";
 
 const rootReducer = combineReducers({
-	posts,
-	privilege
+  posts,
+  privilege,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

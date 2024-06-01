@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import { MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { switchPrivilege } from "./posts/privilegeSlice";
+import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
 import { AppDispatch } from "../app/store";

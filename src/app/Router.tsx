@@ -1,19 +1,19 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Posts from "../components/Posts";
-import Home from "../components/Home";
-import User from "../components/user";
-import CreateUpdatePost from "../components/CreateUpdatePost";
-import NotFound from "../features/NotFound";
-import Post from "../components/Post";
-import ServerError from "../features/ServerError";
+import Posts from "../pages/Posts";
+import Home from "../pages/Home";
+import User from "../pages/user";
+import CreateUpdatePost from "../pages/CreateUpdatePost";
+import NotFound from "../pages/NotFound";
+import Post from "../pages/Post";
+import ServerError from "../pages/ServerError";
 
 // POSTS
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../app/store";
-import { postsList } from "../features/posts/postsSlice";
-import { switchPrivilege } from "../features/posts/privilegeSlice";
+import { postsList } from "../modules/posts/utils/postsSlice";
+import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
 import { RootState } from "../app/rootReducer";
-import { postTypes } from "../features/posts/types";
+import { postTypes } from "../modules/posts/types";
 import axios, { AxiosError } from "axios";
 import { useEffect } from "react";
 

@@ -1,8 +1,8 @@
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
-import { commentType } from "../components/Post";
-import { onePostType } from "./posts/types";
+import { commentType } from "../../../pages/Post";
+import { onePostType } from "../types";
 import he from "he";
 import TextareaAutosize from "react-textarea-autosize";
 

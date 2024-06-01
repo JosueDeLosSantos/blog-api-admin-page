@@ -8,11 +8,11 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { MouseEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { switchPrivilege } from "./posts/privilegeSlice";
+import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
 import { AppDispatch } from "../app/store";
-import useWindowSize from "../features/windowSize";
+import useWindowSize from "../hooks/windowSize";
 
 export default function MenuBar() {
   const dispatch: AppDispatch = useDispatch();

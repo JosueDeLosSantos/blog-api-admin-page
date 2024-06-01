@@ -1,13 +1,13 @@
-import MenuBar from "../MenuBar";
-import MenuBarLarge from "../MenuBarLarge";
+import MenuBar from "../../../components/MenuBar";
+import MenuBarLarge from "../../../components/MenuBarLarge";
 import { SyntheticEvent, useEffect, useRef, useState, Suspense } from "react";
-import { postTypes } from "./types";
+import { postTypes } from "../types";
 import ColorThief from "colorthief";
 import { useNavigate } from "react-router-dom";
 import he from "he"; // decodes mongodb encoded HTML
-import postsAmountController from "./postsAmountController";
-import SkeletonPostsPage from "../SkeletonPostsPage";
-import useWindowSize from "../windowSize";
+import postsAmountController from "../utils/postsAmountController";
+import SkeletonPostsPage from "../../../pages/SkeletonPostsPage";
+import useWindowSize from "../../../hooks/windowSize";
 
 function postsInitialValue(v: postTypes[]) {
   if (v.length) {

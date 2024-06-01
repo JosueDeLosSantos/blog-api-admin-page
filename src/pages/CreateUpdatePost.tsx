@@ -3,18 +3,18 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../app/store";
-import { addPost, updatePost } from "../features/posts/postsSlice";
-import { switchPrivilege } from "../features/posts/privilegeSlice";
+import { addPost, updatePost } from "../modules/posts/utils/postsSlice";
+import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "./editor.css";
 import he from "he"; // decodes mongodb encoded HTML
-import { editPostType } from "../features/posts/types";
-import MenuBar from "../features/MenuBar";
-import MenuBarLarge from "../features/MenuBarLarge";
-import useWindowSize from "../features/windowSize";
+import { editPostType } from "../modules/posts/types";
+import MenuBar from "../components/MenuBar";
+import MenuBarLarge from "../components/MenuBarLarge";
+import useWindowSize from "../hooks/windowSize";
 import TextareaAutosize from "react-textarea-autosize";
-import ImageUploader from "../features/image-uploader/ImageUploader";
+import ImageUploader from "../components/ImageUploader";
 import { ImageType } from "react-images-uploading";
 
 type fileType = {

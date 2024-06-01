@@ -1,6 +1,6 @@
 import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import useWindowSize from "../features/windowSize";
+import useWindowSize from "../hooks/windowSize";
 
 function SkeletonPostsPage() {
   const { windowWidth } = useWindowSize();

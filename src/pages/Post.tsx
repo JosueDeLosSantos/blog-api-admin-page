@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-import MenuBar from "../features/MenuBar";
+import MenuBar from "../components/MenuBar";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import CommentsBox from "../features/CommentsBox";
-import { onePostType } from "../features/posts/types";
+import CommentsBox from "../modules/posts/components/CommentsBox";
+import { onePostType } from "../modules/posts/types";
 import he from "he"; // decodes mongodb encoded HTML
 import { useState, useEffect, useRef } from "react";
 import ForumIcon from "@mui/icons-material/Forum";
@@ -15,12 +15,12 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { red, grey } from "@mui/material/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../app/store";
-import { switchPrivilege } from "../features/posts/privilegeSlice";
+import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
 import { RootState } from "../app/rootReducer";
 import axios, { AxiosError } from "axios";
-import { deletePost } from "../features/posts/postsSlice";
-import useWindowSize from "../features/windowSize";
-import MenuBarLarge from "../features/MenuBarLarge";
+import { deletePost } from "../modules/posts/utils/postsSlice";
+import useWindowSize from "../hooks/windowSize";
+import MenuBarLarge from "../components/MenuBarLarge";
 
 const theme = createTheme({
   palette: {

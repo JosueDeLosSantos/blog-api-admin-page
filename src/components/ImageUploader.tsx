@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { formDataType } from "../../components/CreateUpdatePost";
+import { formDataType } from "../pages/CreateUpdatePost";
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import ReactCrop, {
   centerCrop,
@@ -7,8 +7,8 @@ import ReactCrop, {
   Crop,
   PixelCrop,
 } from "react-image-crop";
-import { canvasPreview } from "./canvasPreview";
-import { useDebounceEffect } from "./useDebounceEffect";
+import { canvasPreview } from "./utils/canvasPreview";
+import { useDebounceEffect } from "./utils/useDebounceEffect";
 import "react-image-crop/dist/ReactCrop.css";
 
 // This is to demonstate how to make and center a % aspect crop

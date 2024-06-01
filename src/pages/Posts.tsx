@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
-import PostsTemplate from "../features/posts/PostsTemplate";
+import PostsTemplate from "../modules/posts/components/PostsTemplate";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../app/store";
-import { postsList } from "../features/posts/postsSlice";
-import { switchPrivilege } from "../features/posts/privilegeSlice";
+import { postsList } from "../modules/posts/utils/postsSlice";
+import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
 import { RootState } from "../app/rootReducer";
-import { postTypes } from "../features/posts/types";
-import SkeletonPostsPage from "../features/SkeletonPostsPage";
-import ServerError from "../features/ServerError";
+import { postTypes } from "../modules/posts/types";
+import SkeletonPostsPage from "./SkeletonPostsPage";
+import ServerError from "./ServerError";
 
 function Index() {
   const dispatch: AppDispatch = useDispatch();
