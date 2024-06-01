@@ -1,11 +1,12 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Posts from "../pages/Posts";
 import Home from "../pages/Home";
-import User from "../pages/user";
 import CreateUpdatePost from "../pages/CreateUpdatePost";
 import NotFound from "../pages/NotFound";
 import Post from "../pages/Post";
 import ServerError from "../pages/ServerError";
+import LogIn from "../pages/log-in";
+import SignUp from "../pages/sign-up";
 
 // POSTS
 import { useDispatch, useSelector } from "react-redux";
@@ -83,8 +84,12 @@ const Router = () => {
       element: <ServerError />,
     },
     {
-      path: ":name",
-      element: <User />,
+      path: "log-in",
+      element: <LogIn />,
+    },
+    {
+      path: "sign-up",
+      element: <SignUp />,
     },
     {
       path: "posts/create",
