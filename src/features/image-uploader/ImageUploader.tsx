@@ -33,19 +33,21 @@ function centerAspectCrop(
   );
 }
 
-export default function App({
-  message = "Click or Drop here",
-  operation = "create",
-  url = "",
-  formData,
-  setFormData,
-}: {
+type AppProps = {
   message?: string;
   operation?: string;
   url?: string;
   formData: formDataType;
   setFormData: (formData: formDataType) => void;
-}) {
+};
+
+const App: React.FC<AppProps> = ({
+  message = "Click or Drop here",
+  operation = "create",
+  url = "",
+  formData,
+  setFormData,
+}) => {
   const [imgSrc, setImgSrc] = useState("");
   const previewCanvasRef = useRef<HTMLCanvasElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -157,120 +159,224 @@ export default function App({
       <ImageUploading value={images} onChange={onChange} dataURLKey="data_url">
         {({ imageList, onImageUpload, isDragging, dragProps }) => (
           <div>
-            <div className="mx-auto w-full text-start md:mb-0 xl:text-xl">
-              {operation === "create" ? (
-                <button
-                  style={{ display: `${imageContainer}` }}
-                  className={
-                    isDragging
-                      ? "h-[24rem] w-full rounded-lg bg-blue-100 text-2xl font-bold text-blue-300 max-sm:h-[12rem] dark:bg-slate-900 dark:text-slate-700"
-                      : "h-[24rem] w-full rounded-lg bg-slate-200 text-2xl font-bold text-slate-400 max-sm:h-[12rem] dark:bg-slate-800 dark:text-slate-600"
-                  }
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onImageUpload();
-                  }}
-                  {...dragProps}
-                >
-                  {message}
-                </button>
-              ) : (
-                <div style={{ display: `${imageContainer}` }}>
-                  <div className="relative bottom-0 left-0 h-[24rem] w-full max-sm:h-[12rem]">
-                    <img
-                      className="absolute left-0 top-0 h-full w-full rounded-lg object-cover"
-                      src={url}
-                      alt=""
-                    />
-                  </div>
-                  <button
-                    className="mt-2 rounded bg-blue-500 px-[1em] py-[0.5em] font-bold text-white hover:bg-blue-700 max-sm:text-sm"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      onImageUpload();
-                    }}
-                  >
-                    Update
-                  </button>
-                </div>
-              )}
-            </div>
-            <div
-              style={{ display: `${cropSectionVisibility}` }}
-              className="relative bottom-0 left-0 w-full"
-            >
-              <div>
-                {!!imgSrc && (
-                  <ReactCrop
-                    crop={crop}
-                    onChange={(_, percentCrop) => setCrop(percentCrop)}
-                    onComplete={(c) => setCompletedCrop(c)}
-                    aspect={aspect}
-                    // minWidth={400}
-                    minHeight={100}
-                    // circularCrop
-                  >
-                    <img
-                      className="rounded-lg object-cover"
-                      ref={imgRef}
-                      alt="Crop me"
-                      src={imgSrc}
-                      onLoad={onImageLoad}
-                    />
-                  </ReactCrop>
-                )}
-              </div>
-              {!!completedCrop && (
-                <div>
-                  {/* remove the hidden class to see crop preview. 
-                  This element can't be removed or the library will
-                  misbehave.*/}
-                  <div className="hidden">
-                    <canvas
-                      ref={previewCanvasRef}
-                      style={{
-                        border: "1px solid black",
-                        objectFit: "contain",
-                        width: "100%",
-                        // width: completedCrop.width,
-                        // height: completedCrop.height,
-                      }}
-                    />
-                  </div>
-                  <button
-                    className="mt-2 rounded bg-green-600 px-[1em] py-[0.5em] font-bold text-white hover:bg-green-700 max-sm:text-sm"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      onCropSelected();
-                    }}
-                  >
-                    Crop
-                  </button>
-                </div>
-              )}
-            </div>
-            <div style={{ display: `${selectedCropSection}` }}>
-              <div className="relative bottom-0 left-0 h-[24rem] w-full max-sm:h-[12rem]">
-                <img
-                  className="absolute left-0 top-0 h-full w-full rounded-lg object-cover"
-                  src={selectedCroppedImageSrc}
-                  alt=""
-                />
-              </div>
-
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  onRemoveCrop();
-                }}
-                className="mt-2 rounded bg-red-500 px-[1em] py-[0.5em] font-bold text-white hover:bg-red-700 max-sm:text-sm"
-              >
-                Remove
-              </button>
-            </div>
+            <BlogImgUploadBtn
+              imageContainer={imageContainer}
+              operation={operation}
+              isDragging={isDragging}
+              message={message}
+              url={url}
+              dragProps={{ ...dragProps }}
+              onImageUpload={onImageUpload}
+            />
+            <ImgCrop
+              cropSectionVisibility={cropSectionVisibility}
+              aspect={aspect}
+              imgSrc={imgSrc}
+              imgRef={imgRef}
+              previewCanvasRef={previewCanvasRef}
+              completedCrop={completedCrop}
+              crop={crop}
+              setCrop={setCrop}
+              setCompletedCrop={setCompletedCrop}
+              onCropSelected={onCropSelected}
+              onImageLoad={onImageLoad}
+            />
+            <BlogImgRemovalBtn
+              selectedCropSection={selectedCropSection}
+              selectedCroppedImageSrc={selectedCroppedImageSrc}
+              onRemoveCrop={onRemoveCrop}
+            />
           </div>
         )}
       </ImageUploading>
     </div>
   );
+};
+
+export default App;
+
+interface ImgUploadBtnProps {
+  imageContainer: string;
+  operation: string;
+  isDragging: boolean;
+  message: string;
+  url: string;
+  dragProps: {
+    onDrop: (e: React.DragEvent<HTMLElement>) => void;
+    onDragEnter: (e: React.DragEvent<HTMLElement>) => void;
+    onDragLeave: (e: React.DragEvent<HTMLElement>) => void;
+    onDragOver: (e: React.DragEvent<HTMLElement>) => void;
+    onDragStart: (e: React.DragEvent<HTMLElement>) => void;
+  };
+  onImageUpload: () => void;
 }
+
+const BlogImgUploadBtn: React.FC<ImgUploadBtnProps> = ({
+  imageContainer,
+  operation,
+  isDragging,
+  message,
+  url,
+  dragProps,
+  onImageUpload,
+}) => {
+  return (
+    <div className="mx-auto w-full text-start md:mb-0 xl:text-xl">
+      {operation === "create" ? (
+        <button
+          style={{ display: `${imageContainer}` }}
+          className={
+            isDragging
+              ? "h-[24rem] w-full rounded-lg bg-blue-100 text-2xl font-bold text-blue-300 max-sm:h-[12rem] dark:bg-slate-900 dark:text-slate-700"
+              : "h-[24rem] w-full rounded-lg bg-slate-200 text-2xl font-bold text-slate-400 max-sm:h-[12rem] dark:bg-slate-800 dark:text-slate-600"
+          }
+          onClick={(e) => {
+            e.preventDefault();
+            onImageUpload();
+          }}
+          {...dragProps}
+        >
+          {message}
+        </button>
+      ) : (
+        <div style={{ display: `${imageContainer}` }}>
+          <div className="relative bottom-0 left-0 h-[24rem] w-full max-sm:h-[12rem]">
+            <img
+              className="absolute left-0 top-0 h-full w-full rounded-lg object-cover"
+              src={url}
+              alt=""
+            />
+          </div>
+          <button
+            className="mt-2 rounded bg-blue-500 px-[1em] py-[0.5em] font-bold text-white hover:bg-blue-700 max-sm:text-sm"
+            onClick={(e) => {
+              e.preventDefault();
+              onImageUpload();
+            }}
+          >
+            Update
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+interface ImgCropPros {
+  cropSectionVisibility: string;
+  aspect: number;
+  imgSrc: string;
+  imgRef: React.RefObject<HTMLImageElement>;
+  previewCanvasRef: React.RefObject<HTMLCanvasElement>;
+  completedCrop: PixelCrop | undefined;
+  crop: Crop | undefined;
+  setCrop: React.Dispatch<React.SetStateAction<Crop | undefined>>;
+  setCompletedCrop: React.Dispatch<React.SetStateAction<PixelCrop | undefined>>;
+  onCropSelected: () => void;
+  onImageLoad: (e: React.SyntheticEvent<HTMLImageElement>) => void;
+}
+
+const ImgCrop: React.FC<ImgCropPros> = ({
+  cropSectionVisibility,
+  aspect,
+  imgSrc,
+  imgRef,
+  previewCanvasRef,
+  completedCrop,
+  crop,
+  setCrop,
+  setCompletedCrop,
+  onCropSelected,
+  onImageLoad,
+}) => {
+  return (
+    <div
+      style={{ display: `${cropSectionVisibility}` }}
+      className="relative bottom-0 left-0 w-full"
+    >
+      <div>
+        {!!imgSrc && (
+          <ReactCrop
+            crop={crop}
+            onChange={(_, percentCrop) => setCrop(percentCrop)}
+            onComplete={(c) => setCompletedCrop(c)}
+            aspect={aspect}
+            // minWidth={400}
+            minHeight={100}
+            // circularCrop
+          >
+            <img
+              className="rounded-lg object-cover"
+              ref={imgRef}
+              alt="Crop me"
+              src={imgSrc}
+              onLoad={onImageLoad}
+            />
+          </ReactCrop>
+        )}
+      </div>
+      {!!completedCrop && (
+        <div>
+          {/* remove the hidden class to see crop preview. 
+        This element can't be removed or the library will
+        misbehave.*/}
+          <div className="hidden">
+            <canvas
+              ref={previewCanvasRef}
+              style={{
+                border: "1px solid black",
+                objectFit: "contain",
+                width: "100%",
+                // width: completedCrop.width,
+                // height: completedCrop.height,
+              }}
+            />
+          </div>
+          <button
+            className="mt-2 rounded bg-green-600 px-[1em] py-[0.5em] font-bold text-white hover:bg-green-700 max-sm:text-sm"
+            onClick={(e) => {
+              e.preventDefault();
+              onCropSelected();
+            }}
+          >
+            Crop
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+interface ImgRemovalBtnProps {
+  selectedCropSection: string;
+  selectedCroppedImageSrc: string;
+  onRemoveCrop: () => void;
+}
+
+const BlogImgRemovalBtn: React.FC<ImgRemovalBtnProps> = ({
+  selectedCropSection,
+  selectedCroppedImageSrc,
+  onRemoveCrop,
+}) => {
+  return (
+    <div style={{ display: `${selectedCropSection}` }}>
+      <div className="relative bottom-0 left-0 h-[24rem] w-full max-sm:h-[12rem]">
+        <img
+          className="absolute left-0 top-0 h-full w-full rounded-lg object-cover"
+          src={selectedCroppedImageSrc}
+          alt=""
+        />
+      </div>
+
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          onRemoveCrop();
+        }}
+        className="mt-2 rounded bg-red-500 px-[1em] py-[0.5em] font-bold text-white hover:bg-red-700 max-sm:text-sm"
+      >
+        Remove
+      </button>
+    </div>
+  );
+};
