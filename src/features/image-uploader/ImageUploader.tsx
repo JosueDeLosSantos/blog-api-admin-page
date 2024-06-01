@@ -53,6 +53,7 @@ export default function App({
   const [cropSectionVisibility, setCropSectionVisibility] = useState("block");
   const [selectedCropSection, setSelectedCropSection] = useState("none");
   const [selectedCroppedImageSrc, setSelectedCroppedImageSrc] = useState("");
+  const aspect = 16 / 9;
 
   const onChange = (imageList: ImageListType) => {
     setImages(imageList);
