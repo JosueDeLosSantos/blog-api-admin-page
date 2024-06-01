@@ -161,7 +161,10 @@ export default function App({
                       ? "h-[24rem] w-full rounded-lg bg-blue-100 text-2xl font-bold text-blue-300 max-sm:h-[12rem] dark:bg-slate-900 dark:text-slate-700"
                       : "h-[24rem] w-full rounded-lg bg-slate-200 text-2xl font-bold text-slate-400 max-sm:h-[12rem] dark:bg-slate-800 dark:text-slate-600"
                   }
-                  onClick={onImageUpload}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onImageUpload();
+                  }}
                   {...dragProps}
                 >
                   {message}
@@ -200,7 +203,7 @@ export default function App({
                     aspect={16 / 9}
                     // minWidth={400}
                     minHeight={100}
-                    //circularCrop
+                    // circularCrop
                   >
                     <img
                       className="rounded-lg object-cover"
@@ -214,20 +217,23 @@ export default function App({
               </div>
               {!!completedCrop && (
                 <div>
-                  <div>
+                  {/* remove the hidden class to see crop preview. 
+                  This element can't be removed or the library will
+                  misbehave.*/}
+                  <div className="hidden">
                     <canvas
                       ref={previewCanvasRef}
                       style={{
                         border: "1px solid black",
                         objectFit: "contain",
                         width: "100%",
-                        /* width: completedCrop.width,
-                        height: completedCrop.height, */
+                        // width: completedCrop.width,
+                        // height: completedCrop.height,
                       }}
                     />
                   </div>
                   <button
-                    className="mt-2 rounded bg-green-500 px-[1em] py-[0.5em] font-bold text-white hover:bg-green-700 max-sm:text-sm"
+                    className="mt-2 rounded bg-green-600 px-[1em] py-[0.5em] font-bold text-white hover:bg-green-700 max-sm:text-sm"
                     onClick={(e) => {
                       e.preventDefault();
                       onCropSelected();
