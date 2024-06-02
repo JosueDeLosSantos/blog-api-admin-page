@@ -1,12 +1,13 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Posts from "../pages/Posts";
-import Home from "../pages/Home";
+import Navbar from "../pages/Navbar";
 import CreateUpdatePost from "../pages/CreateUpdatePost";
 import NotFound from "../pages/NotFound";
 import Post from "../pages/Post";
 import ServerError from "../pages/ServerError";
 import LogIn from "../pages/log-in";
 import SignUp from "../pages/sign-up";
+import Hero from "../pages/Hero";
 
 // POSTS
 import { useDispatch, useSelector } from "react-redux";
@@ -72,36 +73,42 @@ const Router = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home />,
+      element: <Navbar />,
+      children: [
+        {
+          index: true,
+          element: <Hero />,
+        },
+        {
+          path: "log-in",
+          element: <LogIn />,
+        },
+        {
+          path: "sign-up",
+          element: <SignUp />,
+        },
+        {
+          path: "posts",
+          element: <Posts />,
+        },
+        {
+          path: "posts/post/:name",
+          element: <Post />,
+        },
+        {
+          path: "posts/create",
+          element: <CreateUpdatePost operation="create" />,
+        },
+        {
+          path: "posts/update/:name",
+          element: <CreateUpdatePost operation="update" />,
+        },
+        {
+          path: "server-error",
+          element: <ServerError />,
+        },
+      ],
       errorElement: <NotFound />,
-    },
-    {
-      path: "posts",
-      element: <Posts />,
-    },
-    {
-      path: "server-error",
-      element: <ServerError />,
-    },
-    {
-      path: "log-in",
-      element: <LogIn />,
-    },
-    {
-      path: "sign-up",
-      element: <SignUp />,
-    },
-    {
-      path: "posts/create",
-      element: <CreateUpdatePost operation="create" />,
-    },
-    {
-      path: "posts/update/:name",
-      element: <CreateUpdatePost operation="update" />,
-    },
-    {
-      path: "posts/post/:name",
-      element: <Post />,
     },
   ]);
   return <RouterProvider router={router} />;

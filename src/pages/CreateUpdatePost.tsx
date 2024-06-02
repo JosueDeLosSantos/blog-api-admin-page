@@ -10,9 +10,6 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "./editor.css";
 import he from "he"; // decodes mongodb encoded HTML
 import { editPostType } from "../modules/posts/types";
-import MenuBar from "../components/MenuBar";
-import MenuBarLarge from "../components/MenuBarLarge";
-import useWindowSize from "../hooks/windowSize";
 import TextareaAutosize from "react-textarea-autosize";
 import ImageUploader from "../components/ImageUploader";
 import { ImageType } from "react-images-uploading";
@@ -226,15 +223,10 @@ function CreateUpdatePost({ operation }: { operation: string }) {
     ],
   };
 
-  const { windowWidth } = useWindowSize();
-
   // MARK: return
 
   return (
     <>
-      {windowWidth < 769 && <MenuBar />}
-      {windowWidth > 768 && <MenuBarLarge />}
-
       <div className="py-12 max-sm:mt-5 sm:mt-8">
         <div className="mx-auto max-w-[900px] sm:px-6 lg:px-8">
           <div className="overflow-hidden shadow-sm sm:rounded-lg ">

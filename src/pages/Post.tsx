@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router-dom";
-import MenuBar from "../components/MenuBar";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -20,7 +19,6 @@ import { RootState } from "../app/rootReducer";
 import axios, { AxiosError } from "axios";
 import { deletePost } from "../modules/posts/utils/postsSlice";
 import useWindowSize from "../hooks/windowSize";
-import MenuBarLarge from "../components/MenuBarLarge";
 
 const theme = createTheme({
   palette: {
@@ -261,9 +259,6 @@ function Post() {
 
   return (
     <div className="min-h-screen bg-slate-100 dark:bg-slate-950">
-      {windowWidth < 769 && <MenuBar />}
-      {windowWidth > 768 && <MenuBarLarge />}
-
       <main className="flex gap-4 px-5 pb-5 pt-24">
         {member === "admin" && (
           <ThemeProvider theme={theme}>

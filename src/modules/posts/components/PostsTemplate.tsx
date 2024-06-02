@@ -114,63 +114,56 @@ function PostsTemplate({
     };
   }, [postsCopy, posts]);
 
-  const { windowWidth } = useWindowSize();
-
   // MARK: return
 
   return (
     <div className="max-h-auto min-h-screen bg-slate-100 dark:bg-slate-950">
-      {windowWidth <= 768 && <MenuBar />}
-      {windowWidth >= 769 && <MenuBarLarge />}
-
       <div className="mx-auto w-fit pt-24">
-        <Suspense fallback={<SkeletonPostsPage />}>
-          {postsCopy &&
-            postsCopy.map((post, index) => (
-              <div
-                id={post._id}
-                ref={(el) => (parentRef.current[index] = el)}
-                onClick={(e) => postClick(e)}
-                className="mx-5 mb-2 flex max-w-screen-lg cursor-pointer flex-col rounded-lg border border-solid border-slate-200 bg-white p-2 sm:gap-1 md:flex-col md:gap-2 lg:flex-row lg:gap-4 dark:border-slate-950 dark:bg-slate-800"
-                key={post._id}
-              >
-                <div className="relative w-full lg:w-1/2">
-                  {post.file !== null && (
-                    <img
-                      onLoad={(e) => setTitleColor(e)}
-                      id={post._id}
-                      className="sm:mx-h-60 max-h-40 w-full object-cover md:max-h-64"
-                      src={`${server}${post.file.path}`}
-                      crossOrigin="anonymous"
-                      alt=""
-                    />
-                  )}
-                  <div
-                    ref={(el) => (listImgRef.current[index] = el)}
-                    data-imgid={post._id}
-                    className={`absolute bottom-0 left-1 lg:hidden`}
-                  >
-                    <h2 className="except max-sm:text-xl">
-                      {he.decode(post.title)}
-                    </h2>
-                  </div>
-                </div>
-                <div className="w-full md:w-full  lg:w-1/2">
-                  <h2 className="sm:text-1xl mb-2 mt-1 hidden text-xl md:text-2xl lg:block">
+        {postsCopy &&
+          postsCopy.map((post, index) => (
+            <div
+              id={post._id}
+              ref={(el) => (parentRef.current[index] = el)}
+              onClick={(e) => postClick(e)}
+              className="mx-5 mb-2 flex max-w-screen-lg cursor-pointer flex-col rounded-lg border border-solid border-slate-200 bg-white p-2 sm:gap-1 md:flex-col md:gap-2 lg:flex-row lg:gap-4 dark:border-slate-950 dark:bg-slate-800"
+              key={post._id}
+            >
+              <div className="relative w-full lg:w-1/2">
+                {post.file !== null && (
+                  <img
+                    onLoad={(e) => setTitleColor(e)}
+                    id={post._id}
+                    className="sm:mx-h-60 max-h-40 w-full object-cover md:max-h-64"
+                    src={`${server}${post.file.path}`}
+                    crossOrigin="anonymous"
+                    alt=""
+                  />
+                )}
+                <div
+                  ref={(el) => (listImgRef.current[index] = el)}
+                  data-imgid={post._id}
+                  className={`absolute bottom-0 left-1 lg:hidden`}
+                >
+                  <h2 className="except max-sm:text-xl">
                     {he.decode(post.title)}
                   </h2>
-                  <span className="text-xs italic text-gray-500 md:text-base dark:text-gray-300">
-                    {post.date}
-                  </span>
-                  <div className="max-lg:mt-2">
-                    <p className="md:text-1xl prose mb-0 line-clamp-6 text-lg max-lg:mt-0 sm:text-xl dark:text-white">
-                      {he.decode(post.description)}
-                    </p>
-                  </div>
                 </div>
               </div>
-            ))}
-        </Suspense>
+              <div className="w-full md:w-full  lg:w-1/2">
+                <h2 className="sm:text-1xl mb-2 mt-1 hidden text-xl md:text-2xl lg:block">
+                  {he.decode(post.title)}
+                </h2>
+                <span className="text-xs italic text-gray-500 md:text-base dark:text-gray-300">
+                  {post.date}
+                </span>
+                <div className="max-lg:mt-2">
+                  <p className="md:text-1xl prose mb-0 line-clamp-6 text-lg max-lg:mt-0 sm:text-xl dark:text-white">
+                    {he.decode(post.description)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
       </div>
     </div>
   );

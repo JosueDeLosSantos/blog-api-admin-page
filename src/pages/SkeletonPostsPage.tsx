@@ -1,41 +1,6 @@
-import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import useWindowSize from "../hooks/windowSize";
-
 function SkeletonPostsPage() {
-  const { windowWidth } = useWindowSize();
-
   return (
     <div className="max-h-auto min-h-screen bg-slate-100 dark:bg-slate-950">
-      <Box>
-        <AppBar
-          className="border border-solid border-slate-200 bg-white shadow-none dark:border-slate-900 dark:bg-slate-800"
-          position="fixed"
-        >
-          <Toolbar>
-            <IconButton
-              className="icons"
-              size="large"
-              edge="start"
-              aria-label="menu"
-              sx={{ mr: 2, color: "black" }}
-            >
-              <MenuIcon fontSize={windowWidth > 350 ? "large" : "medium"} />
-            </IconButton>
-
-            <Typography
-              variant="h6"
-              component="div"
-              className="logo mx-sm:text-xl w-full text-center font-PressStart2P lg:text-3xl"
-              sx={{
-                color: "black",
-              }}
-            >
-              {"<JCODER>"}
-            </Typography>
-          </Toolbar>
-        </AppBar>
-      </Box>
       <div className="mx-auto w-fit pt-24">
         {Array.from({ length: 5 }).map((_, i) => (
           <div
