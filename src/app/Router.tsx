@@ -18,6 +18,7 @@ import { RootState } from "../app/rootReducer";
 import { postTypes } from "../modules/posts/types";
 import axios, { AxiosError } from "axios";
 import { useEffect } from "react";
+import Profile from "../pages/Profile";
 
 const Router = () => {
   // MARK: posts preloader
@@ -86,6 +87,10 @@ const Router = () => {
         {
           path: "sign-up",
           element: <SignUp />,
+        },
+        {
+          path: "profile",
+          element: <Profile />,
         },
         {
           path: "posts",

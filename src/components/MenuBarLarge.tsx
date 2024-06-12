@@ -32,7 +32,10 @@ export default function MenuBar() {
       case "4": // Sign Up
         navigate("/sign-up");
         break;
-      case "5": // Logout
+      case "5": // Profile
+        navigate("/profile");
+        break;
+      case "6": // Logout
         dispatch(switchPrivilege("user"));
         localStorage.removeItem("accessToken");
         navigate("/posts");
@@ -103,6 +106,15 @@ export default function MenuBar() {
             {member === "admin" && (
               <div
                 data-menuitem="5"
+                className="w-fit flex-1 cursor-pointer font-bold antialiased hover:bg-slate-100 dark:hover:bg-slate-700"
+                onClick={(e) => handleClick(e)}
+              >
+                Profile
+              </div>
+            )}
+            {member === "admin" && (
+              <div
+                data-menuitem="6"
                 className="w-fit flex-1 cursor-pointer font-bold hover:bg-slate-100 dark:hover:bg-slate-700"
                 onClick={(e) => handleClick(e)}
               >
