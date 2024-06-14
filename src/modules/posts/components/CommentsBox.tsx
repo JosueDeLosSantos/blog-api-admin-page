@@ -10,6 +10,7 @@ function CommentsBox({
   post_id,
   formData,
   isEditing,
+  commentsOptionsParentRef,
   addComment,
   setFormData,
   setIsEditing,
@@ -18,6 +19,10 @@ function CommentsBox({
   post_id: string;
   formData: commentType;
   isEditing: boolean;
+  commentsOptionsParentRef:
+    | React.RefObject<HTMLDivElement>[]
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    | React.MutableRefObject<any[]>;
   addComment: (arg: commentType) => void;
   setFormData: (arg: commentType) => void;
   setIsEditing: (arg: boolean) => void;
@@ -31,6 +36,16 @@ function CommentsBox({
   ): void => {
     const { name, value /* scrollHeight */ } = event.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const restoreCommentOptionsVisibility = () => {
+    const targetRef = commentsOptionsParentRef as React.MutableRefObject<any[]>;
+    targetRef.current.forEach((element) => {
+      if (element?.style?.display) {
+        // remove the style key from the element object
+        element.style = "";
+      }
+    });
   };
 
   const [commentError, setCommentError] = useState("");
@@ -194,14 +209,20 @@ function CommentsBox({
           {isEditing && (
             <div className="mt-4 box-border flex gap-2 sm:gap-3">
               <button
-                onClick={onSubmit}
+                onClick={(e) => {
+                  onSubmit(e);
+                  restoreCommentOptionsVisibility();
+                }}
                 type="button"
                 className="cursor-pointer rounded-sm border-0 bg-green-100 px-2 py-1 text-slate-600 ring-2 ring-green-400 hover:bg-green-200 dark:bg-green-400 dark:text-slate-800 dark:ring-green-800"
               >
                 Accept
               </button>
               <button
-                onClick={onSubmit}
+                onClick={(e) => {
+                  onSubmit(e);
+                  restoreCommentOptionsVisibility();
+                }}
                 type="button"
                 className="cursor-pointer rounded-sm border-0 bg-slate-50 px-2 py-1 text-slate-500 ring-2 ring-slate-400 hover:bg-slate-100 dark:border dark:border-blue-300 dark:bg-slate-900 dark:text-slate-50 dark:ring-0 dark:hover:bg-slate-800"
               >

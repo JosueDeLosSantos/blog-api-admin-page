@@ -189,6 +189,9 @@ function Post() {
     }
   };
 
+  const commentsOptionsParentRef = useRef(
+    Array(post?.comments.length).fill(null),
+  );
   const deleteRef = useRef(Array(post?.comments.length).fill(null));
   const editRef = useRef(Array(post?.comments.length).fill(null));
 
@@ -209,6 +212,32 @@ function Post() {
       }
     });
   };
+
+  function hideCommentsOptions(e: React.MouseEvent<HTMLButtonElement>) {
+    const target = e.target as HTMLButtonElement;
+
+    if (target?.parentElement?.dataset) {
+      let optionsParent = null;
+      const dataset = target.parentElement.dataset;
+      if (dataset.testid) {
+        optionsParent = target.parentElement?.parentElement?.parentElement;
+      } else if (dataset.deleteid || dataset.editid) {
+        optionsParent = target.parentElement?.parentElement;
+      } else {
+        optionsParent = target.parentElement;
+      }
+
+      if (optionsParent) {
+        commentsOptionsParentRef.current.forEach((el) => {
+          if (el && el.contains(optionsParent)) {
+            el.style.display = "none";
+          } else {
+            el.style = "";
+          }
+        });
+      }
+    }
+  }
 
   // MARK: edit comment
   function editComment(commentId: string) {
@@ -392,6 +421,7 @@ function Post() {
           {/* Comment's box */}
           {member === "admin" && post?.post && (
             <CommentsBox
+              commentsOptionsParentRef={commentsOptionsParentRef}
               formData={commentToEdit}
               setFormData={setCommentToEdit}
               setIsEditing={setIsEditing}
@@ -436,13 +466,22 @@ function Post() {
                     {comment.date}
                   </div>
                   {member === "admin" && (
-                    <div className="absolute right-[-15px] top-[-15px] flex flex-row-reverse">
+                    <div
+                      ref={(el) =>
+                        (commentsOptionsParentRef.current[index] = el)
+                      }
+                      data-comment-options-parent={comment._id}
+                      className="absolute right-[-15px] top-[-15px] flex flex-row-reverse"
+                    >
                       <IconButton
                         className="icons"
                         ref={(el) => (deleteRef.current[index] = el)}
                         data-deleteid={comment._id}
                         data-author={comment.author}
-                        onClick={handleDeletion}
+                        onClick={(e) => {
+                          hideCommentsOptions(e);
+                          handleDeletion(e);
+                        }}
                       >
                         <DeleteIcon fontSize="small" />
                       </IconButton>
@@ -452,7 +491,10 @@ function Post() {
                           ref={(el) => (editRef.current[index] = el)}
                           data-editid={comment._id}
                           data-author={comment.author}
-                          onClick={handleEdition}
+                          onClick={(e) => {
+                            hideCommentsOptions(e);
+                            handleEdition(e);
+                          }}
                         >
                           <EditIcon fontSize="small" />
                         </IconButton>
