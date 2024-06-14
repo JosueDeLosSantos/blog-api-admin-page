@@ -231,8 +231,6 @@ function Post() {
         commentsOptionsParentRef.current.forEach((el) => {
           if (el && el.contains(optionsParent)) {
             el.style.display = "none";
-          } else {
-            el.style = "";
           }
         });
       }
