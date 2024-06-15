@@ -31,7 +31,13 @@ export type formDataType = {
   trash: string;
 };
 
-function CreateUpdatePost({ operation }: { operation: string }) {
+function CreateUpdatePost({
+  operation,
+  server,
+}: {
+  operation: string;
+  server: string;
+}) {
   const dispatch: AppDispatch = useDispatch();
   const { name } = useParams();
   const { state }: { state: editPostType | null } = useLocation();
@@ -114,9 +120,6 @@ function CreateUpdatePost({ operation }: { operation: string }) {
   // MARK: onSubmit
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
-
-    console.log(e);
-
     const jwtToken = localStorage.getItem("accessToken");
     const headers: Record<string, string> = {};
 
@@ -129,9 +132,7 @@ function CreateUpdatePost({ operation }: { operation: string }) {
         formData.file = state!.file;
       }
 
-      // http://localhost:3000/user/posts/:name
-      //https://dummy-blog.adaptable.app/user/posts/:name
-      const apiUrl = `http://localhost:3000/user/posts/${name}`;
+      const apiUrl = `${server}user/posts/${name}`;
       if (jwtToken) {
         headers["Authorization"] = `Bearer ${jwtToken}`;
       }
@@ -164,7 +165,7 @@ function CreateUpdatePost({ operation }: { operation: string }) {
         }
       }
     } else {
-      const apiUrl = "http://localhost:3000/user/create-post";
+      const apiUrl = `${server}user/create-post`;
       if (jwtToken) {
         headers["Authorization"] = `Bearer ${jwtToken}`;
       }
@@ -328,7 +329,7 @@ function CreateUpdatePost({ operation }: { operation: string }) {
                       formData={formData}
                       setFormData={setFormData}
                       operation="update"
-                      url={`http://localhost:3000/${state?.file.path}`}
+                      url={`${server}${state?.file.path}`}
                     />
                   )}
 

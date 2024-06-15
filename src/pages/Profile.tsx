@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
 import ProfilePicUploader from "../components/ProfilePicUploader";
 
-export default function Profile() {
+export default function Profile({ server }: { server: string }) {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [selected, setSelected] = useState(true);
@@ -52,7 +52,7 @@ export default function Profile() {
     if (jwtToken) {
       headers["Authorization"] = `Bearer ${jwtToken}`;
     }
-    const url = "http://localhost:3000/user/admin/profile/photo";
+    const url = `${server}user/admin/profile/photo`;
     try {
       const response = await axios.putForm(url, newProfile, {
         headers: headers,
@@ -60,7 +60,7 @@ export default function Profile() {
 
       setProfilePic({
         file: response.data.photo,
-        src: `http://localhost:3000/${response.data.photo.path}`,
+        src: `${server}${response.data.photo.path}`,
         trash: response.data.photo.filename,
       });
     } catch (error) {
@@ -84,7 +84,7 @@ export default function Profile() {
     if (jwtToken) {
       headers["Authorization"] = `Bearer ${jwtToken}`;
     }
-    const url = "http://localhost:3000/user/admin/profile/photo";
+    const url = `${server}user/admin/profile/photo`;
     try {
       await axios.putForm(
         url,
@@ -139,7 +139,7 @@ export default function Profile() {
         headers["Authorization"] = `Bearer ${jwtToken}`;
       }
       try {
-        const url = `http://localhost:3000/user/admin/profile`;
+        const url = `${server}user/admin/profile`;
         const response = await axios.get(url, {
           headers: headers,
         });
@@ -147,7 +147,7 @@ export default function Profile() {
         if (response.data.user.photo) {
           setProfilePic({
             ...profilePic,
-            src: `http://localhost:3000/${response.data.user.photo.path}`,
+            src: `${server}${response.data.user.photo.path}`,
             trash: response.data.user.photo.filename,
           });
         }
@@ -215,9 +215,7 @@ export default function Profile() {
       }
     }
 
-    // http://localhost:3000/user/profile
-    //https://dummy-blog.adaptable.app/user/profile
-    const apiUrl = "http://localhost:3000/user/admin/profile";
+    const apiUrl = `${server}user/admin/profile`;
     // get security token
     const jwtToken = localStorage.getItem("accessToken");
     const headers: Record<string, string> = {};

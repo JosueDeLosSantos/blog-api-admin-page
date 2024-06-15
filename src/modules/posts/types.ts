@@ -1,16 +1,18 @@
+type photoType = {
+  filename: string;
+  originalname: string;
+  mimetype: string;
+  path: string;
+  size: number;
+};
+
 export type postTypes = {
   _id: string;
   title: string;
   description: string;
   date: string;
   author: string;
-  file: {
-    filename: string;
-    originalname: string;
-    mimetype: string;
-    path: string;
-    size: number;
-  };
+  file: photoType;
   __v: number;
 };
 
@@ -21,13 +23,7 @@ export type onePostType = {
   date: string;
   author: string;
   post: string;
-  file: {
-    filename: string;
-    originalname: string;
-    mimetype: string;
-    path: string;
-    size: number;
-  };
+  file: photoType;
   comments: {
     _id: string;
     comment: string;
@@ -36,6 +32,7 @@ export type onePostType = {
     email: string;
     name: string;
     post: string;
+    photo: photoType | null;
     __v: number;
   }[];
   __v: number;
@@ -47,13 +44,7 @@ export type editPostType = {
   description: string;
   date: string;
   post: string;
-  file: {
-    filename: string;
-    originalname: string;
-    mimetype: string;
-    path: string;
-    size: number;
-  };
+  file: photoType;
   comments: string[];
   __v: number;
 };

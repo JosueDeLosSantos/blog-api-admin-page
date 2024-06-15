@@ -10,62 +10,55 @@ import { postTypes } from "../modules/posts/types";
 import SkeletonPostsPage from "./SkeletonPostsPage";
 import ServerError from "./ServerError";
 
-function Index() {
+function Index({ server }: { server: string }) {
   const dispatch: AppDispatch = useDispatch();
   const posts = useSelector((state: RootState) => state.posts);
   const [loadState, setLoadState] = useState("loading");
 
-  // http://localhost:3000/
-  // https://dummy-blog.adaptable.app/
-  const server = "http://localhost:3000/";
-
   // MARK: get posts
   useEffect(() => {
     // make an API call only if the state array is empty
-    if (!posts.length) {
-      (async function fetchPosts() {
-        // get security token
-        const jwtToken = localStorage.getItem("accessToken");
-        const headers: Record<string, string> = {};
-        if (jwtToken) {
-          headers["Authorization"] = `Bearer ${jwtToken}`;
+
+    (async function fetchPosts() {
+      // get security token
+      const jwtToken = localStorage.getItem("accessToken");
+      const headers: Record<string, string> = {};
+      if (jwtToken) {
+        headers["Authorization"] = `Bearer ${jwtToken}`;
+      }
+      try {
+        const response = await axios.get(server, {
+          headers: headers,
+        });
+
+        dispatch(switchPrivilege("admin"));
+
+        if (response.data.posts) {
+          dispatch(postsList(response.data.posts));
         }
-        try {
-          const response = await axios.get(server, {
-            headers: headers,
-          });
+        setLoadState("success");
+      } catch (error) {
+        const axiosError = error as AxiosError;
 
-          dispatch(switchPrivilege("admin"));
+        if (
+          axiosError?.response?.status === 403 ||
+          axiosError?.response?.status === 401
+        ) {
+          type dataType = {
+            posts: postTypes[];
+          };
+          const userData = axiosError?.response?.data as dataType;
 
-          if (response.data.posts) {
-            dispatch(postsList(response.data.posts));
+          if (userData.posts) {
+            dispatch(postsList(userData.posts));
           }
           setLoadState("success");
-        } catch (error) {
-          const axiosError = error as AxiosError;
-
-          if (
-            axiosError?.response?.status === 403 ||
-            axiosError?.response?.status === 401
-          ) {
-            type dataType = {
-              posts: postTypes[];
-            };
-            const userData = axiosError?.response?.data as dataType;
-
-            if (userData.posts) {
-              dispatch(postsList(userData.posts));
-            }
-            setLoadState("success");
-          } else {
-            setLoadState("error");
-          }
+        } else {
+          setLoadState("error");
         }
-      })();
-    } else {
-      setLoadState("success");
-    }
-  }, [posts, dispatch]);
+      }
+    })();
+  }, [posts, server, dispatch]);
   // MARK: render
   return (
     (loadState === "loading" && (

@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 
-function SignUp() {
+function SignUp({ server }: { server: string }) {
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -34,9 +34,7 @@ function SignUp() {
   // MARK: onSubmit
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
-    // http://localhost:3000/user/sign-up
-    //https://dummy-blog.adaptable.app/user/sign-up
-    const apiUrl = "http://localhost:3000/user/admin/sign-up";
+    const apiUrl = `${server}user/admin/sign-up`;
     try {
       const response = await axios.post(apiUrl, formData);
 

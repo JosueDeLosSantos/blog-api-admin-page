@@ -8,6 +8,7 @@ import TextareaAutosize from "react-textarea-autosize";
 
 function CommentsBox({
   post_id,
+  server,
   formData,
   isEditing,
   commentsOptionsParentRef,
@@ -17,6 +18,7 @@ function CommentsBox({
   setPost,
 }: {
   post_id: string;
+  server: string;
   formData: commentType;
   isEditing: boolean;
   commentsOptionsParentRef:
@@ -53,9 +55,7 @@ function CommentsBox({
   async function onSubmit(e: FormEvent | React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
 
-    // http://localhost:3000/
-    // https://dummy-blog.adaptable.app/comments
-    const apiUrl = "http://localhost:3000/user/comments";
+    const apiUrl = `${server}user/comments`;
     // get security token
     const jwtToken = localStorage.getItem("accessToken");
     const headers: Record<string, string> = {};
@@ -75,6 +75,7 @@ function CommentsBox({
           email: "",
           date: "",
           post: post_id,
+          photo: formData.photo,
           __v: 0,
         });
         setCommentError("");
@@ -101,6 +102,7 @@ function CommentsBox({
               email: "",
               date: "",
               post: post_id,
+              photo: formData.photo,
               __v: 0,
             });
           } else {
@@ -125,6 +127,8 @@ function CommentsBox({
           headers: headers,
         });
 
+        console.log(response.data);
+
         /* If no errors are returned, add a date and id to the most recent added comment to keep 
 				the page updated */
         if (!response.data.errors) {
@@ -133,6 +137,7 @@ function CommentsBox({
           formData._id = response.data.post.comments[0]._id;
           formData.name = `${response.data.user.first_name} ${response.data.user.last_name}`;
           formData.email = response.data.user.email;
+          formData.photo = response.data.post.comments[0].photo;
 
           // update comments array
           addComment(formData);
@@ -145,6 +150,7 @@ function CommentsBox({
             email: "",
             date: "",
             post: post_id,
+            photo: formData.photo,
             __v: 0,
           });
           // clear errors

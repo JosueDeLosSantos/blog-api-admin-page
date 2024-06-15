@@ -34,6 +34,14 @@ const theme = createTheme({
   },
 });
 
+type photoType = {
+  filename: string;
+  originalname: string;
+  mimetype: string;
+  path: string;
+  size: number;
+};
+
 export type commentType = {
   _id: string;
   comment: string;
@@ -42,10 +50,11 @@ export type commentType = {
   email: string;
   name: string;
   post: string;
+  photo: photoType | null;
   __v: number;
 };
 
-function Post() {
+function Post({ server }: { server: string }) {
   const dispatch: AppDispatch = useDispatch();
   const member = useSelector((state: RootState) => state.privilege);
   const initialPost = null as unknown as onePostType;
@@ -60,6 +69,7 @@ function Post() {
     email: "",
     date: "",
     post: "",
+    photo: null,
     __v: 0,
   });
 
@@ -114,8 +124,8 @@ function Post() {
         headers["Authorization"] = `Bearer ${jwtToken}`;
       }
       try {
-        const server = `http://localhost:3000/user/posts/${urlId}`;
-        const response = await axios.get(server, {
+        const url = `${server}user/posts/${urlId}`;
+        const response = await axios.get(url, {
           headers: headers,
         });
 
@@ -158,9 +168,7 @@ function Post() {
   }
   // MARK: Delete post
   const handleDeletePost = async (postId: string) => {
-    // http://localhost:3000/user/posts
-    //https://dummy-blog.adaptable.app/user/posts
-    const API_URL = "http://localhost:3000/user/posts";
+    const API_URL = `${server}user/posts`;
     // get security token
     const jwtToken = localStorage.getItem("accessToken");
     const headers: Record<string, string> = {};
@@ -255,7 +263,7 @@ function Post() {
 
   // MARK: delete comment
   async function deleteComment(commentId: string) {
-    const apiUrl = `http://localhost:3000/user/comments/${commentId}`;
+    const apiUrl = `${server}user/comments/${commentId}`;
     try {
       const jwtToken = localStorage.getItem("accessToken");
       const headers: Record<string, string> = {};
@@ -282,8 +290,9 @@ function Post() {
 
   const { windowWidth } = useWindowSize();
 
-  // MARK: return
+  console.log(post);
 
+  // MARK: return
   return (
     <div className="min-h-screen bg-slate-100 dark:bg-slate-950">
       <main className="flex gap-4 px-5 pb-5 pt-24">
@@ -342,7 +351,7 @@ function Post() {
           </ThemeProvider>
         )}
 
-        <article className="mx-auto max-w-[900px] rounded-lg border border-solid border-slate-200 bg-white pb-3 sm:w-9/12 dark:border-slate-950 dark:bg-slate-800">
+        <article className="mx-auto max-w-[900px] rounded-lg border border-solid border-slate-200 bg-white pb-3 max-sm:w-full sm:w-9/12 dark:border-slate-950 dark:bg-slate-800">
           {/* MARK: Post's header */}
           <header id="post-header">
             <div
@@ -358,7 +367,7 @@ function Post() {
               ></div>
 
               <img
-                src={`http://localhost:3000/${post?.file.path}`}
+                src={`${server}${post?.file.path}`}
                 className="absolute left-0 top-0 h-full w-full rounded-lg object-cover"
               />
               {/* skeleton image */}
@@ -419,6 +428,7 @@ function Post() {
           {/* Comment's box */}
           {member === "admin" && post?.post && (
             <CommentsBox
+              server={server}
               commentsOptionsParentRef={commentsOptionsParentRef}
               formData={commentToEdit}
               setFormData={setCommentToEdit}
@@ -431,7 +441,7 @@ function Post() {
           )}
           <div id="comments-box" className="mx-auto mt-10 max-w-screen-md">
             {post?.comments?.length > 0 && (
-              <div className="mx-auto text-center">
+              <div className="mx-auto mb-8 text-center">
                 <h2>Comments</h2>
               </div>
             )}
@@ -451,66 +461,89 @@ function Post() {
             {post?.comments.map((comment, index) => (
               <div
                 key={comment._id}
-                className="mx-auto mb-8 box-border max-h-[1600px] w-11/12 truncate rounded-lg border border-solid border-slate-300 p-5 dark:border-slate-600"
+                className="mx-auto mb-8 box-border flex max-h-[1600px] w-11/12 gap-4 truncate rounded-lg border border-solid border-slate-300 p-5 max-md:flex-col max-md:gap-2 dark:border-slate-600"
               >
-                <div className="relative mb-5 flex h-5 flex-col items-start sm:flex-row sm:gap-2">
-                  <div className="font-bold text-slate-500 max-sm:text-xs sm:text-sm dark:text-slate-300">
-                    {comment.name}
-                  </div>
-                  <div className="relative bottom-5 text-slate-400 max-sm:hidden max-sm:text-2xl sm:text-4xl dark:text-slate-200">
-                    .
-                  </div>
-                  <div className="text-slate-500 max-sm:text-[0.70rem] max-sm:leading-[1.390] sm:self-center sm:text-[0.80rem] sm:leading-snug dark:text-slate-300">
-                    {comment.date}
-                  </div>
-                  {member === "admin" && (
-                    <div
-                      ref={(el) =>
-                        (commentsOptionsParentRef.current[index] = el)
-                      }
-                      data-comment-options-parent={comment._id}
-                      className="absolute right-[-15px] top-[-15px] flex flex-row-reverse"
-                    >
-                      <IconButton
-                        className="icons"
-                        ref={(el) => (deleteRef.current[index] = el)}
-                        data-deleteid={comment._id}
-                        data-author={comment.author}
-                        onClick={(e) => {
-                          hideCommentsOptions(e);
-                          handleDeletion(e);
-                        }}
-                      >
-                        <DeleteIcon fontSize="small" />
-                      </IconButton>
-                      {comment.author === user._id && (
-                        <IconButton
-                          className="icons"
-                          ref={(el) => (editRef.current[index] = el)}
-                          data-editid={comment._id}
-                          data-author={comment.author}
-                          onClick={(e) => {
-                            hideCommentsOptions(e);
-                            handleEdition(e);
-                          }}
+                <div>
+                  <img
+                    className="rounded-full ring-1 ring-slate-300"
+                    src={
+                      comment.photo === null
+                        ? "/images/profile-pic-placeholder.webp"
+                        : `${server}${comment.photo.path}`
+                    }
+                    width={35}
+                    height={35}
+                    alt="profile picture"
+                  />
+                </div>
+                <div className="w-11/12 max-md:space-y-8">
+                  <div>
+                    <div className="relative mb-5 flex h-5 flex-col items-start md:flex-row md:gap-2">
+                      <div className="text-sm font-bold text-slate-500 dark:text-slate-300">
+                        {comment.name}
+                      </div>
+                      <div className="relative bottom-5 text-slate-400 max-md:hidden max-md:text-2xl md:text-4xl dark:text-slate-200">
+                        .
+                      </div>
+                      <div className="text-slate-500 max-md:text-[0.70rem] max-md:leading-[1.390] md:self-center md:text-[0.80rem] md:leading-snug dark:text-slate-300">
+                        {comment.date}
+                      </div>
+                      {member === "admin" && (
+                        <div
+                          ref={(el) =>
+                            (commentsOptionsParentRef.current[index] = el)
+                          }
+                          data-comment-options-parent={comment._id}
+                          className="absolute right-[-15px] top-[-15px] flex flex-row-reverse max-md:right-[-35px] max-md:top-[-50px]"
                         >
-                          <EditIcon fontSize="small" />
-                        </IconButton>
+                          <IconButton
+                            className="icons"
+                            ref={(el) => (deleteRef.current[index] = el)}
+                            data-deleteid={comment._id}
+                            data-author={comment.author}
+                            onClick={(e) => {
+                              hideCommentsOptions(e);
+                              handleDeletion(e);
+                            }}
+                          >
+                            <DeleteIcon
+                              sx={{ opacity: 0.7 }}
+                              fontSize="small"
+                            />
+                          </IconButton>
+                          {comment.author === user._id && (
+                            <IconButton
+                              className="icons"
+                              ref={(el) => (editRef.current[index] = el)}
+                              data-editid={comment._id}
+                              data-author={comment.author}
+                              onClick={(e) => {
+                                hideCommentsOptions(e);
+                                handleEdition(e);
+                              }}
+                            >
+                              <EditIcon
+                                sx={{ opacity: 0.7 }}
+                                fontSize="small"
+                              />
+                            </IconButton>
+                          )}
+                        </div>
                       )}
                     </div>
-                  )}
-                </div>
-                <div className="truncate text-pretty text-base">
-                  {/* Converts avery \n into a paragraph */}
-                  {comment.comment
-                    .split("\n")
-                    .map((line, i) =>
-                      line === "" ? (
-                        <br key={`${comment._id}${i}`} />
-                      ) : (
-                        <p key={`${comment._id}${i}`}>{he.decode(line)}</p>
-                      ),
-                    )}
+                  </div>
+                  <div className="w-[110%] truncate text-pretty text-sm">
+                    {/* Converts avery \n into a paragraph */}
+                    {comment.comment
+                      .split("\n")
+                      .map((line, i) =>
+                        line === "" ? (
+                          <br key={`${comment._id}${i}`} />
+                        ) : (
+                          <p key={`${comment._id}${i}`}>{he.decode(line)}</p>
+                        ),
+                      )}
+                  </div>
                 </div>
               </div>
             ))}

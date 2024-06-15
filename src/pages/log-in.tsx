@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../app/store";
 import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
 
-function LogIn() {
+function LogIn({ server }: { server: string }) {
   const dispatch: AppDispatch = useDispatch();
   const [formData, setFormData] = useState({
     username: "",
@@ -31,9 +31,8 @@ function LogIn() {
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
-    // http://localhost:3000/
-    // https://dummy-blog.adaptable.app/user/log-in
-    const apiUrl = "http://localhost:3000/user/admin/log-in";
+
+    const apiUrl = `${server}user/admin/log-in`;
     try {
       const response = await axios.post(apiUrl, formData);
 

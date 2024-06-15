@@ -10,6 +10,7 @@ import ReactCrop, {
 import { canvasPreview } from "./utils/canvasPreview";
 import { useDebounceEffect } from "./utils/useDebounceEffect";
 import "react-image-crop/dist/ReactCrop.css";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 
 // This is to demonstate how to make and center a % aspect crop
 // which is a bit trickier so we use some helper functions.
@@ -59,6 +60,7 @@ const App: React.FC<AppProps> = ({
   const [cropSectionVisibility, setCropSectionVisibility] = useState("block");
   const [selectedCropSection, setSelectedCropSection] = useState("none");
   const [selectedCroppedImageSrc, setSelectedCroppedImageSrc] = useState("");
+  const [cropBtnsVisibility, setCropBtnsVisibility] = useState("block");
   const aspect = 16 / 9;
 
   const onChange = (imageList: ImageListType) => {
@@ -78,6 +80,10 @@ const App: React.FC<AppProps> = ({
     const { width, height } = e.currentTarget;
     setCrop(centerAspectCrop(width, height, aspect));
     setImageContainer("none"); // hides fake image container
+  }
+
+  function onCrop(param: string) {
+    setCropBtnsVisibility(`${param}`);
   }
 
   // MARK: onDownloadCropClick
@@ -166,9 +172,11 @@ const App: React.FC<AppProps> = ({
               message={message}
               url={url}
               dragProps={{ ...dragProps }}
+              onCrop={onCrop}
               onImageUpload={onImageUpload}
             />
             <ImgCrop
+              cropBtnsVisibility={cropBtnsVisibility}
               cropSectionVisibility={cropSectionVisibility}
               aspect={aspect}
               imgSrc={imgSrc}
@@ -176,6 +184,7 @@ const App: React.FC<AppProps> = ({
               previewCanvasRef={previewCanvasRef}
               completedCrop={completedCrop}
               crop={crop}
+              onCrop={onCrop}
               setCrop={setCrop}
               setCompletedCrop={setCompletedCrop}
               onCropSelected={onCropSelected}
@@ -208,6 +217,7 @@ interface ImgUploadBtnProps {
     onDragOver: (e: React.DragEvent<HTMLElement>) => void;
     onDragStart: (e: React.DragEvent<HTMLElement>) => void;
   };
+  onCrop: (param: string) => void;
   onImageUpload: () => void;
 }
 
@@ -218,6 +228,7 @@ const BlogImgUploadBtn: React.FC<ImgUploadBtnProps> = ({
   message,
   url,
   dragProps,
+  onCrop,
   onImageUpload,
 }) => {
   return (
@@ -233,6 +244,7 @@ const BlogImgUploadBtn: React.FC<ImgUploadBtnProps> = ({
           onClick={(e) => {
             e.preventDefault();
             onImageUpload();
+            onCrop("block");
           }}
           {...dragProps}
         >
@@ -270,6 +282,8 @@ interface ImgCropPros {
   previewCanvasRef: React.RefObject<HTMLCanvasElement>;
   completedCrop: PixelCrop | undefined;
   crop: Crop | undefined;
+  cropBtnsVisibility: string;
+  onCrop: (param: string) => void;
   setCrop: React.Dispatch<React.SetStateAction<Crop | undefined>>;
   setCompletedCrop: React.Dispatch<React.SetStateAction<PixelCrop | undefined>>;
   onCropSelected: () => void;
@@ -284,6 +298,8 @@ const ImgCrop: React.FC<ImgCropPros> = ({
   previewCanvasRef,
   completedCrop,
   crop,
+  cropBtnsVisibility,
+  onCrop,
   setCrop,
   setCompletedCrop,
   onCropSelected,
@@ -333,14 +349,25 @@ const ImgCrop: React.FC<ImgCropPros> = ({
             />
           </div>
           <button
+            style={{ display: `${cropBtnsVisibility}` }}
             className="mt-2 rounded bg-green-600 px-[1em] py-[0.5em] font-bold text-white hover:bg-green-700 max-sm:text-sm"
             onClick={(e) => {
               e.preventDefault();
               onCropSelected();
+              onCrop("none");
             }}
           >
             Crop
           </button>
+          {cropBtnsVisibility === "none" &&
+            cropSectionVisibility === "block" && (
+              <div className="mt-2 w-fit rounded bg-green-600 px-[1em] py-[0.5em] font-bold text-white hover:bg-green-700 max-sm:text-sm">
+                <AutorenewIcon
+                  className="animate-spin" /* sx={{ fontSize: 80  }} */
+                />{" "}
+                Cropping
+              </div>
+            )}
         </div>
       )}
     </div>
