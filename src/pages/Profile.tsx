@@ -168,6 +168,7 @@ export default function Profile({ server }: { server: string }) {
           navigate("/log-in");
         } else {
           navigate("/server-error");
+          dispatch(switchPrivilege("user"));
         }
       }
     })();

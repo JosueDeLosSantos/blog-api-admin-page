@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { commentType } from "../../../pages/Post";
@@ -12,6 +12,8 @@ function CommentsBox({
   formData,
   isEditing,
   commentsOptionsParentRef,
+  commentsBoxOptionsVisibility,
+  manageCommentsBoxOptionsVisibility,
   addComment,
   setFormData,
   setIsEditing,
@@ -25,20 +27,29 @@ function CommentsBox({
     | React.RefObject<HTMLDivElement>[]
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     | React.MutableRefObject<any[]>;
+  commentsBoxOptionsVisibility: string;
+  manageCommentsBoxOptionsVisibility: (arg: string) => void;
   addComment: (arg: commentType) => void;
   setFormData: (arg: commentType) => void;
   setIsEditing: (arg: boolean) => void;
   setPost: (arg: onePostType) => void;
 }) {
   const navigate = useNavigate();
-  // MARK: State
-
+  const [postCommentBtnVisibility, setPostCommentBtnVisibility] =
+    useState("none");
   const handleCommentChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>,
   ): void => {
+    if (postCommentBtnVisibility === "none") {
+      setPostCommentBtnVisibility("");
+    }
     const { name, value /* scrollHeight */ } = event.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  function onPostComment() {
+    setPostCommentBtnVisibility("none");
+  }
 
   const restoreCommentOptionsVisibility = () => {
     const targetRef = commentsOptionsParentRef as React.MutableRefObject<any[]>;
@@ -88,11 +99,6 @@ function CommentsBox({
           /* If no errors are returned, add a date and id to the most recent added comment to keep 
 					the page updated */
           if (!response.data.errors) {
-            // clear errors
-            setCommentError("");
-            // update post
-            setPost(response.data.post);
-            setIsEditing(false);
             // clear form fields
             setFormData({
               _id: "",
@@ -105,6 +111,11 @@ function CommentsBox({
               photo: formData.photo,
               __v: 0,
             });
+            // clear errors
+            setCommentError("");
+            // update post
+            setPost(response.data.post);
+            setIsEditing(false);
           } else {
             setCommentError(response.data.errors[0].msg);
           }
@@ -126,8 +137,6 @@ function CommentsBox({
         const response = await axios.post(apiUrl, formData, {
           headers: headers,
         });
-
-        console.log(response.data);
 
         /* If no errors are returned, add a date and id to the most recent added comment to keep 
 				the page updated */
@@ -203,20 +212,28 @@ function CommentsBox({
           </div>
 
           {!isEditing && (
-            <div className="box-border flex">
+            <div
+              style={{ display: `${postCommentBtnVisibility}` }}
+              className="box-border flex"
+            >
               <button
                 type="submit"
                 className="mt-5 cursor-pointer rounded-sm bg-black px-6 py-4 text-white hover:bg-slate-700 focus:outline-none focus:ring-offset-2 active:border-blue-300 dark:border dark:hover:bg-slate-900"
+                onClick={onPostComment}
               >
                 Post Comment →
               </button>
             </div>
           )}
           {isEditing && (
-            <div className="mt-4 box-border flex gap-2 sm:gap-3">
+            <div
+              style={{ display: `${commentsBoxOptionsVisibility}` }}
+              className="mt-4 box-border flex gap-2 sm:gap-3"
+            >
               <button
                 onClick={(e) => {
                   onSubmit(e);
+                  manageCommentsBoxOptionsVisibility("none");
                   restoreCommentOptionsVisibility();
                 }}
                 type="button"
@@ -227,6 +244,7 @@ function CommentsBox({
               <button
                 onClick={(e) => {
                   onSubmit(e);
+                  manageCommentsBoxOptionsVisibility("none");
                   restoreCommentOptionsVisibility();
                 }}
                 type="button"

@@ -61,6 +61,8 @@ function Post({ server }: { server: string }) {
   const [post, setPost] = useState<onePostType>(initialPost);
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
+  const [commentsBoxOptionsVisibility, setCommentsBoxOptionsVisibility] =
+    useState(""); // "" / "none"
   const [commentToEdit, setCommentToEdit] = useState<commentType>({
     _id: "",
     comment: "",
@@ -72,6 +74,10 @@ function Post({ server }: { server: string }) {
     photo: null,
     __v: 0,
   });
+
+  function manageCommentsBoxOptionsVisibility(v: string) {
+    setCommentsBoxOptionsVisibility(v);
+  }
 
   // keep comments array updated to avoid unnecessary API calls
   function addComment(arg: commentType) {
@@ -247,11 +253,15 @@ function Post({ server }: { server: string }) {
 
   // MARK: edit comment
   function editComment(commentId: string) {
+    manageCommentsBoxOptionsVisibility("");
     const selectedComment = post.comments.filter(
       (comment) => comment._id === commentId,
     )[0];
     setIsEditing(true);
-    setCommentToEdit(selectedComment);
+    setCommentToEdit({
+      ...selectedComment,
+      comment: he.decode(selectedComment.comment),
+    });
 
     /* Scroll to comments box */
     const commentsBoxSection = document.getElementById("edit-comment-box");
@@ -431,6 +441,10 @@ function Post({ server }: { server: string }) {
               server={server}
               commentsOptionsParentRef={commentsOptionsParentRef}
               formData={commentToEdit}
+              commentsBoxOptionsVisibility={commentsBoxOptionsVisibility}
+              manageCommentsBoxOptionsVisibility={
+                manageCommentsBoxOptionsVisibility
+              }
               setFormData={setCommentToEdit}
               setIsEditing={setIsEditing}
               isEditing={isEditing}
@@ -465,7 +479,7 @@ function Post({ server }: { server: string }) {
               >
                 <div>
                   <img
-                    className="rounded-full ring-1 ring-slate-300"
+                    className="rounded-full ring-1 ring-slate-400 dark:ring-slate-300"
                     src={
                       comment.photo === null
                         ? "/images/profile-pic-placeholder.webp"
@@ -532,7 +546,7 @@ function Post({ server }: { server: string }) {
                       )}
                     </div>
                   </div>
-                  <div className="w-[110%] truncate text-pretty text-sm">
+                  <div className="w-full truncate text-pretty text-sm">
                     {/* Converts avery \n into a paragraph */}
                     {comment.comment
                       .split("\n")
