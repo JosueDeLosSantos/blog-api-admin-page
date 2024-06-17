@@ -6,7 +6,6 @@ import CommentsBox from "../modules/posts/components/CommentsBox";
 import { onePostType } from "../modules/posts/types";
 import he from "he"; // decodes mongodb encoded HTML
 import { useState, useEffect, useRef } from "react";
-import ForumIcon from "@mui/icons-material/Forum";
 import ForumOutlinedIcon from "@mui/icons-material/ForumOutlined";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Badge from "@mui/material/Badge";
@@ -305,63 +304,61 @@ function Post({ server }: { server: string }) {
   // MARK: return
   return (
     <div className="min-h-screen bg-slate-100 dark:bg-slate-950">
-      <main className="flex gap-4 px-5 pb-5 pt-24">
-        {member === "admin" && (
-          <ThemeProvider theme={theme}>
-            <div
-              className={
-                windowWidth > 770
-                  ? "fixed flex h-screen w-fit flex-col gap-8 pt-10"
-                  : "toolbarBorder fixed bottom-0 left-0 z-50 flex w-screen justify-around bg-white p-2 shadow-[0px_-0.5px_5px_rgb(148,163,184)] dark:bg-slate-800 dark:shadow-none"
-              }
-            >
+      <main className="flex gap-4 px-5 pb-5 pt-2">
+        <ThemeProvider theme={theme}>
+          <div
+            className={
+              windowWidth > 770
+                ? "fixed right-5 flex h-screen w-fit flex-col gap-8 pt-10"
+                : "toolbarBorder fixed bottom-0 left-0 z-50 flex w-screen justify-around bg-white p-2 shadow-[0px_-0.5px_5px_rgb(148,163,184)] dark:bg-slate-800 dark:shadow-none"
+            }
+          >
+            <div>
+              <IconButton onClick={() => ScrollTo("comments")}>
+                <Badge badgeContent={post?.comments.length} color="primary">
+                  <ForumOutlinedIcon
+                    className="icons"
+                    fontSize="medium"
+                    color="secondary"
+                  />
+                </Badge>
+              </IconButton>
+            </div>
+            {post && member === "admin" && (
               <div>
-                <IconButton onClick={() => ScrollTo("comments")}>
-                  <Badge badgeContent={post?.comments.length} color="primary">
-                    <ForumOutlinedIcon
-                      className="icons"
-                      fontSize="medium"
-                      color="secondary"
-                    />
-                  </Badge>
-                </IconButton>
-              </div>
-              {post && (
-                <div>
-                  <IconButton onClick={() => EditPost(post)}>
-                    <EditIcon
-                      className="icons"
-                      fontSize="medium"
-                      color="secondary"
-                    />
-                  </IconButton>
-                </div>
-              )}
-              {post && (
-                <div>
-                  <IconButton onClick={() => handleDeletePost(post._id)}>
-                    <DeleteIcon
-                      className="icons"
-                      fontSize="medium"
-                      color="secondary"
-                    />
-                  </IconButton>
-                </div>
-              )}
-              <div>
-                <IconButton onClick={() => ScrollTo("posts")}>
-                  <KeyboardArrowUpIcon
+                <IconButton onClick={() => EditPost(post)}>
+                  <EditIcon
                     className="icons"
                     fontSize="medium"
                     color="secondary"
                   />
                 </IconButton>
               </div>
+            )}
+            {post && member === "admin" && (
+              <div>
+                <IconButton onClick={() => handleDeletePost(post._id)}>
+                  <DeleteIcon
+                    className="icons"
+                    fontSize="medium"
+                    color="secondary"
+                  />
+                </IconButton>
+              </div>
+            )}
+            <div>
+              <IconButton onClick={() => ScrollTo("posts")}>
+                <KeyboardArrowUpIcon
+                  className="icons"
+                  fontSize="medium"
+                  color="secondary"
+                />
+              </IconButton>
             </div>
-          </ThemeProvider>
-        )}
+          </div>
+        </ThemeProvider>
 
-        <article className="mx-auto max-w-[900px] rounded-lg border border-solid border-slate-200 bg-white pb-3 max-sm:w-full sm:w-9/12 dark:border-slate-950 dark:bg-slate-800">
+        <article className="ml-5 rounded-lg border border-solid border-slate-200 bg-white pb-3 max-sm:w-full sm:w-11/12 dark:border-slate-950 dark:bg-slate-800">
           {/* MARK: Post's header */}
           <header id="post-header">
             <div
@@ -564,20 +561,6 @@ function Post({ server }: { server: string }) {
           </div>
         </article>
       </main>
-
-      {member === "user" && (
-        <span onClick={() => ScrollTo("comments")}>
-          <div className="fixed bottom-5 left-5 w-fit cursor-pointer rounded-full bg-neutral-950 p-3 dark:bg-purple-700">
-            <ThemeProvider theme={theme}>
-              {post?.comments && (
-                <Badge badgeContent={post.comments.length} color="primary">
-                  <ForumIcon fontSize="large" color="info" />
-                </Badge>
-              )}
-            </ThemeProvider>
-          </div>
-        </span>
-      )}
     </div>
   );
 }

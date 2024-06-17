@@ -7,10 +7,13 @@ function Home() {
   const { windowWidth } = useWindowSize();
 
   return (
-    <div className="min-h-screen w-full bg-slate-100 dark:bg-slate-950">
-      {windowWidth < 769 && <MenuBar />}
-      {windowWidth > 768 && <MenuBarLarge />}
-      <main>
+    <div
+      style={windowWidth > 1023 ? { display: "flex" } : { display: "block" }}
+      className="min-h-screen w-full bg-slate-100 dark:bg-slate-950"
+    >
+      {windowWidth < 1024 && <MenuBar />}
+      {windowWidth > 1023 && <MenuBarLarge />}
+      <main className="w-4/5">
         <Outlet />
       </main>
     </div>

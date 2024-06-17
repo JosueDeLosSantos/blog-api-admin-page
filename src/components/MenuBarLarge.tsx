@@ -1,12 +1,19 @@
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import { MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
 import { AppDispatch } from "../app/store";
+
+// Icons
+import LaptopIcon from "@mui/icons-material/Laptop";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import DynamicFeedOutlinedIcon from "@mui/icons-material/DynamicFeedOutlined";
+import VpnKeyOutlinedIcon from "@mui/icons-material/VpnKeyOutlined";
+import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 
 export default function MenuBar() {
   const dispatch: AppDispatch = useDispatch();
@@ -15,6 +22,8 @@ export default function MenuBar() {
   const navigate = useNavigate();
   const handleClick = (e: MouseEvent) => {
     const target = e.target as HTMLElement;
+
+    console.log(target.parentElement);
 
     switch (target.dataset.menuitem) {
       case "0": // Home
@@ -35,7 +44,7 @@ export default function MenuBar() {
       case "5": // Profile
         navigate("/profile");
         break;
-      case "6": // Logout
+      case "6": // Sign Out
         dispatch(switchPrivilege("user"));
         localStorage.removeItem("accessToken");
         navigate("/posts");
@@ -48,82 +57,105 @@ export default function MenuBar() {
   // MARK: return
 
   return (
-    <Box>
-      <AppBar
-        className="border border-solid border-slate-200 bg-white shadow-none dark:border-slate-900 dark:bg-slate-800"
-        position="fixed"
-      >
-        <Toolbar className="flex justify-between">
-          <div className="logo mx-sm:text-xl font-PressStart2P text-[#721ea3] lg:text-2xl">
-            {"<JCODER>"}
+    <div className="flex h-screen w-1/5 flex-col border border-solid border-slate-200 bg-white p-2 shadow-none dark:border-slate-900 dark:bg-slate-800">
+      <div className="flex h-1/5 items-center justify-center rounded bg-purple-100 text-center font-PressStart2P text-purple-700 dark:bg-purple-700 dark:text-purple-100">
+        <LaptopIcon />
+        {"<JCODER>"}
+      </div>
+      <div className="flex flex-col justify-between text-black xl:text-lg dark:text-slate-100">
+        {member === "user" && (
+          <div
+            data-menuitem="0"
+            className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
+            onClick={(e) => handleClick(e)}
+          >
+            <HomeOutlinedIcon /> <span className="ml-2">Home</span>
           </div>
-          <div className="flex min-w-[75%] items-center justify-between divide-x divide-y-0 divide-solid text-center text-black xl:text-lg dark:divide-slate-50 dark:text-slate-100">
-            {member === "user" && (
-              <div
-                data-menuitem="0"
-                className="w-fit flex-1 cursor-pointer font-bold hover:bg-slate-100 dark:hover:bg-slate-700"
-                onClick={(e) => handleClick(e)}
-              >
-                Home
-              </div>
-            )}
-            {member && (
-              <div
-                data-menuitem="1"
-                className="w-fit flex-1 cursor-pointer font-bold hover:bg-slate-100 dark:hover:bg-slate-700"
-                onClick={(e) => handleClick(e)}
-              >
-                All Posts
-              </div>
-            )}
-            {member === "admin" && (
-              <div
-                data-menuitem="2"
-                className="w-fit flex-1 cursor-pointer font-bold hover:bg-slate-100 dark:hover:bg-slate-700"
-                onClick={(e) => handleClick(e)}
-              >
-                Create Post
-              </div>
-            )}
-            {member === "user" && (
-              <div
-                data-menuitem="3"
-                className="w-fit flex-1 cursor-pointer font-bold hover:bg-slate-100 dark:hover:bg-slate-700"
-                onClick={(e) => handleClick(e)}
-              >
-                Login
-              </div>
-            )}
-            {member === "user" && (
-              <div
-                data-menuitem="4"
-                className="w-fit flex-1 cursor-pointer font-bold hover:bg-slate-100 dark:hover:bg-slate-700"
-                onClick={(e) => handleClick(e)}
-              >
+        )}
+        {member && (
+          <div
+            data-menuitem="1"
+            className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
+            onClick={(e) => handleClick(e)}
+          >
+            <DynamicFeedOutlinedIcon data-menuitem="1" />
+            <span data-menuitem="1" className="ml-2">
+              All Posts
+            </span>
+          </div>
+        )}
+        {member === "admin" && (
+          <div
+            data-menuitem="2"
+            className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
+            onClick={(e) => handleClick(e)}
+          >
+            <EditNoteOutlinedIcon
+              data-menuitem="2"
+              sx={{ fontSize: "1.7rem" }}
+            />
+            <span data-menuitem="2" className="ml-2">
+              Create Post
+            </span>
+          </div>
+        )}
+
+        {member === "user" && (
+          <>
+            <div
+              data-menuitem="4"
+              className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
+              onClick={(e) => handleClick(e)}
+            >
+              <HowToRegOutlinedIcon data-menuitem="4" />
+              <span data-menuitem="4" className="ml-2">
                 Sign Up
-              </div>
-            )}
-            {member === "admin" && (
-              <div
-                data-menuitem="5"
-                className="w-fit flex-1 cursor-pointer font-bold antialiased hover:bg-slate-100 dark:hover:bg-slate-700"
-                onClick={(e) => handleClick(e)}
-              >
-                Profile
-              </div>
-            )}
-            {member === "admin" && (
-              <div
-                data-menuitem="6"
-                className="w-fit flex-1 cursor-pointer font-bold hover:bg-slate-100 dark:hover:bg-slate-700"
-                onClick={(e) => handleClick(e)}
-              >
-                Logout
-              </div>
-            )}
+              </span>
+            </div>
+            <div className="sidebar-empty-space mt-2 flex w-full rounded bg-slate-100 dark:bg-slate-700"></div>
+          </>
+        )}
+        {member === "user" && (
+          <div
+            data-menuitem="3"
+            className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
+            onClick={(e) => handleClick(e)}
+          >
+            <VpnKeyOutlinedIcon data-menuitem="3" sx={{ fontSize: "1.2rem" }} />
+            <span data-menuitem="3" className="ml-2">
+              Sing In
+            </span>
           </div>
-        </Toolbar>
-      </AppBar>
-    </Box>
+        )}
+        {member === "admin" && (
+          <>
+            <div
+              data-menuitem="5"
+              className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
+              onClick={(e) => handleClick(e)}
+            >
+              <AccountCircleOutlinedIcon data-menuitem="5" />
+              <span data-menuitem="5" className="ml-2">
+                Profile
+              </span>
+            </div>
+            <div className="sidebar-empty-space mt-2 flex w-full rounded bg-slate-100 dark:bg-slate-700"></div>
+          </>
+        )}
+
+        {member === "admin" && (
+          <div
+            data-menuitem="6"
+            className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
+            onClick={(e) => handleClick(e)}
+          >
+            <LogoutOutlinedIcon data-menuitem="6" />
+            <span data-menuitem="6" className="ml-2">
+              Sign Out
+            </span>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

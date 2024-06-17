@@ -44,6 +44,10 @@ html {
   padding: 0 !important;
 }
 
+.sidebar-empty-space {
+  height: calc(100vh - 4 * 40px - 178.391px);
+}
+
 /* Beam of light background effect */
 .bg-custom-animation-1 {
   background: linear-gradient(
@@ -78,10 +82,6 @@ html {
     color: #333 !important;
   }
 
-  .logo {
-    color: #721ea3 !important;
-  }
-
   html {
     background-color: rgb(241, 245, 249, 1) !important;
   }
@@ -99,10 +99,6 @@ html {
   .icons,
   .css-1yuf3k2-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
     color: rgb(241, 245, 249, 1) !important;
-  }
-
-  .logo {
-    color: #e0abff !important;
   }
 
   html,
