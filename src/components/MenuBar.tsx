@@ -2,55 +2,156 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import { MouseEvent, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
 import { AppDispatch } from "../app/store";
 import useWindowSize from "../hooks/windowSize";
+import {
+  Divider,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+
+// Icons
+import LaptopIcon from "@mui/icons-material/Laptop";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import DynamicFeedOutlinedIcon from "@mui/icons-material/DynamicFeedOutlined";
+import VpnKeyOutlinedIcon from "@mui/icons-material/VpnKeyOutlined";
+import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 
 export default function MenuBar() {
   const dispatch: AppDispatch = useDispatch();
   const member = useSelector((state: RootState) => state.privilege);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const navigate = useNavigate();
-  const handleClose = (e: MouseEvent) => {
-    const target = e.target as HTMLElement;
+  const [open, setOpen] = useState(false);
 
-    switch (target.dataset.menuitem) {
-      case "0": // Home
-        navigate("/");
-        break;
-      case "1": // All Posts
-        navigate("/posts");
-        break;
-      case "2": // Create post
-        navigate("/posts/create");
-        break;
-      case "3": // Login
-        navigate("/log-in");
-        break;
-      case "4": // Sign Up
-        navigate("/sign-up");
-        break;
-      case "5": // Logout
-        dispatch(switchPrivilege("user"));
-        localStorage.removeItem("accessToken");
-        navigate("/posts");
-        break;
-      default:
-        setAnchorEl(null);
-    }
+  const toggleDrawer = (newOpen: boolean) => () => {
+    setOpen(newOpen);
   };
+
+  const navigate = useNavigate();
+
+  const homePage = () => {
+    navigate("/");
+  };
+
+  const allPost = () => {
+    navigate("/posts");
+  };
+
+  const createPost = () => {
+    navigate("/posts/create");
+  };
+
+  const signIn = () => {
+    navigate("/log-in");
+  };
+
+  const signUp = () => {
+    navigate("/sign-up");
+  };
+
+  const profile = () => {
+    navigate("/profile");
+  };
+
+  const signOut = () => {
+    dispatch(switchPrivilege("user"));
+    localStorage.removeItem("accessToken");
+    navigate("/posts");
+  };
+
+  const DrawerList = (
+    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+      <List>
+        {member === "user" && (
+          <ListItem onClick={homePage} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <HomeOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Home"} />
+            </ListItemButton>
+          </ListItem>
+        )}
+        <ListItem onClick={allPost} disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              <DynamicFeedOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary={"All Posts"} />
+          </ListItemButton>
+        </ListItem>
+        {member === "admin" && (
+          <ListItem onClick={createPost} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <EditNoteOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Create Post"} />
+            </ListItemButton>
+          </ListItem>
+        )}
+        {member === "user" && (
+          <ListItem onClick={signUp} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <HowToRegOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Sign Up"} />
+            </ListItemButton>
+          </ListItem>
+        )}
+        {member === "user" && (
+          <>
+            <Divider />
+            <ListItem onClick={signIn} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <VpnKeyOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Sign In"} />
+              </ListItemButton>
+            </ListItem>
+          </>
+        )}
+        {member === "admin" && (
+          <ListItem onClick={profile} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <AccountCircleOutlinedIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Profile"} />
+            </ListItemButton>
+          </ListItem>
+        )}
+        {member === "admin" && (
+          <>
+            <Divider />
+            <ListItem onClick={signOut} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <LogoutOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Sign Out"} />
+              </ListItemButton>
+            </ListItem>
+          </>
+        )}
+      </List>
+    </Box>
+  );
 
   // MARK: return
 
@@ -68,99 +169,19 @@ export default function MenuBar() {
             size="large"
             edge="start"
             aria-label="menu"
-            onClick={handleClick}
+            onClick={toggleDrawer(true)}
             sx={{ mr: 2, color: "black" }}
           >
             <MenuIcon fontSize={windowWidth >= 640 ? "large" : "medium"} />
           </IconButton>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            elevation={1}
-            onClose={handleClose}
-            MenuListProps={{
-              "aria-labelledby": "basic-button",
-            }}
-          >
-            {member === "user" && (
-              <MenuItem
-                data-menuitem="0"
-                sx={{
-                  fontSize: "1rem",
-                  borderBottom: "1px solid #e0e0e0",
-                }}
-                onClick={(e) => handleClose(e)}
-              >
-                Home
-              </MenuItem>
-            )}
-            {member && (
-              <MenuItem
-                data-menuitem="1"
-                sx={{
-                  fontSize: "1rem",
-                  borderBottom: "1px solid #e0e0e0", // Add a bottom border to each menu item
-                }}
-                onClick={(e) => handleClose(e)}
-              >
-                All Posts
-              </MenuItem>
-            )}
-            {member === "admin" && (
-              <MenuItem
-                data-menuitem="2"
-                sx={{
-                  fontSize: "1rem",
-                  borderBottom: "1px solid #e0e0e0", // Add a bottom border to each menu item
-                }}
-                onClick={(e) => handleClose(e)}
-              >
-                Create Post
-              </MenuItem>
-            )}
-            {member === "user" && (
-              <MenuItem
-                data-menuitem="3"
-                sx={{
-                  fontSize: "1rem",
-                  borderBottom: "1px solid #e0e0e0", // Add a bottom border to each menu item
-                }}
-                onClick={(e) => handleClose(e)}
-              >
-                Login
-              </MenuItem>
-            )}
-            {member === "user" && (
-              <MenuItem
-                data-menuitem="4"
-                sx={{
-                  fontSize: "1rem",
-                }}
-                onClick={(e) => handleClose(e)}
-              >
-                Sign Up
-              </MenuItem>
-            )}
-            {member === "admin" && (
-              <MenuItem
-                data-menuitem="5"
-                sx={{
-                  fontSize: "1rem",
-                }}
-                onClick={(e) => handleClose(e)}
-              >
-                Logout
-              </MenuItem>
-            )}
-          </Menu>
+
+          <Drawer open={open} onClose={toggleDrawer(false)}>
+            {DrawerList}
+          </Drawer>
           <Typography
             variant="h6"
             component="div"
-            className="logo w-full text-center font-PressStart2P text-xs sm:text-sm"
-            sx={{
-              color: "#721ea3",
-            }}
+            className="w-full text-center font-PressStart2P text-xs text-purple-700 sm:text-sm dark:text-purple-300"
           >
             {"<JCODER>"}
           </Typography>

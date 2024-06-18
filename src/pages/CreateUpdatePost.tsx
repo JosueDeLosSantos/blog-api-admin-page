@@ -228,10 +228,10 @@ function CreateUpdatePost({
 
   return (
     <>
-      <div className="py-12 max-sm:mt-5 sm:mt-8">
-        <div className="mx-auto max-w-[900px] sm:px-6 lg:px-8">
+      <div className="pb-5 max-sm:mt-5 sm:mt-8">
+        <div className="mx-auto max-w-[900px] max-lg:mt-14 sm:px-6 lg:px-8">
           <div className="overflow-hidden shadow-sm sm:rounded-lg ">
-            <div className="min-h-[80vh] border-b border-gray-200  bg-white p-6 dark:bg-slate-700">
+            <div className="min-h-[80vh] border-gray-200  bg-white p-6 dark:bg-slate-700">
               <form onSubmit={onSubmit}>
                 {operation === "update" && (
                   <h1 className="text-center text-2xl font-bold sm:text-3xl">

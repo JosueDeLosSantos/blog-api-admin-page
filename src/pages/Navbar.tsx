@@ -13,7 +13,7 @@ function Home() {
     >
       {windowWidth < 1024 && <MenuBar />}
       {windowWidth > 1023 && <MenuBarLarge />}
-      <main className="w-4/5">
+      <main className="mx-auto w-4/5">
         <Outlet />
       </main>
     </div>

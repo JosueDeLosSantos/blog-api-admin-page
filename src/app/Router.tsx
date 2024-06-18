@@ -18,20 +18,12 @@ const Router = () => {
   const router = createBrowserRouter([
     {
       path: "/",
+      element: <Hero />,
+    },
+    {
+      path: "/",
       element: <Navbar />,
       children: [
-        {
-          index: true,
-          element: <Hero />,
-        },
-        {
-          path: "log-in",
-          element: <LogIn server={server} />,
-        },
-        {
-          path: "sign-up",
-          element: <SignUp server={server} />,
-        },
         {
           path: "profile",
           element: <Profile server={server} />,
@@ -58,6 +50,14 @@ const Router = () => {
         },
       ],
       errorElement: <NotFound />,
+    },
+    {
+      path: "log-in",
+      element: <LogIn server={server} />,
+    },
+    {
+      path: "sign-up",
+      element: <SignUp server={server} />,
     },
   ]);
   return <RouterProvider router={router} />;

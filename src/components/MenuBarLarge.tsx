@@ -57,7 +57,7 @@ export default function MenuBar() {
   // MARK: return
 
   return (
-    <div className="flex h-screen w-1/5 flex-col border border-solid border-slate-200 bg-white p-2 shadow-none dark:border-slate-900 dark:bg-slate-800">
+    <div className="sticky top-0 flex h-screen w-1/5 flex-col border border-solid border-slate-200 bg-white p-2 shadow-none dark:border-slate-900 dark:bg-slate-800">
       <div className="flex h-1/5 items-center justify-center rounded bg-purple-100 text-center font-PressStart2P text-purple-700 dark:bg-purple-700 dark:text-purple-100">
         <LaptopIcon />
         {"<JCODER>"}

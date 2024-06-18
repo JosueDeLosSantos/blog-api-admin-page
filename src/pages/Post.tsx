@@ -303,12 +303,12 @@ function Post({ server }: { server: string }) {
 
   // MARK: return
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-slate-950">
-      <main className="flex gap-4 px-5 pb-5 pt-2">
+    <div className="min-h-screen bg-slate-100 lg:w-[95%] dark:bg-slate-950">
+      <div className="flex gap-4 px-5 pb-5 max-lg:pt-14 lg:pt-2">
         <ThemeProvider theme={theme}>
           <div
             className={
-              windowWidth > 770
+              windowWidth > 1023
                 ? "fixed right-5 flex h-screen w-fit flex-col gap-8 pt-10"
                 : "toolbarBorder fixed bottom-0 left-0 z-50 flex w-screen justify-around bg-white p-2 shadow-[0px_-0.5px_5px_rgb(148,163,184)] dark:bg-slate-800 dark:shadow-none"
             }
@@ -358,7 +358,7 @@ function Post({ server }: { server: string }) {
           </div>
         </ThemeProvider>
 
-        <article className="ml-5 rounded-lg border border-solid border-slate-200 bg-white pb-3 max-sm:w-full sm:w-11/12 dark:border-slate-950 dark:bg-slate-800">
+        <article className="w-full rounded-lg border border-solid border-slate-200 bg-white pb-3 dark:border-slate-950 dark:bg-slate-800">
           {/* MARK: Post's header */}
           <header id="post-header">
             <div
@@ -560,7 +560,7 @@ function Post({ server }: { server: string }) {
             ))}
           </div>
         </article>
-      </main>
+      </div>
     </div>
   );
 }
