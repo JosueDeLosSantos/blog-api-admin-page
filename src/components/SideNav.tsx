@@ -61,7 +61,7 @@ export default function MenuBar() {
         {member === "user" && (
           <div
             data-menuitem="0"
-            className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
+            className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-700 hover:text-white dark:bg-slate-700 dark:hover:bg-purple-100 dark:hover:text-purple-700"
             onClick={homePage}
           >
             <HomeOutlinedIcon /> <span className="ml-2">Home</span>
@@ -70,7 +70,7 @@ export default function MenuBar() {
         {member && (
           <div
             data-menuitem="1"
-            className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
+            className={`mt-2 flex w-full cursor-pointer items-center rounded p-2 font-medium hover:bg-purple-700 hover:text-white dark:hover:bg-purple-100 dark:hover:text-purple-700 ${(location.pathname === "/posts" && "bg-purple-100 text-purple-700 dark:bg-purple-700  dark:text-purple-100") || "bg-slate-100  dark:bg-slate-700 "}`}
             onClick={allPost}
           >
             <DynamicFeedOutlinedIcon data-menuitem="1" />
@@ -82,7 +82,7 @@ export default function MenuBar() {
         {member === "admin" && (
           <div
             data-menuitem="2"
-            className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
+            className={`mt-2 flex w-full cursor-pointer items-center rounded p-2 font-medium hover:bg-purple-700 hover:text-white dark:hover:bg-purple-100 dark:hover:text-purple-700 ${(location.pathname === "/posts/create" && "bg-purple-100 text-purple-700 dark:bg-purple-700  dark:text-purple-100") || "bg-slate-100  dark:bg-slate-700 "}`}
             onClick={createPost}
           >
             <EditNoteOutlinedIcon
@@ -99,7 +99,7 @@ export default function MenuBar() {
           <>
             <div
               data-menuitem="4"
-              className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
+              className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-700 hover:text-white dark:bg-slate-700 dark:hover:bg-purple-100 dark:hover:text-purple-700"
               onClick={signUp}
             >
               <HowToRegOutlinedIcon data-menuitem="4" />
@@ -113,7 +113,7 @@ export default function MenuBar() {
         {member === "user" && (
           <div
             data-menuitem="3"
-            className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
+            className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-700 hover:text-white dark:bg-slate-700 dark:hover:bg-purple-100 dark:hover:text-purple-700"
             onClick={signIn}
           >
             <VpnKeyOutlinedIcon data-menuitem="3" sx={{ fontSize: "1.2rem" }} />
@@ -126,7 +126,7 @@ export default function MenuBar() {
           <>
             <div
               data-menuitem="5"
-              className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
+              className={`mt-2 flex w-full cursor-pointer items-center rounded p-2 font-medium hover:bg-purple-700 hover:text-white dark:hover:bg-purple-100 dark:hover:text-purple-700 ${(location.pathname === "/profile" && "bg-purple-100 text-purple-700 dark:bg-purple-700  dark:text-purple-100") || "bg-slate-100  dark:bg-slate-700 "}`}
               onClick={profile}
             >
               <AccountCircleOutlinedIcon data-menuitem="5" />
@@ -141,7 +141,7 @@ export default function MenuBar() {
         {member === "admin" && (
           <div
             data-menuitem="6"
-            className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
+            className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-700 hover:text-white dark:bg-slate-700 dark:hover:bg-purple-100 dark:hover:text-purple-700"
             onClick={signOut}
           >
             <LogoutOutlinedIcon data-menuitem="6" />

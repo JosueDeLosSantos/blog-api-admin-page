@@ -86,9 +86,17 @@ html {
     background-color: rgb(241, 245, 249, 1) !important;
   }
 
-  .drawer-list-item:hover,
   .menu-item-selected {
     background-color: rgb(243, 232, 255) !important;
+  }
+
+  .drawer-list-item:hover {
+    background-color: rgb(126, 34, 206) !important;
+    color: white;
+  }
+
+  .drawer-list-item:hover * {
+    color: white;
   }
 }
 
@@ -130,10 +138,17 @@ html {
     height: 100vh !important;
   }
 
-  .drawer-list-item:hover,
   .menu-item-selected {
     background-color: rgb(126, 34, 206) !important;
     color: rgb(243, 232, 255) !important;
+  }
+
+  .drawer-list-item:hover {
+    background-color: rgb(243, 232, 255) !important;
+  }
+
+  .drawer-list-item:hover * {
+    color: rgb(126, 34, 206) !important;
   }
 
   .drawerContent {

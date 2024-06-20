@@ -110,12 +110,16 @@ export default function Profile({ server }: { server: string }) {
     }
   }
 
+  const [passwordChange, setPasswordChange] = useState(true);
+
   function onSelect(event: ChangeEvent<HTMLSelectElement>) {
     const selectedOption = (event.target as HTMLSelectElement).value;
+
     if (selectedOption === "Yes") {
       setSelected(false);
-    } else {
+    } else if (selectedOption === "No") {
       setSelected(true);
+      setPasswordChange(false);
       setFormvalues({
         ...formValues,
         password: "",
@@ -285,8 +289,8 @@ export default function Profile({ server }: { server: string }) {
   return (
     <div className="mb-[5vh] mt-[10vh] flex w-full flex-col items-center justify-center gap-5">
       {/*MARK: Profile-pic */}
-      <div className="flex w-[75vw] max-w-[800px] flex-col items-center rounded-xl border-slate-200 bg-white px-10 py-5 shadow-md md:flex-row dark:border-slate-900 dark:bg-slate-800">
-        <div className="md:mr-5">
+      <div className="flex w-[75vw] max-w-[600px] flex-col items-center gap-3 rounded-xl border-slate-200 bg-white px-10 py-5 shadow-md md:gap-5 dark:border-slate-900 dark:bg-slate-800">
+        <div>
           <img
             className="rounded-full max-md:size-[80px]"
             width={100}
@@ -294,21 +298,19 @@ export default function Profile({ server }: { server: string }) {
             src={profilePic.src}
           />
         </div>
-        <div className="flex flex-col-reverse md:flex-col">
+        <div className="flex flex-col-reverse">
           {profilePic.src === "/images/profile-pic-placeholder.webp" && (
-            <h3 className="text-2xl antialiased max-md:text-center max-md:text-xl">
+            <h3 className="text-center text-xl antialiased md:text-2xl">
               Add a profile picture
             </h3>
           )}
           {profilePic.src !== "/images/profile-pic-placeholder.webp" && (
-            <h3 className="text-2xl antialiased max-md:text-center max-md:text-xl">
+            <h3 className="text-center text-xl antialiased md:text-2xl">
               Update profile picture
             </h3>
           )}
-
-          {/* <p className="max-md:text-center max-md:text-sm">Profile-pic.jpg</p> */}
         </div>
-        <div className="md:ml-auto">
+        <div>
           <ProfilePicUploader
             profilePic={profilePic}
             onProfilePicChange={onProfilePicChange}
@@ -316,14 +318,14 @@ export default function Profile({ server }: { server: string }) {
         </div>
       </div>
       {/* MARK: Profile-info */}
-      <div className="flex w-[75vw] max-w-[800px] flex-col rounded-xl border-slate-200 bg-white px-10 py-5 shadow-md dark:border-slate-900 dark:bg-slate-800">
+      <div className="flex w-[75vw] max-w-[600px] flex-col rounded-xl border-slate-200 bg-white px-10 py-5 shadow-md dark:border-slate-900 dark:bg-slate-800">
         <div className="my-5">
-          <h2 className="antialiased max-md:text-center md:text-3xl">
+          <h2 className="text-center antialiased md:text-3xl">
             Update your information here
           </h2>
         </div>
         <form onSubmit={onSubmit} className="mt-5 flex flex-col gap-5">
-          <div className="flex flex-col gap-5 md:flex-row">
+          <div className="flex flex-col gap-5">
             <div className="flex-1">
               <label htmlFor="first_name">First Name</label>
               <input
@@ -355,7 +357,7 @@ export default function Profile({ server }: { server: string }) {
               </span>
             </div>
           </div>
-          <div className="flex flex-col gap-5 md:flex-row">
+          <div className="flex flex-col gap-5">
             <div className="flex-1">
               <label htmlFor="email">Email</label>
               <input
@@ -387,19 +389,24 @@ export default function Profile({ server }: { server: string }) {
               </span>
             </div>
           </div>
-          <div className="flex flex-col gap-5 md:flex-row">
+          <div className="flex flex-col gap-5">
             <div className="flex-1">
               <label htmlFor="new_password">Update password</label>
               <select
                 onChange={onSelect}
                 className="py focus:shadow-outline mt-1 box-border h-10 w-full cursor-pointer appearance-none rounded border  border-slate-400 bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-purple-400 focus:outline-none dark:border-slate-400 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-300"
               >
-                <option defaultValue={""}>Select an option</option>
+                <option
+                  defaultValue={""}
+                  disabled={selected && passwordChange ? false : true}
+                >
+                  Select an option
+                </option>
                 <option>Yes</option>
                 <option>No</option>
               </select>
             </div>
-            <div className="flex-1">
+            <div className={`flex-1 ${selected ? "hidden" : ""}`}>
               <label htmlFor="password">Current Password</label>
               <input
                 className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border  border-slate-400 bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-purple-400 focus:outline-none dark:border-slate-400 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-300"
@@ -416,8 +423,8 @@ export default function Profile({ server }: { server: string }) {
               </span>
             </div>
           </div>
-          <div className="flex flex-col gap-5 md:flex-row">
-            <div className="flex-1">
+          <div className="flex flex-col gap-5">
+            <div className={`flex-1 ${selected ? "hidden" : ""}`}>
               <label htmlFor="newPassword">New Password</label>
               <input
                 className="py focus:shadow-outline mt-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-purple-400 focus:outline-none dark:border-slate-400 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-300"
@@ -433,7 +440,7 @@ export default function Profile({ server }: { server: string }) {
                 {errors.newPassword}
               </span>
             </div>
-            <div className="flex-1">
+            <div className={`flex-1 ${selected ? "hidden" : ""}`}>
               <label htmlFor="newPasswordConfirmation">
                 Confirm new password
               </label>
