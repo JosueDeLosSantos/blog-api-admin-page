@@ -85,6 +85,11 @@ html {
   html {
     background-color: rgb(241, 245, 249, 1) !important;
   }
+
+  .drawer-list-item:hover,
+  .menu-item-selected {
+    background-color: rgb(243, 232, 255) !important;
+  }
 }
 
 /* Dark mode */
@@ -118,6 +123,25 @@ html {
 
   .toolbarBorder {
     border-top: 1px solid rgb(15, 23, 42, 1) !important;
+  }
+
+  .drawer {
+    background-color: rgb(51, 65, 85, 1) !important;
+    height: 100vh !important;
+  }
+
+  .drawer-list-item:hover,
+  .menu-item-selected {
+    background-color: rgb(126, 34, 206) !important;
+    color: rgb(243, 232, 255) !important;
+  }
+
+  .drawerContent {
+    color: white;
+  }
+
+  .divider {
+    background: white;
   }
 }
 

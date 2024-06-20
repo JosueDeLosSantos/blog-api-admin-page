@@ -6,7 +6,7 @@ import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
@@ -22,7 +22,6 @@ import {
 } from "@mui/material";
 
 // Icons
-import LaptopIcon from "@mui/icons-material/Laptop";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import DynamicFeedOutlinedIcon from "@mui/icons-material/DynamicFeedOutlined";
 import VpnKeyOutlinedIcon from "@mui/icons-material/VpnKeyOutlined";
@@ -34,6 +33,7 @@ import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 export default function MenuBar() {
   const dispatch: AppDispatch = useDispatch();
   const member = useSelector((state: RootState) => state.privilege);
+  const location = useLocation();
   const [open, setOpen] = useState(false);
 
   const toggleDrawer = (newOpen: boolean) => () => {
@@ -73,78 +73,111 @@ export default function MenuBar() {
   };
 
   const DrawerList = (
-    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+    <Box
+      className="drawer"
+      sx={{ width: 250 }}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+    >
       <List>
         {member === "user" && (
-          <ListItem onClick={homePage} disablePadding>
+          <ListItem
+            className="drawer-list-item"
+            onClick={homePage}
+            disablePadding
+          >
             <ListItemButton>
               <ListItemIcon>
-                <HomeOutlinedIcon />
+                <HomeOutlinedIcon className="drawerContent" />
               </ListItemIcon>
-              <ListItemText primary={"Home"} />
+              <ListItemText className="drawerContent" primary={"Home"} />
             </ListItemButton>
           </ListItem>
         )}
-        <ListItem onClick={allPost} disablePadding>
+        <ListItem
+          className={`drawer-list-item ${location.pathname === "/posts" && "menu-item-selected"}`}
+          onClick={allPost}
+          disablePadding
+        >
           <ListItemButton>
             <ListItemIcon>
-              <DynamicFeedOutlinedIcon />
+              <DynamicFeedOutlinedIcon className="drawerContent" />
             </ListItemIcon>
-            <ListItemText primary={"All Posts"} />
+            <ListItemText className="drawerContent" primary={"All Posts"} />
           </ListItemButton>
         </ListItem>
         {member === "admin" && (
-          <ListItem onClick={createPost} disablePadding>
+          <ListItem
+            className={`drawer-list-item ${location.pathname === "/posts/create" && "menu-item-selected"}`}
+            onClick={createPost}
+            disablePadding
+          >
             <ListItemButton>
               <ListItemIcon>
-                <EditNoteOutlinedIcon />
+                <EditNoteOutlinedIcon className="drawerContent" />
               </ListItemIcon>
-              <ListItemText primary={"Create Post"} />
+              <ListItemText className="drawerContent" primary={"Create Post"} />
             </ListItemButton>
           </ListItem>
         )}
         {member === "user" && (
-          <ListItem onClick={signUp} disablePadding>
+          <ListItem
+            className="drawer-list-item"
+            onClick={signUp}
+            disablePadding
+          >
             <ListItemButton>
               <ListItemIcon>
-                <HowToRegOutlinedIcon />
+                <HowToRegOutlinedIcon className="drawerContent" />
               </ListItemIcon>
-              <ListItemText primary={"Sign Up"} />
+              <ListItemText className="drawerContent" primary={"Sign Up"} />
             </ListItemButton>
           </ListItem>
         )}
         {member === "user" && (
           <>
-            <Divider />
-            <ListItem onClick={signIn} disablePadding>
+            <Divider className="divider" />
+            <ListItem
+              className="drawer-list-item"
+              onClick={signIn}
+              disablePadding
+            >
               <ListItemButton>
                 <ListItemIcon>
-                  <VpnKeyOutlinedIcon />
+                  <VpnKeyOutlinedIcon className="drawerContent" />
                 </ListItemIcon>
-                <ListItemText primary={"Sign In"} />
+                <ListItemText className="drawerContent" primary={"Sign In"} />
               </ListItemButton>
             </ListItem>
           </>
         )}
         {member === "admin" && (
-          <ListItem onClick={profile} disablePadding>
+          <ListItem
+            className={`drawer-list-item ${location.pathname === "/profile" && "menu-item-selected"}`}
+            onClick={profile}
+            disablePadding
+          >
             <ListItemButton>
               <ListItemIcon>
-                <AccountCircleOutlinedIcon />
+                <AccountCircleOutlinedIcon className="drawerContent" />
               </ListItemIcon>
-              <ListItemText primary={"Profile"} />
+              <ListItemText className="drawerContent" primary={"Profile"} />
             </ListItemButton>
           </ListItem>
         )}
         {member === "admin" && (
           <>
-            <Divider />
-            <ListItem onClick={signOut} disablePadding>
+            <Divider className="divider" />
+            <ListItem
+              className="drawer-list-item"
+              onClick={signOut}
+              disablePadding
+            >
               <ListItemButton>
                 <ListItemIcon>
-                  <LogoutOutlinedIcon />
+                  <LogoutOutlinedIcon className="drawerContent" />
                 </ListItemIcon>
-                <ListItemText primary={"Sign Out"} />
+                <ListItemText className="drawerContent" primary={"Sign Out"} />
               </ListItemButton>
             </ListItem>
           </>

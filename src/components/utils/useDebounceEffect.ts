@@ -7,11 +7,12 @@ export function useDebounceEffect(
 ) {
   useEffect(() => {
     const t = setTimeout(() => {
-      fn.apply(undefined, deps);
+      // eslint-disable-next-line prefer-spread
+      fn.apply(undefined, deps as []);
     }, waitTime);
 
     return () => {
       clearTimeout(t);
     };
-  }, deps);
+  }, [deps, fn, waitTime]);
 }

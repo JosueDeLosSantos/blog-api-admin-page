@@ -1,4 +1,3 @@
-import { MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,38 +19,34 @@ export default function MenuBar() {
   const member = useSelector((state: RootState) => state.privilege);
 
   const navigate = useNavigate();
-  const handleClick = (e: MouseEvent) => {
-    const target = e.target as HTMLElement;
+  const homePage = () => {
+    navigate("/");
+  };
 
-    console.log(target.parentElement);
+  const allPost = () => {
+    navigate("/posts");
+  };
 
-    switch (target.dataset.menuitem) {
-      case "0": // Home
-        navigate("/");
-        break;
-      case "1": // All Posts
-        navigate("/posts");
-        break;
-      case "2": // Create post
-        navigate("/posts/create");
-        break;
-      case "3": // Login
-        navigate("/log-in");
-        break;
-      case "4": // Sign Up
-        navigate("/sign-up");
-        break;
-      case "5": // Profile
-        navigate("/profile");
-        break;
-      case "6": // Sign Out
-        dispatch(switchPrivilege("user"));
-        localStorage.removeItem("accessToken");
-        navigate("/posts");
-        break;
-      default:
-        navigate("/posts");
-    }
+  const createPost = () => {
+    navigate("/posts/create");
+  };
+
+  const signIn = () => {
+    navigate("/log-in");
+  };
+
+  const signUp = () => {
+    navigate("/sign-up");
+  };
+
+  const profile = () => {
+    navigate("/profile");
+  };
+
+  const signOut = () => {
+    dispatch(switchPrivilege("user"));
+    localStorage.removeItem("accessToken");
+    navigate("/posts");
   };
 
   // MARK: return
@@ -67,7 +62,7 @@ export default function MenuBar() {
           <div
             data-menuitem="0"
             className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
-            onClick={(e) => handleClick(e)}
+            onClick={homePage}
           >
             <HomeOutlinedIcon /> <span className="ml-2">Home</span>
           </div>
@@ -76,7 +71,7 @@ export default function MenuBar() {
           <div
             data-menuitem="1"
             className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
-            onClick={(e) => handleClick(e)}
+            onClick={allPost}
           >
             <DynamicFeedOutlinedIcon data-menuitem="1" />
             <span data-menuitem="1" className="ml-2">
@@ -88,7 +83,7 @@ export default function MenuBar() {
           <div
             data-menuitem="2"
             className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
-            onClick={(e) => handleClick(e)}
+            onClick={createPost}
           >
             <EditNoteOutlinedIcon
               data-menuitem="2"
@@ -105,7 +100,7 @@ export default function MenuBar() {
             <div
               data-menuitem="4"
               className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
-              onClick={(e) => handleClick(e)}
+              onClick={signUp}
             >
               <HowToRegOutlinedIcon data-menuitem="4" />
               <span data-menuitem="4" className="ml-2">
@@ -119,7 +114,7 @@ export default function MenuBar() {
           <div
             data-menuitem="3"
             className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
-            onClick={(e) => handleClick(e)}
+            onClick={signIn}
           >
             <VpnKeyOutlinedIcon data-menuitem="3" sx={{ fontSize: "1.2rem" }} />
             <span data-menuitem="3" className="ml-2">
@@ -132,7 +127,7 @@ export default function MenuBar() {
             <div
               data-menuitem="5"
               className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
-              onClick={(e) => handleClick(e)}
+              onClick={profile}
             >
               <AccountCircleOutlinedIcon data-menuitem="5" />
               <span data-menuitem="5" className="ml-2">
@@ -147,7 +142,7 @@ export default function MenuBar() {
           <div
             data-menuitem="6"
             className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-100 hover:text-purple-700 dark:bg-slate-700 dark:hover:bg-purple-700 dark:hover:text-purple-100"
-            onClick={(e) => handleClick(e)}
+            onClick={signOut}
           >
             <LogoutOutlinedIcon data-menuitem="6" />
             <span data-menuitem="6" className="ml-2">

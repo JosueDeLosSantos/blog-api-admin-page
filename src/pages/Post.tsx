@@ -476,7 +476,7 @@ function Post({ server }: { server: string }) {
               >
                 <div>
                   <img
-                    className="rounded-full ring-1 ring-slate-400 dark:ring-slate-300"
+                    className="rounded-full ring-1 ring-slate-400 dark:ring-slate-500"
                     src={
                       comment.photo === null
                         ? "/images/profile-pic-placeholder.webp"

@@ -163,7 +163,7 @@ const App: React.FC<AppProps> = ({
   return (
     <div>
       <ImageUploading value={images} onChange={onChange} dataURLKey="data_url">
-        {({ imageList, onImageUpload, isDragging, dragProps }) => (
+        {({ onImageUpload, isDragging, dragProps }) => (
           <div>
             <BlogImgUploadBtn
               imageContainer={imageContainer}
