@@ -5,14 +5,21 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../app/store";
 import { addPost, updatePost } from "../modules/posts/utils/postsSlice";
 import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import "./editor.css";
 import he from "he"; // decodes mongodb encoded HTML
 import { editPostType } from "../modules/posts/types";
 import TextareaAutosize from "react-textarea-autosize";
 import ImageUploader from "../components/ImageUploader";
 import { ImageType } from "react-images-uploading";
+// CKEditor imports
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { ClassicEditor } from "@ckeditor/ckeditor5-editor-classic";
+import { Essentials } from "@ckeditor/ckeditor5-essentials";
+import { Bold, Italic } from "@ckeditor/ckeditor5-basic-styles";
+import { Paragraph } from "@ckeditor/ckeditor5-paragraph";
+import { ImageUpload, Image } from "@ckeditor/ckeditor5-image";
+import { SimpleUploadAdapter } from "@ckeditor/ckeditor5-upload";
+import "./editor.css";
 
 type fileType = {
   filename: string;
@@ -38,6 +45,7 @@ function CreateUpdatePost({
   operation: string;
   server: string;
 }) {
+  const jwtToken = localStorage.getItem("accessToken");
   const dispatch: AppDispatch = useDispatch();
   const { name } = useParams();
   const { state }: { state: editPostType | null } = useLocation();
@@ -120,7 +128,7 @@ function CreateUpdatePost({
   // MARK: onSubmit
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
-    const jwtToken = localStorage.getItem("accessToken");
+
     const headers: Record<string, string> = {};
 
     if (operation === "update") {
@@ -203,7 +211,7 @@ function CreateUpdatePost({
     }
   }
 
-  const editorConfiguration = {
+  /*   const editorConfiguration = {
     // Displaying the proper UI element in the toolbar.
     toolbar: [
       "heading",
@@ -222,6 +230,31 @@ function CreateUpdatePost({
       "undo",
       "redo",
     ],
+  }; */
+
+  const editorConfiguration = {
+    plugins: [
+      Essentials,
+      Bold,
+      Italic,
+      Paragraph,
+      SimpleUploadAdapter,
+      ImageUpload,
+      Image,
+    ],
+    toolbar: ["bold", "italic", "|", "uploadImage"],
+    simpleUpload: {
+      // The URL that the images are uploaded to.
+      uploadUrl: `http://localhost:3000/user/upload-image`,
+      /* 
+      // Enable the XMLHttpRequest.withCredentials property.
+      withCredentials: true,
+
+      // Headers sent along with the XMLHttpRequest to the upload server.
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      }, */
+    },
   };
 
   // MARK: return
@@ -295,6 +328,20 @@ function CreateUpdatePost({
                     <span className="text-red-500 dark:text-red-300">*</span>
                   </label>
 
+                  {/* <CKEditor
+                    editor={ClassicEditor}
+                    data={formData.post}
+                    config={editorConfiguration}
+                    onChange={(_, editor) => {
+                      const content = editor.getData(); // Get the updated content
+                      handlePostChange(content); // Update the state
+                      const toolbarItems = Array.from(
+                        editor.ui.componentFactory.names(), // display available list of toolbar editor
+                      );
+                      console.log(toolbarItems.sort());
+                    }}
+                  /> */}
+
                   <CKEditor
                     editor={ClassicEditor}
                     data={formData.post}
@@ -302,12 +349,13 @@ function CreateUpdatePost({
                     onChange={(_, editor) => {
                       const content = editor.getData(); // Get the updated content
                       handlePostChange(content); // Update the state
-                      /* const toolbarItems = Array.from(
-													editor.ui.componentFactory.names() // display available list of toolbar editor
-												);
-												console.log(toolbarItems.sort()); */
+                      const toolbarItems = Array.from(
+                        editor.ui.componentFactory.names(), // display available list of toolbar editor
+                      );
+                      console.log(toolbarItems.sort());
                     }}
                   />
+
                   <span className="text-sm text-gray-400">{`${formData.post.length}/100000`}</span>
                   <br />
                   <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
