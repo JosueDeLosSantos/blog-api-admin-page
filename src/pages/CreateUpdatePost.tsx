@@ -19,6 +19,7 @@ import { Bold, Italic } from "@ckeditor/ckeditor5-basic-styles";
 import { Paragraph } from "@ckeditor/ckeditor5-paragraph";
 import { ImageUpload, Image } from "@ckeditor/ckeditor5-image";
 import { SimpleUploadAdapter } from "@ckeditor/ckeditor5-upload";
+import { Table } from "@ckeditor/ckeditor5-table";
 import "./editor.css";
 
 type fileType = {
@@ -211,26 +212,17 @@ function CreateUpdatePost({
     }
   }
 
-  /*   const editorConfiguration = {
-    // Displaying the proper UI element in the toolbar.
-    toolbar: [
-      "heading",
-      "|",
-      "bold",
-      "italic",
-      "link",
-      "bulletedList",
-      "numberedList",
-      "|",
-      "outdent",
-      "indent",
-      "|",
-      "blockQuote",
-      "insertTable",
-      "undo",
-      "redo",
-    ],
-  }; */
+  // MARK: image deletion
+  async function imageDeletion(value: string) {
+    try {
+      const response = await axios.delete(
+        `${server}user/delete-image/${value}`,
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const editorConfiguration = {
     plugins: [
@@ -241,8 +233,9 @@ function CreateUpdatePost({
       SimpleUploadAdapter,
       ImageUpload,
       Image,
+      Table,
     ],
-    toolbar: ["bold", "italic", "|", "uploadImage"],
+    toolbar: ["bold", "italic", "|", "uploadImage", "insertTable"],
     simpleUpload: {
       // The URL that the images are uploaded to.
       uploadUrl: `http://localhost:3000/user/upload-image`,
@@ -328,20 +321,6 @@ function CreateUpdatePost({
                     <span className="text-red-500 dark:text-red-300">*</span>
                   </label>
 
-                  {/* <CKEditor
-                    editor={ClassicEditor}
-                    data={formData.post}
-                    config={editorConfiguration}
-                    onChange={(_, editor) => {
-                      const content = editor.getData(); // Get the updated content
-                      handlePostChange(content); // Update the state
-                      const toolbarItems = Array.from(
-                        editor.ui.componentFactory.names(), // display available list of toolbar editor
-                      );
-                      console.log(toolbarItems.sort());
-                    }}
-                  /> */}
-
                   <CKEditor
                     editor={ClassicEditor}
                     data={formData.post}
@@ -349,10 +328,28 @@ function CreateUpdatePost({
                     onChange={(_, editor) => {
                       const content = editor.getData(); // Get the updated content
                       handlePostChange(content); // Update the state
-                      const toolbarItems = Array.from(
+                      /* const toolbarItems = Array.from(
                         editor.ui.componentFactory.names(), // display available list of toolbar editor
                       );
-                      console.log(toolbarItems.sort());
+                      console.log(toolbarItems.sort()); */
+                    }}
+                    onReady={(editor) => {
+                      editor.editing.view.document.on("delete", () => {
+                        const selection = editor.model.document.selection;
+                        const selectedElement = selection.getSelectedElement();
+                        const regex = /imageBlock/i;
+                        if (
+                          selectedElement &&
+                          selectedElement.name.match(regex)
+                        ) {
+                          const imageUrl = selectedElement.getAttribute("src");
+                          const url = `${imageUrl}`;
+                          const urlSplit = url.split("/");
+                          const imageName = urlSplit[urlSplit.length - 1];
+                          console.log(imageName);
+                          imageDeletion(`${imageName}`);
+                        }
+                      });
                     }}
                   />
 
