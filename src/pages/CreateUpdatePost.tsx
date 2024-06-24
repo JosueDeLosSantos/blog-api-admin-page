@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { useDispatch } from "react-redux";
@@ -17,7 +17,7 @@ import { ClassicEditor } from "@ckeditor/ckeditor5-editor-classic";
 import { Essentials } from "@ckeditor/ckeditor5-essentials";
 import { Bold, Italic } from "@ckeditor/ckeditor5-basic-styles";
 import { Paragraph } from "@ckeditor/ckeditor5-paragraph";
-import { ImageUpload, Image } from "@ckeditor/ckeditor5-image";
+import { ImageUpload, Image, ImageResize } from "@ckeditor/ckeditor5-image";
 import { SimpleUploadAdapter } from "@ckeditor/ckeditor5-upload";
 import { Table } from "@ckeditor/ckeditor5-table";
 import "./editor.css";
@@ -214,9 +214,15 @@ function CreateUpdatePost({
 
   // MARK: image deletion
   async function imageDeletion(value: string) {
+    const headers: Record<string, string> = {};
+    if (jwtToken) {
+      headers["Authorization"] = `Bearer ${jwtToken}`;
+    }
+
     try {
       const response = await axios.delete(
         `${server}user/delete-image/${value}`,
+        { headers: headers },
       );
       console.log(response.data);
     } catch (error) {
@@ -233,22 +239,45 @@ function CreateUpdatePost({
       SimpleUploadAdapter,
       ImageUpload,
       Image,
+      ImageResize,
       Table,
     ],
-    toolbar: ["bold", "italic", "|", "uploadImage", "insertTable"],
+    toolbar: ["bold", "italic", "|", "uploadImage"],
     simpleUpload: {
       // The URL that the images are uploaded to.
       uploadUrl: `http://localhost:3000/user/upload-image`,
-      /* 
+
       // Enable the XMLHttpRequest.withCredentials property.
       withCredentials: true,
 
       // Headers sent along with the XMLHttpRequest to the upload server.
       headers: {
         Authorization: `Bearer ${jwtToken}`,
-      }, */
+      },
     },
   };
+
+  const [allImages, setAllImages] = useState<string[]>([]);
+  const [unUsedImages, setUnusedImages] = useState<string[]>([]);
+  const [usedImages, setUsedImages] = useState<string[]>([]);
+
+  function trashImagesRecord(value: string[]) {
+    setUsedImages(value);
+    setAllImages([...new Set([...usedImages, ...unUsedImages, ...value])]);
+    setUnusedImages(allImages.filter((image) => !value.includes(image)));
+    console.log({ trash: unUsedImages, asset: value, all: allImages });
+  }
+
+  useEffect(() => {
+    const trash = unUsedImages;
+    console.log("Component mounted");
+    // this cleanup function is supposed to keep the server updated
+    // containing only the images that are used in the post
+    return () => {
+      console.log({ trash: trash });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [unUsedImages]);
 
   // MARK: return
 
@@ -326,14 +355,38 @@ function CreateUpdatePost({
                     data={formData.post}
                     config={editorConfiguration}
                     onChange={(_, editor) => {
-                      const content = editor.getData(); // Get the updated content
-                      handlePostChange(content); // Update the state
+                      // Get the updated content
+                      const content = editor.getData();
+                      // Update the state
+                      handlePostChange(content);
+                      // Crawl images as soon as they are inserted in the editor
+                      // without the following code, the server won't be able to
+                      // delete unnecessary images
+                      const editableElement = editor.ui.getEditableElement();
+                      if (editableElement) {
+                        const imageNamesStore: string[] = [];
+                        const imagesCrawler =
+                          editableElement.querySelectorAll("img");
+                        imagesCrawler.forEach((image) => {
+                          const tempImgArr = image.src.split("/");
+                          const imageName = tempImgArr[tempImgArr.length - 1];
+                          const imageWithDecodedSpaces = imageName.replace(
+                            /%20/g,
+                            " ",
+                          );
+                          if (imageWithDecodedSpaces.split(".")[1]) {
+                            imageNamesStore.push(imageWithDecodedSpaces);
+                          }
+                        });
+                        trashImagesRecord(imageNamesStore);
+                      }
                       /* const toolbarItems = Array.from(
                         editor.ui.componentFactory.names(), // display available list of toolbar editor
                       );
                       console.log(toolbarItems.sort()); */
                     }}
                     onReady={(editor) => {
+                      /* delete image from editor */
                       editor.editing.view.document.on("delete", () => {
                         const selection = editor.model.document.selection;
                         const selectedElement = selection.getSelectedElement();

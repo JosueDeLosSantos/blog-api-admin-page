@@ -116,8 +116,7 @@ html {
 
   html,
   .ck-editor__main * {
-    background-color: rgb(2, 6, 23, 1) !important;
-    color: rgb(241, 245, 249, 1) !important;
+    color: rgb(2, 6, 23, 1) !important;
   }
 
   .css-1yuf3k2-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
