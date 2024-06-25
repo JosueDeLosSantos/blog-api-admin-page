@@ -135,7 +135,6 @@ const App: React.FC<AppProps> = ({
     const croppedImgUrl = URL.createObjectURL(file);
     setSelectedCroppedImageSrc(croppedImgUrl);
     setSelectedCropSection("block");
-    console.log(file);
   }
 
   function onRemoveCrop() {

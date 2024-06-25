@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function Navbar() {
   return (
     <div className="relative mx-auto h-screen max-h-screen w-full max-w-[1536px] overflow-hidden">
-      <div className="bg-custom-animation z-0 grid w-full grid-cols-[repeat(11,_minmax(0,_1fr))] opacity-5 sm:grid-cols-[repeat(15,_minmax(0,_1fr))] lg:grid-cols-[repeat(19,_minmax(0,_1fr))]">
+      <div className="bg-custom-animation z-0 grid w-full grid-cols-[repeat(11,_minmax(0,_1fr))] opacity-5 sm:grid-cols-[repeat(15,_minmax(0,_1fr))] lg:grid-cols-[repeat(19,_minmax(0,_1fr))] dark:bg-black dark:text-slate-500">
         {Array.from({ length: 800 }).map((_, index) => (
           <div className="text-3xl sm:text-5xl lg:text-8xl " key={index}>
             {index % 2 === 0 ? 0 : 1}

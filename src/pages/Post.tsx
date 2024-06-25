@@ -299,8 +299,6 @@ function Post({ server }: { server: string }) {
 
   const { windowWidth } = useWindowSize();
 
-  console.log(post);
-
   // MARK: return
   return (
     <div className="min-h-screen bg-slate-100 lg:w-[95%] dark:bg-slate-950">

@@ -1,5 +1,10 @@
 import { FormEvent, useEffect, useState } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import {
+  useParams,
+  useNavigate,
+  useLocation,
+  useBlocker,
+} from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../app/store";
@@ -63,6 +68,53 @@ function CreateUpdatePost({
     trash: state !== null ? state.file.filename : "",
   });
   const navigate = useNavigate();
+
+  const [allImages, setAllImages] = useState<string[]>([]);
+  const [unUsedImages, setUnusedImages] = useState<string[]>([]);
+  const [usedImages, setUsedImages] = useState<string[]>([]);
+  const [isUploadingImages, setIsUploadingImages] = useState<boolean>(false);
+
+  function trashImagesRecord(value: string[]) {
+    setUsedImages(value);
+    setAllImages([...new Set([...usedImages, ...unUsedImages, ...value])]);
+    setUnusedImages(allImages.filter((image) => !value.includes(image)));
+  }
+
+  const blocker = useBlocker(
+    ({ currentLocation, nextLocation }) =>
+      usedImages.length > 0 &&
+      currentLocation.pathname !== nextLocation.pathname,
+  );
+
+  useEffect(() => {
+    const headers: Record<string, string> = {};
+    if (jwtToken) {
+      headers["Authorization"] = `Bearer ${jwtToken}`;
+    }
+    // trashes unused images
+    if (unUsedImages.length > 0) {
+      (async () => {
+        try {
+          await axios.delete(`${server}user/delete-image/${unUsedImages[0]}`, {
+            headers: headers,
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      })();
+    }
+    // trashes images pending for upload if the user navigates away
+    if (blocker.state === "blocked" && !isUploadingImages) {
+      usedImages.map(async (image) => {
+        return await axios.delete(`${server}user/delete-image/${image}`, {
+          headers: headers,
+        });
+      });
+      blocker.proceed();
+    } else if (blocker.state === "blocked" && isUploadingImages) {
+      blocker.proceed();
+    }
+  }, [blocker, unUsedImages, jwtToken, server, usedImages, isUploadingImages]);
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -158,6 +210,9 @@ function CreateUpdatePost({
           delete response.data.post.post;
           delete response.data.post.comments;
           dispatch(updatePost(response.data.post)); // update global state
+          if (usedImages.length > 0) {
+            setIsUploadingImages(true);
+          }
           navigate("/posts");
         }
       } catch (error) {
@@ -193,6 +248,9 @@ function CreateUpdatePost({
           delete response.data.post.post;
           delete response.data.post.comments;
           dispatch(addPost(response.data.post)); // update global state
+          if (usedImages.length > 0) {
+            setIsUploadingImages(true);
+          }
           navigate("/posts");
         }
       } catch (error) {
@@ -224,7 +282,14 @@ function CreateUpdatePost({
         `${server}user/delete-image/${value}`,
         { headers: headers },
       );
-      console.log(response.data);
+      // update usedImages state
+      const updatedState = usedImages.filter(
+        (image) => image !== response.data,
+      );
+      setUsedImages(updatedState);
+      if (!updatedState.length) {
+        setAllImages([]);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -256,28 +321,6 @@ function CreateUpdatePost({
       },
     },
   };
-
-  const [allImages, setAllImages] = useState<string[]>([]);
-  const [unUsedImages, setUnusedImages] = useState<string[]>([]);
-  const [usedImages, setUsedImages] = useState<string[]>([]);
-
-  function trashImagesRecord(value: string[]) {
-    setUsedImages(value);
-    setAllImages([...new Set([...usedImages, ...unUsedImages, ...value])]);
-    setUnusedImages(allImages.filter((image) => !value.includes(image)));
-    console.log({ trash: unUsedImages, asset: value, all: allImages });
-  }
-
-  useEffect(() => {
-    const trash = unUsedImages;
-    console.log("Component mounted");
-    // this cleanup function is supposed to keep the server updated
-    // containing only the images that are used in the post
-    return () => {
-      console.log({ trash: trash });
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [unUsedImages]);
 
   // MARK: return
 
@@ -399,7 +442,6 @@ function CreateUpdatePost({
                           const url = `${imageUrl}`;
                           const urlSplit = url.split("/");
                           const imageName = urlSplit[urlSplit.length - 1];
-                          console.log(imageName);
                           imageDeletion(`${imageName}`);
                         }
                       });
