@@ -1,10 +1,5 @@
-import { FormEvent, useEffect, useState } from "react";
-import {
-  useParams,
-  useNavigate,
-  useLocation,
-  useBlocker,
-} from "react-router-dom";
+import { FormEvent, useCallback, useState } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../app/store";
@@ -15,6 +10,7 @@ import { editPostType } from "../modules/posts/types";
 import TextareaAutosize from "react-textarea-autosize";
 import ImageUploader from "../components/ImageUploader";
 import { ImageType } from "react-images-uploading";
+import base64ToImage from "../utils/base64ToImage";
 // CKEditor imports
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 // import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -23,7 +19,7 @@ import { Essentials } from "@ckeditor/ckeditor5-essentials";
 import { Bold, Italic } from "@ckeditor/ckeditor5-basic-styles";
 import { Paragraph } from "@ckeditor/ckeditor5-paragraph";
 import { ImageUpload, Image, ImageResize } from "@ckeditor/ckeditor5-image";
-import { SimpleUploadAdapter } from "@ckeditor/ckeditor5-upload";
+import { Base64UploadAdapter } from "@ckeditor/ckeditor5-upload";
 import { Table } from "@ckeditor/ckeditor5-table";
 import "./editor.css";
 
@@ -67,54 +63,8 @@ function CreateUpdatePost({
     // a new file is uploaded so that we can command the server to delete the old one.
     trash: state !== null ? state.file.filename : "",
   });
+  const [imagesTray, setImagesTray] = useState<ImageType[]>([]);
   const navigate = useNavigate();
-
-  const [allImages, setAllImages] = useState<string[]>([]);
-  const [unUsedImages, setUnusedImages] = useState<string[]>([]);
-  const [usedImages, setUsedImages] = useState<string[]>([]);
-  const [isUploadingImages, setIsUploadingImages] = useState<boolean>(false);
-
-  function trashImagesRecord(value: string[]) {
-    setUsedImages(value);
-    setAllImages([...new Set([...usedImages, ...unUsedImages, ...value])]);
-    setUnusedImages(allImages.filter((image) => !value.includes(image)));
-  }
-
-  const blocker = useBlocker(
-    ({ currentLocation, nextLocation }) =>
-      usedImages.length > 0 &&
-      currentLocation.pathname !== nextLocation.pathname,
-  );
-
-  useEffect(() => {
-    const headers: Record<string, string> = {};
-    if (jwtToken) {
-      headers["Authorization"] = `Bearer ${jwtToken}`;
-    }
-    // trashes unused images
-    if (unUsedImages.length > 0) {
-      (async () => {
-        try {
-          await axios.delete(`${server}user/delete-image/${unUsedImages[0]}`, {
-            headers: headers,
-          });
-        } catch (error) {
-          console.log(error);
-        }
-      })();
-    }
-    // trashes images pending for upload if the user navigates away
-    if (blocker.state === "blocked" && !isUploadingImages) {
-      usedImages.map(async (image) => {
-        return await axios.delete(`${server}user/delete-image/${image}`, {
-          headers: headers,
-        });
-      });
-      blocker.proceed();
-    } else if (blocker.state === "blocked" && isUploadingImages) {
-      blocker.proceed();
-    }
-  }, [blocker, unUsedImages, jwtToken, server, usedImages, isUploadingImages]);
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -210,9 +160,6 @@ function CreateUpdatePost({
           delete response.data.post.post;
           delete response.data.post.comments;
           dispatch(updatePost(response.data.post)); // update global state
-          if (usedImages.length > 0) {
-            setIsUploadingImages(true);
-          }
           navigate("/posts");
         }
       } catch (error) {
@@ -234,7 +181,10 @@ function CreateUpdatePost({
         headers["Authorization"] = `Bearer ${jwtToken}`;
       }
 
-      try {
+      // detects base64 images and replace them with URLs
+      contentInspector(formData.post, formData.title);
+
+      /* try {
         const response = await axios.postForm(apiUrl, formData, {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
@@ -248,9 +198,6 @@ function CreateUpdatePost({
           delete response.data.post.post;
           delete response.data.post.comments;
           dispatch(addPost(response.data.post)); // update global state
-          if (usedImages.length > 0) {
-            setIsUploadingImages(true);
-          }
           navigate("/posts");
         }
       } catch (error) {
@@ -266,32 +213,7 @@ function CreateUpdatePost({
         } else {
           navigate("/server-error");
         }
-      }
-    }
-  }
-
-  // MARK: image deletion
-  async function imageDeletion(value: string) {
-    const headers: Record<string, string> = {};
-    if (jwtToken) {
-      headers["Authorization"] = `Bearer ${jwtToken}`;
-    }
-
-    try {
-      const response = await axios.delete(
-        `${server}user/delete-image/${value}`,
-        { headers: headers },
-      );
-      // update usedImages state
-      const updatedState = usedImages.filter(
-        (image) => image !== response.data,
-      );
-      setUsedImages(updatedState);
-      if (!updatedState.length) {
-        setAllImages([]);
-      }
-    } catch (error) {
-      console.log(error);
+      } */
     }
   }
 
@@ -301,26 +223,35 @@ function CreateUpdatePost({
       Bold,
       Italic,
       Paragraph,
-      SimpleUploadAdapter,
+      Base64UploadAdapter,
       ImageUpload,
       Image,
       ImageResize,
       Table,
     ],
     toolbar: ["bold", "italic", "|", "uploadImage"],
-    simpleUpload: {
-      // The URL that the images are uploaded to.
-      uploadUrl: `http://localhost:3000/user/upload-image`,
-
-      // Enable the XMLHttpRequest.withCredentials property.
-      withCredentials: true,
-
-      // Headers sent along with the XMLHttpRequest to the upload server.
-      headers: {
-        Authorization: `Bearer ${jwtToken}`,
-      },
-    },
   };
+
+  function contentInspector(content: string, blogTitle: string) {
+    // finds base64 encoded images in the content
+    const regex = /data[^\\>\\"]+/g;
+    const matches = content.match(regex);
+    const tempArr: ImageType[] = [];
+    // decodes base64 encoded images
+    if (matches) {
+      /* for (const match of matches) {
+        tempArr.push(base64ToImage(match));
+      } */
+      matches.forEach((match, i) => {
+        tempArr.push(base64ToImage(match, i, blogTitle));
+      });
+    }
+    setImagesTray(tempArr);
+    console.log(tempArr);
+    let matchIndex = 0;
+    const newStr = content.replace(regex, () => tempArr[matchIndex++].name);
+    console.log(newStr);
+  }
 
   // MARK: return
 
@@ -400,51 +331,13 @@ function CreateUpdatePost({
                     onChange={(_, editor) => {
                       // Get the updated content
                       const content = editor.getData();
+
                       // Update the state
                       handlePostChange(content);
-                      // Crawl images as soon as they are inserted in the editor
-                      // without the following code, the server won't be able to
-                      // delete unnecessary images
-                      const editableElement = editor.ui.getEditableElement();
-                      if (editableElement) {
-                        const imageNamesStore: string[] = [];
-                        const imagesCrawler =
-                          editableElement.querySelectorAll("img");
-                        imagesCrawler.forEach((image) => {
-                          const tempImgArr = image.src.split("/");
-                          const imageName = tempImgArr[tempImgArr.length - 1];
-                          const imageWithDecodedSpaces = imageName.replace(
-                            /%20/g,
-                            " ",
-                          );
-                          if (imageWithDecodedSpaces.split(".")[1]) {
-                            imageNamesStore.push(imageWithDecodedSpaces);
-                          }
-                        });
-                        trashImagesRecord(imageNamesStore);
-                      }
                       /* const toolbarItems = Array.from(
                         editor.ui.componentFactory.names(), // display available list of toolbar editor
                       );
                       console.log(toolbarItems.sort()); */
-                    }}
-                    onReady={(editor) => {
-                      /* delete image from editor */
-                      editor.editing.view.document.on("delete", () => {
-                        const selection = editor.model.document.selection;
-                        const selectedElement = selection.getSelectedElement();
-                        const regex = /imageBlock/i;
-                        if (
-                          selectedElement &&
-                          selectedElement.name.match(regex)
-                        ) {
-                          const imageUrl = selectedElement.getAttribute("src");
-                          const url = `${imageUrl}`;
-                          const urlSplit = url.split("/");
-                          const imageName = urlSplit[urlSplit.length - 1];
-                          imageDeletion(`${imageName}`);
-                        }
-                      });
                     }}
                   />
 
