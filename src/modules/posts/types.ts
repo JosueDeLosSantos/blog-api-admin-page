@@ -44,7 +44,7 @@ export type editPostType = {
   description: string;
   date: string;
   post: string;
-  file: photoType;
+  file: photoType & File;
   comments: string[];
   __v: number;
 };

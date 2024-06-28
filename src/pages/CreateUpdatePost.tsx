@@ -1,4 +1,4 @@
-import { FormEvent, useCallback, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { useDispatch } from "react-redux";
@@ -9,8 +9,7 @@ import he from "he"; // decodes mongodb encoded HTML
 import { editPostType } from "../modules/posts/types";
 import TextareaAutosize from "react-textarea-autosize";
 import ImageUploader from "../components/ImageUploader";
-import { ImageType } from "react-images-uploading";
-import base64ToImage from "../utils/base64ToImage";
+import contentInspector from "../utils/contentInspector";
 // CKEditor imports
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 // import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -23,21 +22,22 @@ import { Base64UploadAdapter } from "@ckeditor/ckeditor5-upload";
 import { Table } from "@ckeditor/ckeditor5-table";
 import "./editor.css";
 
-type fileType = {
+export interface fileType extends File {
   filename: string;
   originalname: string;
   mimetype: string;
   path: string;
-  size: number;
-};
+}
 
 export type formDataType = {
   title: string;
   description: string;
   post: string;
   comments: string[];
-  file: string | File | fileType | ImageType | undefined;
+  file: fileType | File | undefined;
   trash: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any; // Adding index signature
 };
 
 function CreateUpdatePost({
@@ -57,13 +57,12 @@ function CreateUpdatePost({
     description: state !== null ? he.decode(state.description) : "",
     post: state !== null ? he.decode(state.post) : "",
     comments: state !== null ? state.comments : [],
-    file: state !== null ? state.file : "",
-    // if the initial state.post.file value includes metadata for any file stored in the server
+    file: state !== null ? state.file : undefined,
+    // if the initial state.file value includes metadata for any file stored in the server
     // that filename is saved in a temporal trash state. It will be useful if
-    // a new file is uploaded so that we can command the server to delete the old one.
-    trash: state !== null ? state.file.filename : "",
+    // a new file is uploaded so that we can have the server delete the old one.
+    trash: state !== null ? state.file?.filename : "",
   });
-  const [imagesTray, setImagesTray] = useState<ImageType[]>([]);
   const navigate = useNavigate();
 
   const handleInputChange = (
@@ -133,25 +132,37 @@ function CreateUpdatePost({
     e.preventDefault();
 
     const headers: Record<string, string> = {};
+    if (jwtToken) {
+      headers["Authorization"] = `Bearer ${jwtToken}`;
+    }
+    const newFormData = new FormData();
 
     if (operation === "update") {
-      /* the condition bellow fixes unexpected behavior when
-			an image file is selected and then deselected,
-			to make sure that the file property is always filled,
-			since no post without image should be submitted */
-      if (formData.file === "") {
-        formData.file = state!.file;
-      }
-
       const apiUrl = `${server}user/posts/${name}`;
-      if (jwtToken) {
-        headers["Authorization"] = `Bearer ${jwtToken}`;
+
+      const content = contentInspector(formData.post);
+
+      if (content && formData.file) {
+        console.log(content.post);
+        newFormData.append("title", formData.title);
+        newFormData.append("description", formData.description);
+        newFormData.append("post", content.post);
+        newFormData.append("file", formData.file);
+        newFormData.append("trash", formData.trash);
+
+        content.gallery.forEach((file) => {
+          newFormData.append("gallery", file);
+        });
       }
 
       try {
-        const response = await axios.putForm(apiUrl, formData, {
-          headers: headers,
-        });
+        const response = await axios.putForm(
+          apiUrl,
+          content ? newFormData : formData,
+          {
+            headers: headers,
+          },
+        );
 
         if (response.data.errors) {
           const errorsArray = response.data.errors as ErrorsArrayType[];
@@ -177,19 +188,32 @@ function CreateUpdatePost({
       }
     } else {
       const apiUrl = `${server}user/create-post`;
-      if (jwtToken) {
-        headers["Authorization"] = `Bearer ${jwtToken}`;
+
+      // detects base64 images and replace them with temporal URLs
+      // the server will be in charge of assigning URLs to images
+      const content = contentInspector(formData.post);
+
+      if (content && formData.file) {
+        newFormData.append("title", formData.title);
+        newFormData.append("description", formData.description);
+        newFormData.append("post", content.post);
+        newFormData.append("file", formData.file);
+
+        content.gallery.forEach((file) => {
+          newFormData.append("gallery", file);
+        });
       }
 
-      // detects base64 images and replace them with URLs
-      contentInspector(formData.post, formData.title);
-
-      /* try {
-        const response = await axios.postForm(apiUrl, formData, {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
+      try {
+        const response = await axios.postForm(
+          apiUrl,
+          content ? newFormData : formData,
+          {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+            },
           },
-        });
+        );
 
         if (response.data.errors) {
           const errorsArray = response.data.errors as ErrorsArrayType[];
@@ -213,7 +237,7 @@ function CreateUpdatePost({
         } else {
           navigate("/server-error");
         }
-      } */
+      }
     }
   }
 
@@ -231,27 +255,6 @@ function CreateUpdatePost({
     ],
     toolbar: ["bold", "italic", "|", "uploadImage"],
   };
-
-  function contentInspector(content: string, blogTitle: string) {
-    // finds base64 encoded images in the content
-    const regex = /data[^\\>\\"]+/g;
-    const matches = content.match(regex);
-    const tempArr: ImageType[] = [];
-    // decodes base64 encoded images
-    if (matches) {
-      /* for (const match of matches) {
-        tempArr.push(base64ToImage(match));
-      } */
-      matches.forEach((match, i) => {
-        tempArr.push(base64ToImage(match, i, blogTitle));
-      });
-    }
-    setImagesTray(tempArr);
-    console.log(tempArr);
-    let matchIndex = 0;
-    const newStr = content.replace(regex, () => tempArr[matchIndex++].name);
-    console.log(newStr);
-  }
 
   // MARK: return
 

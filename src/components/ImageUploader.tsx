@@ -138,8 +138,10 @@ const App: React.FC<AppProps> = ({
   }
 
   function onRemoveCrop() {
+    setCropBtnsVisibility("block");
     setImageContainer("block");
     setSelectedCropSection("none");
+    setFormData({ ...formData, file: undefined });
   }
 
   useDebounceEffect(
