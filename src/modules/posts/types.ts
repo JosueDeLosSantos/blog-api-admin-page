@@ -6,6 +6,20 @@ type photoType = {
   size: number;
 };
 
+export type galleryImageType =
+  | {
+      fieldname: string;
+      originalname: string;
+      encoding: string;
+      mimetype: string;
+      destination: string;
+      filename: string;
+      path: string;
+      size: number;
+      _id: string;
+    }
+  | undefined;
+
 export type postTypes = {
   _id: string;
   title: string;
@@ -24,6 +38,7 @@ export type onePostType = {
   author: string;
   post: string;
   file: photoType;
+  gallery: galleryImageType[];
   comments: {
     _id: string;
     comment: string;
@@ -45,6 +60,7 @@ export type editPostType = {
   date: string;
   post: string;
   file: photoType & File;
+  gallery: galleryImageType[];
   comments: string[];
   __v: number;
 };

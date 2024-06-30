@@ -7,12 +7,12 @@ import { addPost, updatePost } from "../modules/posts/utils/postsSlice";
 import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
 import he from "he"; // decodes mongodb encoded HTML
 import { editPostType } from "../modules/posts/types";
+import { galleryImageType } from "../modules/posts/types";
 import TextareaAutosize from "react-textarea-autosize";
 import ImageUploader from "../components/ImageUploader";
 import contentInspector from "../utils/contentInspector";
 // CKEditor imports
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { ClassicEditor } from "@ckeditor/ckeditor5-editor-classic";
 import { Essentials } from "@ckeditor/ckeditor5-essentials";
 import { Bold, Italic } from "@ckeditor/ckeditor5-basic-styles";
@@ -35,7 +35,9 @@ export type formDataType = {
   post: string;
   comments: string[];
   file: fileType | File | undefined;
+  galleryStorage: galleryImageType[];
   trash: string;
+  galleryTrash: string[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any; // Adding index signature
 };
@@ -58,12 +60,25 @@ function CreateUpdatePost({
     post: state !== null ? he.decode(state.post) : "",
     comments: state !== null ? state.comments : [],
     file: state !== null ? state.file : undefined,
+    galleryStorage: state !== null ? state.gallery : [],
     // if the initial state.file value includes metadata for any file stored in the server
     // that filename is saved in a temporal trash state. It will be useful if
     // a new file is uploaded so that we can have the server delete the old one.
     trash: state !== null ? state.file?.filename : "",
+    galleryTrash: [],
   });
   const navigate = useNavigate();
+
+  function collectTrash(trash: string) {
+    const tempFormData = formData;
+    tempFormData.galleryTrash.push(trash);
+    tempFormData.galleryStorage?.forEach((file, i) => {
+      if (file?.filename === trash) {
+        tempFormData.galleryStorage?.splice(i, 1);
+      }
+    });
+    setFormData(tempFormData);
+  }
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -140,29 +155,34 @@ function CreateUpdatePost({
     if (operation === "update") {
       const apiUrl = `${server}user/posts/${name}`;
 
+      newFormData.append("title", formData.title);
+      newFormData.append("description", formData.description);
+      newFormData.append(
+        "galleryStorage",
+        JSON.stringify(formData.galleryStorage),
+      );
+      newFormData.append("trash", formData.trash);
+      newFormData.append("galleryTrash", JSON.stringify(formData.galleryTrash));
+
       const content = contentInspector(formData.post);
 
       if (content && formData.file) {
-        console.log(content.post);
-        newFormData.append("title", formData.title);
-        newFormData.append("description", formData.description);
         newFormData.append("post", content.post);
         newFormData.append("file", formData.file);
-        newFormData.append("trash", formData.trash);
-
         content.gallery.forEach((file) => {
           newFormData.append("gallery", file);
         });
+      } else if (!content && formData.file) {
+        newFormData.append("post", formData.post);
+        newFormData.append("file", formData.file);
       }
 
+      console.log(formData);
+
       try {
-        const response = await axios.putForm(
-          apiUrl,
-          content ? newFormData : formData,
-          {
-            headers: headers,
-          },
-        );
+        const response = await axios.putForm(apiUrl, newFormData, {
+          headers: headers,
+        });
 
         if (response.data.errors) {
           const errorsArray = response.data.errors as ErrorsArrayType[];
@@ -198,7 +218,6 @@ function CreateUpdatePost({
         newFormData.append("description", formData.description);
         newFormData.append("post", content.post);
         newFormData.append("file", formData.file);
-
         content.gallery.forEach((file) => {
           newFormData.append("gallery", file);
         });
@@ -334,13 +353,35 @@ function CreateUpdatePost({
                     onChange={(_, editor) => {
                       // Get the updated content
                       const content = editor.getData();
-
                       // Update the state
                       handlePostChange(content);
                       /* const toolbarItems = Array.from(
                         editor.ui.componentFactory.names(), // display available list of toolbar editor
                       );
                       console.log(toolbarItems.sort()); */
+                    }}
+                    onReady={(editor) => {
+                      editor.editing.view.document.on("delete", () => {
+                        const selection = editor.model.document.selection;
+                        const selectedElement = selection.getSelectedElement();
+                        let regex = /imageBlock/i;
+                        if (
+                          selectedElement &&
+                          selectedElement.name.match(regex)
+                        ) {
+                          const imageUrl = selectedElement.getAttribute(
+                            "src",
+                          ) as string;
+                          regex = /data:image/i;
+                          // collect trash only if it is not a base64 encoded image
+                          if (!regex.test(imageUrl)) {
+                            const url = `${imageUrl}`;
+                            const urlSplit = url.split("/");
+                            const imageName = urlSplit[urlSplit.length - 1];
+                            collectTrash(imageName);
+                          }
+                        }
+                      });
                     }}
                   />
 
