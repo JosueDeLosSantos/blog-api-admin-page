@@ -1,7 +1,7 @@
 import base64ToImage from "./base64ToImage";
 export default function contentInspector(content: string) {
   // finds base64 encoded images in the content
-  const regex = /data:[^\\>\\"]+/g;
+  const regex = /data:image\/[^\\>\\"]+/g;
   const matches = content.match(regex);
   const tempArr: File[] = [];
   // decodes base64 encoded images

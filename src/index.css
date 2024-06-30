@@ -48,6 +48,23 @@ html {
   height: calc(100vh - 4 * 40px - 178.391px);
 }
 
+.image {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.image-style-align-right {
+  display: inline;
+  float: right;
+  margin: 1em 0 1em 1em;
+}
+
+.image-style-align-left {
+  display: inline;
+  float: left;
+  margin: 1em 1em 1em 0;
+}
+
 /* Beam of light background effect */
 .bg-custom-animation-1 {
   background: linear-gradient(

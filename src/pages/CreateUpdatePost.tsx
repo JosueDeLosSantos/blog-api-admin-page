@@ -17,9 +17,22 @@ import { ClassicEditor } from "@ckeditor/ckeditor5-editor-classic";
 import { Essentials } from "@ckeditor/ckeditor5-essentials";
 import { Bold, Italic } from "@ckeditor/ckeditor5-basic-styles";
 import { Paragraph } from "@ckeditor/ckeditor5-paragraph";
-import { ImageUpload, Image, ImageResize } from "@ckeditor/ckeditor5-image";
+import {
+  ImageUpload,
+  Image,
+  ImageResize,
+  ImageInline,
+  ImageEditing,
+  ImageStyle,
+  ImageToolbar,
+  ImageCaption,
+} from "@ckeditor/ckeditor5-image";
+import LinkImage from "@ckeditor/ckeditor5-link/src/linkimage";
 import { Base64UploadAdapter } from "@ckeditor/ckeditor5-upload";
 import { Table } from "@ckeditor/ckeditor5-table";
+// import ImageInlineEditing from "@ckeditor/ckeditor5-image/src/image/imageinlineediting";
+// import ImageTypeCommand from "@ckeditor/ckeditor5-image/src/image/imagetypecommand";
+
 import "./editor.css";
 
 export interface fileType extends File {
@@ -177,8 +190,6 @@ function CreateUpdatePost({
         newFormData.append("file", formData.file);
       }
 
-      console.log(formData);
-
       try {
         const response = await axios.putForm(apiUrl, newFormData, {
           headers: headers,
@@ -269,10 +280,55 @@ function CreateUpdatePost({
       Base64UploadAdapter,
       ImageUpload,
       Image,
+      ImageToolbar,
+      ImageCaption,
+      ImageStyle,
       ImageResize,
+      ImageInline,
+      ImageEditing,
+      LinkImage,
       Table,
     ],
-    toolbar: ["bold", "italic", "|", "uploadImage"],
+    toolbar: ["bold", "italic", "|", "insertImage"],
+    image: {
+      toolbar: [
+        "imageStyle:block",
+        "imageStyle:wrapText",
+        "|",
+        "toggleImageCaption",
+        "imageTextAlternative",
+        "|",
+        "linkImage",
+        "|",
+        "resizeImage",
+      ],
+
+      insert: {
+        // If this setting is omitted, the editor defaults to 'block'.
+        // See explanation below.
+        type: "auto",
+      },
+
+      resizeUnit: "%",
+      resizeOptions: [
+        {
+          name: "resizeImage:original",
+          value: null,
+        },
+        {
+          name: "resizeImage:25",
+          value: "25",
+        },
+        {
+          name: "resizeImage:50",
+          value: "50",
+        },
+        {
+          name: "resizeImage:75",
+          value: "75",
+        },
+      ],
+    },
   };
 
   // MARK: return
@@ -355,10 +411,10 @@ function CreateUpdatePost({
                       const content = editor.getData();
                       // Update the state
                       handlePostChange(content);
-                      /* const toolbarItems = Array.from(
+                      const toolbarItems = Array.from(
                         editor.ui.componentFactory.names(), // display available list of toolbar editor
                       );
-                      console.log(toolbarItems.sort()); */
+                      console.log(toolbarItems.sort());
                     }}
                     onReady={(editor) => {
                       editor.editing.view.document.on("delete", () => {
