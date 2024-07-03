@@ -1,5 +1,5 @@
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
-import { postTypes } from "../types";
+import { postTypes } from "../types/types";
 import ColorThief from "colorthief";
 import { useNavigate } from "react-router-dom";
 import he from "he"; // decodes mongodb encoded HTML

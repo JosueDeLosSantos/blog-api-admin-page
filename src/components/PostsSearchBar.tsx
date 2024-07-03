@@ -1,8 +1,8 @@
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../app/rootReducer";
-import { postTypes } from "../types";
+import { RootState } from "../app/rootReducer";
+import { postTypes } from "../types/types";
 import { Link } from "react-router-dom";
 
 export default function Main() {
@@ -25,13 +25,13 @@ export default function Main() {
   return (
     <div className="mb-5">
       <form className="relative mx-5 rounded-lg border border-solid border-slate-200 max-lg:mt-16">
-        <button className="absolute left-0 top-1/2 -translate-y-1/2 rounded-l-md pb-[0.46rem] pl-1 pr-2 pt-[0.45rem] hover:bg-purple-700 hover:text-white dark:hover:bg-purple-100 dark:hover:text-black">
+        <button className="absolute left-0 top-1/2 -translate-y-1/2 rounded-l-md pb-[0.46rem] pl-1 pr-2 pt-[0.45rem] hover:bg-purple-700 hover:text-white dark:text-white dark:hover:bg-purple-100 dark:hover:text-black">
           <SearchOutlinedIcon />
         </button>
 
         <input
           onChange={onchange}
-          className="w-full appearance-none rounded-lg py-2 pl-10 pr-2 outline-none ring-purple-700 focus:ring-2 dark:ring-purple-100"
+          className="w-full appearance-none rounded-lg py-2 pl-10 pr-2 outline-none ring-purple-700 focus:ring-2 dark:text-white dark:ring-purple-100"
           type="text"
           placeholder="Search..."
         />

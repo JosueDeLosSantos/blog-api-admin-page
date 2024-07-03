@@ -1,24 +1,24 @@
 import { useEffect } from "react";
-import { onePostType } from "../modules/posts/types";
+import { onePostType } from "../types/types";
 import hslRgb from "hsl-rgb";
 
 /**
- * React hook that updates the post's content based on the user's preferred color scheme.
+ * Custom React hook that updates the post content based on the user's preferred color scheme.
  *
- * @param {onePostType} post - The post object to update.
- * @param {React.Dispatch<React.SetStateAction<onePostType>>} setPost - The function to update the post state.
- * @return {void} This function does not return anything.
+ * @param {onePostType} post - The current post content.
+ * @param {onePostType} originalPost - The original post content.
+ * @param {React.Dispatch<React.SetStateAction<onePostType>>} setPost - The function to update the post content.
+ * @return {void}
  */
 export default function useDynamicStyles(
   post: onePostType,
+  originalPost: onePostType,
   setPost: React.Dispatch<React.SetStateAction<onePostType>>,
 ) {
   useEffect(() => {
     const matchMedia = window.matchMedia("(prefers-color-scheme: dark)");
     const handleChange = () => {
-      console.log(
-        `Dark mode is ${matchMedia.matches ? "enabled" : "disabled"}`,
-      );
+      // check if the user's preferred color scheme is dark
       if (matchMedia.matches) {
         let tempPost = post?.post;
         // Find all hsl values ex: hsl(0, 0%, 0%)
@@ -52,7 +52,7 @@ export default function useDynamicStyles(
           setPost({ ...post, post: tempPost });
         }
       } else {
-        setPost(post);
+        setPost(originalPost);
       }
     };
 
@@ -62,7 +62,7 @@ export default function useDynamicStyles(
     return () => {
       matchMedia.removeEventListener("change", handleChange);
     };
-  }, [post, setPost]);
+  }, [post, setPost, originalPost]);
 }
 
 /**

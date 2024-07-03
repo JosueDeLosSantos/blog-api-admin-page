@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { postTypes } from "../types";
+import { postTypes } from "../types/types";
 
 const initialState: postTypes[] = [];
 

@@ -4,7 +4,7 @@ import axios from "axios";
 import codeImage from "../../public/images/safar-safarov-koOdUvfGr4c-unsplash.jpg";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../app/store";
-import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
+import { switchPrivilege } from "../utils/privilegeSlice";
 
 function LogIn({ server }: { server: string }) {
   const dispatch: AppDispatch = useDispatch();

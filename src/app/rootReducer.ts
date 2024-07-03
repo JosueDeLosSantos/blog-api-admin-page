@@ -1,6 +1,6 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import posts from "../modules/posts/utils/postsSlice";
-import privilege from "../modules/posts/utils/privilegeSlice";
+import posts from "../utils/postsSlice";
+import privilege from "../utils/privilegeSlice";
 
 const rootReducer = combineReducers({
   posts,

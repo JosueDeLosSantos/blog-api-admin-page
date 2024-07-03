@@ -3,11 +3,11 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../app/store";
-import { addPost, updatePost } from "../modules/posts/utils/postsSlice";
-import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
+import { addPost, updatePost } from "../utils/postsSlice";
+import { switchPrivilege } from "../utils/privilegeSlice";
 import he from "he"; // decodes mongodb encoded HTML
-import { editPostType } from "../modules/posts/types";
-import { galleryImageType } from "../modules/posts/types";
+import { editPostType } from "../types/types";
+import { galleryImageType } from "../types/types";
 import TextareaAutosize from "react-textarea-autosize";
 import ImageUploader from "../components/ImageUploader";
 import contentInspector from "../utils/contentInspector";

@@ -2,8 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import CommentsBox from "../modules/posts/components/CommentsBox";
-import { onePostType } from "../modules/posts/types";
+import CommentsBox from "../components/CommentsBox";
+import { onePostType } from "../types/types";
 import he from "he"; // decodes mongodb encoded HTML
 import { useState, useEffect, useRef } from "react";
 import ForumOutlinedIcon from "@mui/icons-material/ForumOutlined";
@@ -13,10 +13,10 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { red, grey } from "@mui/material/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../app/store";
-import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
+import { switchPrivilege } from "../utils/privilegeSlice";
 import { RootState } from "../app/rootReducer";
 import axios, { AxiosError } from "axios";
-import { deletePost } from "../modules/posts/utils/postsSlice";
+import { deletePost } from "../utils/postsSlice";
 import useWindowSize from "../hooks/windowSize";
 import useDynamicStyles from "../hooks/useDynamicStyles";
 
@@ -59,8 +59,8 @@ function Post({ server }: { server: string }) {
   const member = useSelector((state: RootState) => state.privilege);
   const initialPost = null as unknown as onePostType;
   const [post, setPost] = useState<onePostType>(initialPost);
-  useDynamicStyles(post, setPost);
   const [originalPost, setOriginalPost] = useState<onePostType>(initialPost);
+  useDynamicStyles(post, originalPost, setPost);
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [commentsBoxOptionsVisibility, setCommentsBoxOptionsVisibility] =

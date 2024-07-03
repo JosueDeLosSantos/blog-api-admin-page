@@ -7,8 +7,8 @@ import ReactCrop, {
   Crop,
   PixelCrop,
 } from "react-image-crop";
-import { canvasPreview } from "./utils/canvasPreview";
-import { useDebounceEffect } from "./utils/useDebounceEffect";
+import { canvasPreview } from "../utils/canvasPreview";
+import { useDebounceEffect } from "../utils/useDebounceEffect";
 import "react-image-crop/dist/ReactCrop.css";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 

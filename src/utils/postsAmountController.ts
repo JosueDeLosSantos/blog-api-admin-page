@@ -1,4 +1,4 @@
-import { postTypes } from "../types";
+import { postTypes } from "../types/types";
 
 export function mockArray(post: postTypes, repeat: number) {
   const result: postTypes[] = [];

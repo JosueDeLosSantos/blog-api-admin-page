@@ -3,7 +3,7 @@ import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../app/store";
 import { useDispatch } from "react-redux";
-import { switchPrivilege } from "../modules/posts/utils/privilegeSlice";
+import { switchPrivilege } from "../utils/privilegeSlice";
 import ProfilePicUploader from "../components/ProfilePicUploader";
 
 export default function Profile({ server }: { server: string }) {
