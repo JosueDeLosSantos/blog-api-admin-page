@@ -60,6 +60,7 @@ function Post({ server }: { server: string }) {
   const initialPost = null as unknown as onePostType;
   const [post, setPost] = useState<onePostType>(initialPost);
   useDynamicStyles(post, setPost);
+  const [originalPost, setOriginalPost] = useState<onePostType>(initialPost);
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [commentsBoxOptionsVisibility, setCommentsBoxOptionsVisibility] =
@@ -138,7 +139,10 @@ function Post({ server }: { server: string }) {
 
         dispatch(switchPrivilege("admin"));
         setUser(response.data.user);
+        // the following post is subject to change due to admins's color scheme preferences
         setPost(response.data.post);
+        // this is the original post and will be needed to edit it
+        setOriginalPost(response.data.post);
         setCommentToEdit({ ...commentToEdit, post: response.data.post._id });
       } catch (error) {
         const axiosError = error as AxiosError;
@@ -326,7 +330,7 @@ function Post({ server }: { server: string }) {
             </div>
             {post && member === "admin" && (
               <div>
-                <IconButton onClick={() => EditPost(post)}>
+                <IconButton onClick={() => EditPost(originalPost)}>
                   <EditIcon
                     className="icons"
                     fontSize="medium"

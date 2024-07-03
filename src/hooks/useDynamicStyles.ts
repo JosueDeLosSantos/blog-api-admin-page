@@ -2,9 +2,13 @@ import { useEffect } from "react";
 import { onePostType } from "../modules/posts/types";
 import hslRgb from "hsl-rgb";
 
-// the following hook should detect whether dark mode is enabled or not
-// and set the tables background color, and tables border color accordingly
-
+/**
+ * React hook that updates the post's content based on the user's preferred color scheme.
+ *
+ * @param {onePostType} post - The post object to update.
+ * @param {React.Dispatch<React.SetStateAction<onePostType>>} setPost - The function to update the post state.
+ * @return {void} This function does not return anything.
+ */
 export default function useDynamicStyles(
   post: onePostType,
   setPost: React.Dispatch<React.SetStateAction<onePostType>>,
@@ -17,23 +21,28 @@ export default function useDynamicStyles(
       );
       if (matchMedia.matches) {
         let tempPost = post?.post;
+        // Find all hsl values ex: hsl(0, 0%, 0%)
         const regex = /hsl\(\s*\d+,\s\d+%,\s\d+%\s*\)/g;
         const matches = tempPost?.match(regex);
         if (matches) {
           matches.forEach((match, i) => {
+            // deserialize hsl
             const hslArr = match.match(/\d+/g);
             if (hslArr) {
               const [h, s, l] = hslArr;
+              // convert to rgb
               const rgbArr = hslRgb(
                 Number(h),
                 Number(s) / 100,
                 Number(l) / 100,
               );
+              // adjust luminance to a darker version of the color
               const darkerRgb = isLightColor(rgbArr)
                 ? adjustLuminance(rgbArr, -100)
                 : undefined;
               if (darkerRgb) {
                 const [r, g, b] = darkerRgb;
+                // replace hsl string with rgb
                 matches[i] = `rgb(${r}, ${g}, ${b})`;
               }
             }
