@@ -18,6 +18,7 @@ import { RootState } from "../app/rootReducer";
 import axios, { AxiosError } from "axios";
 import { deletePost } from "../modules/posts/utils/postsSlice";
 import useWindowSize from "../hooks/windowSize";
+import useDynamicStyles from "../hooks/useDynamicStyles";
 
 const theme = createTheme({
   palette: {
@@ -58,6 +59,7 @@ function Post({ server }: { server: string }) {
   const member = useSelector((state: RootState) => state.privilege);
   const initialPost = null as unknown as onePostType;
   const [post, setPost] = useState<onePostType>(initialPost);
+  useDynamicStyles(post, setPost);
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [commentsBoxOptionsVisibility, setCommentsBoxOptionsVisibility] =

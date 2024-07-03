@@ -15,8 +15,16 @@ import contentInspector from "../utils/contentInspector";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { ClassicEditor } from "@ckeditor/ckeditor5-editor-classic";
 import { Essentials } from "@ckeditor/ckeditor5-essentials";
-import { Bold, Italic } from "@ckeditor/ckeditor5-basic-styles";
+import {
+  Bold,
+  Italic,
+  Underline,
+  Strikethrough,
+  Subscript,
+  Superscript,
+} from "@ckeditor/ckeditor5-basic-styles";
 import { Paragraph } from "@ckeditor/ckeditor5-paragraph";
+import Heading from "@ckeditor/ckeditor5-heading/src/heading";
 import {
   ImageUpload,
   Image,
@@ -29,9 +37,16 @@ import {
 } from "@ckeditor/ckeditor5-image";
 import LinkImage from "@ckeditor/ckeditor5-link/src/linkimage";
 import { Base64UploadAdapter } from "@ckeditor/ckeditor5-upload";
-import { Table } from "@ckeditor/ckeditor5-table";
-// import ImageInlineEditing from "@ckeditor/ckeditor5-image/src/image/imageinlineediting";
-// import ImageTypeCommand from "@ckeditor/ckeditor5-image/src/image/imagetypecommand";
+import {
+  Table,
+  TableToolbar,
+  TableCellProperties,
+  TableProperties,
+  TableColumnResize,
+  TableCaption,
+} from "@ckeditor/ckeditor5-table";
+import Alignment from "@ckeditor/ckeditor5-alignment/src/alignment";
+import BlockQuote from "@ckeditor/ckeditor5-block-quote/src/blockquote";
 
 import "./editor.css";
 
@@ -274,8 +289,13 @@ function CreateUpdatePost({
   const editorConfiguration = {
     plugins: [
       Essentials,
+      Heading,
       Bold,
       Italic,
+      Underline,
+      Strikethrough,
+      Subscript,
+      Superscript,
       Paragraph,
       Base64UploadAdapter,
       ImageUpload,
@@ -288,45 +308,57 @@ function CreateUpdatePost({
       ImageEditing,
       LinkImage,
       Table,
+      TableToolbar,
+      TableCellProperties,
+      TableProperties,
+      TableColumnResize,
+      TableCaption,
+      Alignment,
+      BlockQuote,
     ],
-    toolbar: ["bold", "italic", "|", "insertImage"],
+    toolbar: [
+      "undo",
+      "redo",
+      "|",
+      "heading",
+      "|",
+      "alignment",
+      "|",
+      "bold",
+      "italic",
+      "underline",
+      "strikethrough",
+      "subscript",
+      "superscript",
+      "|",
+      "link",
+      "insertImage",
+      "insertTable",
+      "blockQuote",
+    ],
     image: {
       toolbar: [
-        "imageStyle:block",
-        "imageStyle:wrapText",
-        "|",
         "toggleImageCaption",
         "imageTextAlternative",
-        "|",
         "linkImage",
         "|",
-        "resizeImage",
+        "imageStyle:breakText",
+        "imageStyle:wrapText",
+        "|",
+        "resizeImage:25",
+        "resizeImage:50",
+        "resizeImage:75",
+        "resizeImage:original",
       ],
-
-      insert: {
-        // If this setting is omitted, the editor defaults to 'block'.
-        // See explanation below.
-        type: "auto",
-      },
-
-      resizeUnit: "%",
-      resizeOptions: [
-        {
-          name: "resizeImage:original",
-          value: null,
-        },
-        {
-          name: "resizeImage:25",
-          value: "25",
-        },
-        {
-          name: "resizeImage:50",
-          value: "50",
-        },
-        {
-          name: "resizeImage:75",
-          value: "75",
-        },
+    },
+    table: {
+      contentToolbar: [
+        "toggleTableCaption",
+        "tableColumn",
+        "tableRow",
+        "mergeTableCells",
+        "tableProperties",
+        "tableCellProperties",
       ],
     },
   };

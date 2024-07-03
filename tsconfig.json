@@ -21,5 +21,6 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
+  "exclude": ["node_modules", "build", "dist", "tsconfig.node.json", "tsconfig.json", "hsl-rgb"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
