@@ -22,6 +22,7 @@ import {
   Strikethrough,
   Subscript,
   Superscript,
+  Code,
 } from "@ckeditor/ckeditor5-basic-styles";
 import { Paragraph } from "@ckeditor/ckeditor5-paragraph";
 import Heading from "@ckeditor/ckeditor5-heading/src/heading";
@@ -47,6 +48,8 @@ import {
 } from "@ckeditor/ckeditor5-table";
 import Alignment from "@ckeditor/ckeditor5-alignment/src/alignment";
 import BlockQuote from "@ckeditor/ckeditor5-block-quote/src/blockquote";
+import CodeBlock from "@ckeditor/ckeditor5-code-block/src/codeblock";
+import Font from "@ckeditor/ckeditor5-font/src/font";
 
 import "./editor.css";
 
@@ -315,27 +318,45 @@ function CreateUpdatePost({
       TableCaption,
       Alignment,
       BlockQuote,
+      Code,
+      CodeBlock,
+      Font,
     ],
-    toolbar: [
-      "undo",
-      "redo",
-      "|",
-      "heading",
-      "|",
-      "alignment",
-      "|",
-      "bold",
-      "italic",
-      "underline",
-      "strikethrough",
-      "subscript",
-      "superscript",
-      "|",
-      "link",
-      "insertImage",
-      "insertTable",
-      "blockQuote",
-    ],
+    toolbar: {
+      items: [
+        "undo",
+        "redo",
+        "|",
+        "heading",
+        "|",
+        "alignment",
+        "|",
+        {
+          label: "Basic styles",
+          icon: "text",
+          items: [
+            "bold",
+            "italic",
+            "underline",
+            "strikethrough",
+            "subscript",
+            "superscript",
+            "code",
+            "codeBlock",
+          ],
+        },
+        {
+          label: "Font Styles",
+          icon: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M256-240h84l44-122h192l44 122h84L522-720h-84L256-240Zm152-192 70-198h4l70 198H408ZM160-80q-33 0-56.5-23.5T80-160v-640q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v640q0 33-23.5 56.5T800-80H160Zm0-80h640v-640H160v640Zm0-640v640-640Z"/></svg>',
+          items: ["fontSize", "fontFamily", "fontColor", "fontBackgroundColor"],
+        },
+        "|",
+        "link",
+        "insertImage",
+        "insertTable",
+        "blockQuote",
+      ],
+    },
     image: {
       toolbar: [
         "toggleImageCaption",

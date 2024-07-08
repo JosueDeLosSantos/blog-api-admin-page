@@ -53,6 +53,18 @@ html {
   margin-right: auto;
 }
 
+.image-style-block-align-left {
+  display: block;
+  margin-right: auto;
+  margin-left: 0px;
+}
+
+.image-style-block-align-right {
+  display: block;
+  margin-right: 0px;
+  margin-left: auto;
+}
+
 .image-style-align-right {
   display: inline;
   float: right;
@@ -89,6 +101,18 @@ html {
   animation: animated-bg 60s linear infinite;
 }
 
+.table {
+  display: table;
+}
+
+figure.table {
+  margin: 1rem auto !important;
+}
+
+figure.table[style] {
+  margin: 1rem !important;
+}
+
 /* Light mode */
 @media (prefers-color-scheme: light) {
   h1,
@@ -119,23 +143,26 @@ html {
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
-  strong,
-  blockquote,
-  a,
-  h1,
-  /* h2:not(.except), */
+  a:not(.ck-editor__editable *),
+  h1:not(.ck-editor__editable *),
+  h2:not(.ck-editor__editable *),
+  h3:not(.ck-editor__editable *),
+  h4:not(.ck-editor__editable *),
+  label,
   textarea,
-  h2,
-  h3,
-  h4,
   .icons,
   .css-1yuf3k2-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
     color: rgb(241, 245, 249, 1) !important;
   }
 
+  strong,
+  code {
+    color: inherit !important;
+  }
+
   html,
   .ck-editor__main * {
-    color: rgb(2, 6, 23, 1) !important;
+    color: inherit;
   }
 
   .css-1yuf3k2-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {

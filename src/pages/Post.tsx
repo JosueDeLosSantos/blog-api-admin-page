@@ -18,7 +18,7 @@ import { RootState } from "../app/rootReducer";
 import axios, { AxiosError } from "axios";
 import { deletePost } from "../utils/postsSlice";
 import useWindowSize from "../hooks/windowSize";
-import useDynamicStyles from "../hooks/useDynamicStyles";
+import dynamicStyles from "../utils/dynamicStyles";
 
 const theme = createTheme({
   palette: {
@@ -60,7 +60,6 @@ function Post({ server }: { server: string }) {
   const initialPost = null as unknown as onePostType;
   const [post, setPost] = useState<onePostType>(initialPost);
   const [originalPost, setOriginalPost] = useState<onePostType>(initialPost);
-  useDynamicStyles(post, originalPost, setPost);
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [commentsBoxOptionsVisibility, setCommentsBoxOptionsVisibility] =
@@ -139,10 +138,10 @@ function Post({ server }: { server: string }) {
 
         dispatch(switchPrivilege("admin"));
         setUser(response.data.user);
-        // the following post is subject to change due to admins's color scheme preferences
-        setPost(response.data.post);
         // this is the original post and will be needed to edit it
         setOriginalPost(response.data.post);
+        // the following post is subject to change due to admins's color scheme preferences
+        dynamicStyles(response.data.post, setPost);
         setCommentToEdit({ ...commentToEdit, post: response.data.post._id });
       } catch (error) {
         const axiosError = error as AxiosError;
@@ -154,7 +153,8 @@ function Post({ server }: { server: string }) {
           type userPostType = { post: onePostType };
           const userData = axiosError?.response?.data as userPostType;
           dispatch(switchPrivilege("user"));
-          setPost(userData.post);
+          setOriginalPost(userData.post);
+          dynamicStyles(userData.post, setPost);
         } else {
           navigate("/server-error");
         }
@@ -168,12 +168,12 @@ function Post({ server }: { server: string }) {
   function EditPost(postToEdit: onePostType) {
     const postWithFormattedComments = {
       ...postToEdit,
-      comments: postToEdit.comments.map((comment) => {
+      comments: postToEdit?.comments?.map((comment) => {
         return comment._id;
       }),
     };
     // console.log(postWithFormattedComments);
-    navigate(`/posts/update/${postToEdit._id}`, {
+    navigate(`/posts/update/${postToEdit?._id}`, {
       state: postWithFormattedComments,
     });
   }
@@ -209,10 +209,10 @@ function Post({ server }: { server: string }) {
   };
 
   const commentsOptionsParentRef = useRef(
-    Array(post?.comments.length).fill(null),
+    Array(post?.comments?.length).fill(null),
   );
-  const deleteRef = useRef(Array(post?.comments.length).fill(null));
-  const editRef = useRef(Array(post?.comments.length).fill(null));
+  const deleteRef = useRef(Array(post?.comments?.length).fill(null));
+  const editRef = useRef(Array(post?.comments?.length).fill(null));
 
   const handleDeletion = (e: React.MouseEvent<HTMLButtonElement>) => {
     const target = e.target as HTMLButtonElement;
@@ -307,7 +307,7 @@ function Post({ server }: { server: string }) {
 
   // MARK: return
   return (
-    <div className="min-h-screen bg-slate-100 lg:w-[95%] dark:bg-slate-950">
+    <div className="min-h-screen bg-slate-100 lg:w-[94.5%] dark:bg-slate-950">
       <div className="flex gap-4 px-5 pb-5 max-lg:pt-14 lg:pt-2">
         <ThemeProvider theme={theme}>
           <div
@@ -319,7 +319,7 @@ function Post({ server }: { server: string }) {
           >
             <div>
               <IconButton onClick={() => ScrollTo("comments")}>
-                <Badge badgeContent={post?.comments.length} color="primary">
+                <Badge badgeContent={post?.comments?.length} color="primary">
                   <ForumOutlinedIcon
                     className="icons"
                     fontSize="medium"
@@ -378,7 +378,7 @@ function Post({ server }: { server: string }) {
               ></div>
 
               <img
-                src={`${server}${post?.file.path}`}
+                src={`${server}${post?.file?.path}`}
                 className="absolute left-0 top-0 h-full w-full rounded-lg object-cover"
               />
               {/* skeleton image */}
@@ -473,7 +473,7 @@ function Post({ server }: { server: string }) {
               </div>
             )}
             {/* MARK: Comments */}
-            {post?.comments.map((comment, index) => (
+            {post?.comments?.map((comment, index) => (
               <div
                 key={comment._id}
                 className="mx-auto mb-8 box-border flex max-h-[1600px] w-11/12 gap-4 truncate rounded-lg border border-solid border-slate-300 p-5 max-md:flex-col max-md:gap-2 dark:border-slate-600"
