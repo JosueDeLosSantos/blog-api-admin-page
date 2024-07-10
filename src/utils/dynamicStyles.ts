@@ -23,6 +23,7 @@ export default function dynamicStyles(
       /(?<=background-color:)hsl\(\s*\d+,\s*\d+%,\s*\d+%\s*\)/g;
     const bgColorMatches = tempPost?.match(bg_color_regex);
 
+    // bg colors will be darker
     if (bgColorMatches) {
       bgColorMatches.forEach((match, i) => {
         // deserialize hsl
@@ -52,6 +53,7 @@ export default function dynamicStyles(
     const remainingColors = /hsl\(\s*\d+,\s*\d+%,\s*\d+%\s*\)/g;
     const remainingColorMatches = tempPost?.match(remainingColors);
 
+    // remaining colors will be lighter
     if (remainingColorMatches) {
       remainingColorMatches.forEach((match, i) => {
         // deserialize hsl
@@ -80,6 +82,8 @@ export default function dynamicStyles(
 
     setPost({ ...post, post: tempPost });
   } else {
+    // user's preferred color scheme is light
+    // do nothing
     setPost({ ...post, post: post?.post });
   }
 }

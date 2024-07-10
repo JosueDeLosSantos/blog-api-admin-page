@@ -324,6 +324,7 @@ function Post({ server }: { server: string }) {
                     className="icons"
                     fontSize="medium"
                     color="secondary"
+                    titleAccess="Comments"
                   />
                 </Badge>
               </IconButton>
@@ -335,6 +336,7 @@ function Post({ server }: { server: string }) {
                     className="icons"
                     fontSize="medium"
                     color="secondary"
+                    titleAccess="Edit post"
                   />
                 </IconButton>
               </div>
@@ -346,6 +348,7 @@ function Post({ server }: { server: string }) {
                     className="icons"
                     fontSize="medium"
                     color="secondary"
+                    titleAccess="Delete post"
                   />
                 </IconButton>
               </div>
@@ -356,6 +359,7 @@ function Post({ server }: { server: string }) {
                   className="icons"
                   fontSize="medium"
                   color="secondary"
+                  titleAccess="Back to top"
                 />
               </IconButton>
             </div>
@@ -456,7 +460,7 @@ function Post({ server }: { server: string }) {
           )}
           <div id="comments-box" className="mx-auto mt-10 max-w-screen-md">
             {post?.comments?.length > 0 && (
-              <div className="mx-auto mb-8 text-center">
+              <div className="mx-auto mb-12 mt-10 text-center">
                 <h2>Comments</h2>
               </div>
             )}
@@ -482,7 +486,7 @@ function Post({ server }: { server: string }) {
                   <img
                     className="rounded-full ring-1 ring-slate-400 dark:ring-slate-500"
                     src={
-                      comment.photo === null
+                      comment.photo === undefined || comment.photo === null
                         ? "/images/profile-pic-placeholder.webp"
                         : `${server}${comment.photo.path}`
                     }
@@ -520,6 +524,7 @@ function Post({ server }: { server: string }) {
                               hideCommentsOptions(e);
                               handleDeletion(e);
                             }}
+                            title="Delete comment"
                           >
                             <DeleteIcon
                               sx={{ opacity: 0.7 }}
@@ -536,6 +541,7 @@ function Post({ server }: { server: string }) {
                                 hideCommentsOptions(e);
                                 handleEdition(e);
                               }}
+                              title="Edit comment"
                             >
                               <EditIcon
                                 sx={{ opacity: 0.7 }}
@@ -547,7 +553,7 @@ function Post({ server }: { server: string }) {
                       )}
                     </div>
                   </div>
-                  <div className="w-full truncate text-pretty text-sm">
+                  <div className="w-full truncate text-pretty text-sm dark:text-slate-100">
                     {/* Converts avery \n into a paragraph */}
                     {comment.comment
                       .split("\n")
