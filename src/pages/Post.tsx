@@ -308,7 +308,7 @@ function Post({ server }: { server: string }) {
   // MARK: return
   return (
     <div className="min-h-screen bg-slate-100 lg:w-[94.5%] dark:bg-slate-950">
-      <div className="flex gap-4 px-5 pb-5 max-lg:pt-14 lg:pt-2">
+      <div className="flex gap-4 px-4 pb-4 max-lg:pt-14 lg:pt-4">
         <ThemeProvider theme={theme}>
           <div
             className={
@@ -383,7 +383,7 @@ function Post({ server }: { server: string }) {
 
               <img
                 src={`${server}${post?.file?.path}`}
-                className="absolute left-0 top-0 h-full w-full rounded-lg object-cover"
+                className="absolute left-0 top-0 h-full w-full rounded-t-lg object-cover"
               />
               {/* skeleton image */}
               {!post && (
@@ -391,16 +391,16 @@ function Post({ server }: { server: string }) {
               )}
 
               <div className="absolute bottom-0 left-0 z-20 p-4">
-                <h2 className="except text-3xl font-semibold leading-tight text-gray-100 sm:text-4xl">
+                <h2 className="except font-semibold leading-tight text-gray-100 sm:text-3xl">
                   {post?.title && he.decode(post.title)}
                 </h2>
-                <div className="mt-3 flex">
+                <div className="mt-4 flex">
                   <div>
-                    <p className="text-sm font-semibold text-gray-200">
+                    <p className="font-semibold text-gray-200">
                       {" "}
                       {post?.author && he.decode(post?.author)}{" "}
                     </p>
-                    <p className="text-xs font-semibold text-gray-400">
+                    <p className="text-gray-400">
                       {" "}
                       {post?.date && he.decode(post?.date)}{" "}
                     </p>
@@ -413,7 +413,7 @@ function Post({ server }: { server: string }) {
 
           {post?.post && (
             <div
-              className="prose mx-auto max-w-screen-md border-b-[0.5px] border-l-0 border-r-0 border-t-0 border-solid border-slate-200 p-5 sm:mt-5 md:mt-8 dark:border-slate-600 dark:text-white"
+              className="prose mx-auto max-w-screen-md border-b-[0.5px] border-l-0 border-r-0 border-t-0 border-solid border-slate-200 p-4 sm:mt-4 md:mt-8 dark:border-slate-600 dark:text-white"
               dangerouslySetInnerHTML={{
                 __html: he.decode(post.post), // renders decoded HTML
               }}
@@ -469,7 +469,7 @@ function Post({ server }: { server: string }) {
               <div className="mx-auto w-11/12 pb-10 pl-5 pr-5 pt-10 text-slate-600 dark:text-slate-300">
                 If you want to leave a comment{" "}
                 <Link
-                  className="font-bold text-slate-800 no-underline dark:text-white"
+                  className="font-bold text-blue-800 no-underline dark:text-white"
                   to="/log-in"
                 >
                   Log in
@@ -484,7 +484,7 @@ function Post({ server }: { server: string }) {
               >
                 <div>
                   <img
-                    className="rounded-full ring-1 ring-slate-400 dark:ring-slate-500"
+                    className="rounded-full ring-1 ring-blue-400 dark:ring-blue-500"
                     src={
                       comment.photo === undefined || comment.photo === null
                         ? "/images/profile-pic-placeholder.webp"
@@ -501,7 +501,7 @@ function Post({ server }: { server: string }) {
                       <div className="text-sm font-bold text-slate-500 dark:text-slate-300">
                         {comment.name}
                       </div>
-                      <div className="relative bottom-5 text-slate-400 max-md:hidden max-md:text-2xl md:text-4xl dark:text-slate-200">
+                      <div className="relative bottom-6 text-slate-400 max-md:hidden md:text-xl dark:text-slate-200">
                         .
                       </div>
                       <div className="text-slate-500 max-md:text-[0.70rem] max-md:leading-[1.390] md:self-center md:text-[0.80rem] md:leading-snug dark:text-slate-300">

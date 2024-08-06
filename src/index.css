@@ -45,7 +45,7 @@ html {
 }
 
 .sidebar-empty-space {
-  height: calc(100vh - 4 * 40px - 178.391px);
+  height: calc(100vh - 5 * 40px - 178.391px);
 }
 
 .image {
@@ -143,9 +143,9 @@ figure.table[style] {
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
-  a:not(.ck-editor__editable *),
+  a:not(.ck-editor__editable *, .logo),
   h1:not(.ck-editor__editable *),
-  h2:not(.ck-editor__editable *),
+  h2:not(.ck-editor__editable *, .except),
   h3:not(.ck-editor__editable *),
   h4:not(.ck-editor__editable *),
   label,
@@ -220,5 +220,19 @@ figure.table[style] {
   }
   100% {
     transform: translateY(-20%);
+  }
+}
+
+@media (max-width: 600px) {
+  .mobile-logo {
+    margin-right: auto !important;
+    margin-left: calc(40vw - 48px) !important;
+  }
+}
+
+@media (min-width: 600px) {
+  .mobile-logo {
+    margin-right: auto !important;
+    margin-left: auto !important;
   }
 }

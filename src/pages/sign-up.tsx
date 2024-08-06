@@ -102,17 +102,17 @@ function SignUp({ server }: { server: string }) {
       <div className="w-full p-8">
         <h1 className="mb-10 text-center font-PressStart2P text-xl">
           <Link
-            className="logo text-[#721ea3] no-underline visited:text-[#540d7d] hover:text-[#721ea3]"
+            className="logo text-purple-600 no-underline visited:text-purple-700 hover:text-purple-500 dark:text-purple-300 dark:visited:text-purple-400 dark:hover:text-purple-500"
             to="../"
           >
             {"<JCODER>"}
           </Link>
         </h1>
         <form onSubmit={onSubmit} className="mt-10">
-          <h1 className="text-2xl font-bold">Sign up to create an account</h1>
+          <h1 className="text-xl font-bold">Sign up to create an account</h1>
 
           <div>
-            <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+            <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
               {Unauthorized}
             </span>
           </div>
@@ -125,7 +125,7 @@ function SignUp({ server }: { server: string }) {
               First Name
             </label>
             <input
-              className="py focus:shadow-outline box-border h-10 w-full cursor-pointer appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+              className="py focus:shadow-outline mb-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-800 dark:text-gray-200 dark:focus:border-blue-400"
               name="first_name"
               type="text"
               placeholder="Your first name"
@@ -133,7 +133,7 @@ function SignUp({ server }: { server: string }) {
               value={formData.first_name}
               maxLength={40}
             />
-            <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+            <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
               {errors.first_name}
             </span>
           </div>
@@ -145,7 +145,7 @@ function SignUp({ server }: { server: string }) {
               Last Name
             </label>
             <input
-              className="py focus:shadow-outline box-border h-10  w-full cursor-pointer appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+              className="py focus:shadow-outline mb-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-800 dark:text-gray-200 dark:focus:border-blue-400"
               name="last_name"
               type="text"
               placeholder="Your last name"
@@ -153,7 +153,7 @@ function SignUp({ server }: { server: string }) {
               value={formData.last_name}
               maxLength={70}
             />
-            <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+            <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
               {errors.last_name}
             </span>
           </div>
@@ -165,7 +165,7 @@ function SignUp({ server }: { server: string }) {
               Email
             </label>
             <input
-              className="py focus:shadow-outline box-border h-10  w-full cursor-pointer appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+              className="py focus:shadow-outline mb-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-800 dark:text-gray-200 dark:focus:border-blue-400"
               name="email"
               type="text"
               placeholder="Your email address"
@@ -173,7 +173,7 @@ function SignUp({ server }: { server: string }) {
               value={formData.email}
               maxLength={120}
             />
-            <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+            <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
               {errors.email}
             </span>
           </div>
@@ -185,7 +185,7 @@ function SignUp({ server }: { server: string }) {
               Username
             </label>
             <input
-              className="py focus:shadow-outline box-border h-10  w-full cursor-pointer appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+              className="py focus:shadow-outline mb-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-800 dark:text-gray-200 dark:focus:border-blue-400"
               name="username"
               type="text"
               placeholder="Your username"
@@ -193,7 +193,7 @@ function SignUp({ server }: { server: string }) {
               value={formData.username}
               maxLength={80}
             />
-            <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+            <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
               {errors.username}
             </span>
           </div>
@@ -205,7 +205,7 @@ function SignUp({ server }: { server: string }) {
               Password
             </label>
             <input
-              className="py focus:shadow-outline mb-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+              className="py focus:shadow-outline mb-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-800 dark:text-gray-200 dark:focus:border-blue-400"
               name="password"
               type="password"
               placeholder="Your password"
@@ -213,7 +213,7 @@ function SignUp({ server }: { server: string }) {
               value={formData.password}
               maxLength={70}
             />
-            <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+            <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
               {errors.password}
             </span>
           </div>
@@ -225,7 +225,7 @@ function SignUp({ server }: { server: string }) {
               Confirm Password
             </label>
             <input
-              className="py focus:shadow-outline mb-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+              className="py focus:shadow-outline mb-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-800 dark:text-gray-200 dark:focus:border-blue-400"
               name="passwordConfirmation"
               type="password"
               placeholder="Confirm your password"
@@ -233,14 +233,14 @@ function SignUp({ server }: { server: string }) {
               value={formData.passwordConfirmation}
               maxLength={70}
             />
-            <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+            <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
               {errors.passwordConfirmation}
             </span>
           </div>
 
           <div className="mt-8 flex w-full">
             <button
-              className="h-10 w-full cursor-pointer rounded border border-[#461c5f] bg-[#721ea3] px-2 py-2 text-sm font-semibold text-slate-100 hover:bg-[#540d7d] dark:bg-purple-500 dark:hover:bg-purple-600"
+              className="h-10 w-full cursor-pointer rounded border border-purple-700 bg-purple-600 px-2 py-1 text-sm font-semibold text-white hover:bg-purple-500 dark:bg-purple-500 dark:hover:bg-purple-600"
               type="submit"
             >
               Sign up

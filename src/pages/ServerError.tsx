@@ -2,21 +2,20 @@ function ServerError() {
   return (
     <>
       <div>
-        <div className="mt-[25vh] text-center">
-          <h1 className="text-3xl font-medium sm:text-5xl xl:text-6xl">
+        <div className="pt-[25vh] text-center">
+          <h1 className="xl:text-6xl text-3xl font-medium sm:text-5xl">
             Server Error
           </h1>
-          <p className="m-6 text-xl font-medium sm:text-3xl xl:text-4xl">
+          <p className="m-6 text-lg font-medium sm:text-2xl xl:text-3xl dark:text-slate-50">
             Sorry, we are having issues with our server.
           </p>
 
           <div>
-            <a
-              href="https://github.com/JosueDeLosSantos"
-              className="rounded bg-slate-800 px-4 py-2 text-white no-underline hover:bg-slate-700 sm:text-2xl xl:text-3xl"
-            >
-              Contact administrator
-            </a>
+            <button className="rounded bg-purple-500 p-2 text-white no-underline hover:bg-purple-600 md:text-lg dark:bg-slate-800 dark:hover:bg-slate-700">
+              <a href="https://github.com/JosueDeLosSantos">
+                Contact administrator
+              </a>
+            </button>
           </div>
         </div>
       </div>

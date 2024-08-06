@@ -75,7 +75,7 @@ function LogIn({ server }: { server: string }) {
   // MARK: return
 
   return (
-    <div className="container absolute left-[50%] top-[50%] mx-auto flex max-w-md translate-x-[-50%] translate-y-[-70%] overflow-hidden rounded-lg bg-white shadow xl:max-w-3xl dark:bg-slate-700">
+    <div className="container mx-auto flex max-w-md overflow-hidden rounded-lg bg-white shadow max-[500px]:h-[100vh] min-[500px]:absolute min-[500px]:left-[50%] min-[500px]:top-[50%] min-[500px]:translate-x-[-50%] min-[500px]:translate-y-[-70%] xl:max-w-3xl dark:bg-slate-700">
       <div className="relative hidden h-full xl:block xl:w-1/2">
         <img
           className="absolute h-auto w-full object-cover"
@@ -86,21 +86,21 @@ function LogIn({ server }: { server: string }) {
       <div className="w-full p-8 xl:w-1/2">
         <h1 className="mb-10 text-center font-PressStart2P text-xl ">
           <Link
-            className="logo text-[#721ea3] no-underline visited:text-[#540d7d] hover:text-[#721ea3]"
+            className="logo text-purple-600 no-underline visited:text-purple-700 hover:text-purple-500 dark:text-purple-300 dark:visited:text-purple-400 dark:hover:text-purple-500"
             to="../"
           >
             {"<JCODER>"}
           </Link>
         </h1>
         <form onSubmit={onSubmit}>
-          <h1 className="text-2xl font-bold">Sign in to your account</h1>
+          <h1 className="text-xl font-bold">Sign in to your account</h1>
           <div>
             <span className="text-sm text-gray-600 dark:text-gray-300">
               Don't have an account?
             </span>{" "}
             <span className="text-sm font-semibold">
               <Link
-                className="text-[#721ea3] visited:text-[#540d7d] hover:text-[#721ea3] dark:text-purple-200 dark:visited:text-purple-300 dark:hover:text-purple-100"
+                className="logo font-bold text-purple-600 visited:text-purple-700 hover:text-purple-500 dark:text-purple-300 dark:visited:text-purple-400 dark:hover:text-purple-500"
                 to="../sign-up"
               >
                 Sign up
@@ -115,7 +115,7 @@ function LogIn({ server }: { server: string }) {
               Username
             </label>
             <input
-              className="py focus:shadow-outline box-border  h-10 w-full appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+              className="py focus:shadow-outline mb-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-800 dark:text-gray-200 dark:focus:border-blue-400"
               name="username"
               type="text"
               placeholder="Your username"
@@ -124,7 +124,7 @@ function LogIn({ server }: { server: string }) {
               maxLength={80}
               required
             />
-            <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+            <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
               {errors.username}
             </span>
           </div>
@@ -136,7 +136,7 @@ function LogIn({ server }: { server: string }) {
               Password
             </label>
             <input
-              className="py focus:shadow-outline box-border  h-10 w-full appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-400 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+              className="py focus:shadow-outline mb-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-800 dark:text-gray-200 dark:focus:border-blue-400"
               name="password"
               type="password"
               placeholder="Your password"
@@ -145,18 +145,18 @@ function LogIn({ server }: { server: string }) {
               maxLength={70}
               required
             />
-            <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+            <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
               {errors.password}
             </span>
           </div>
 
-          <div className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+          <div className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
             <span>{credentials}</span>
           </div>
 
           <div className="mt-8 flex w-full">
             <button
-              className="py h-10 w-full cursor-pointer rounded border border-[#461c5f] bg-[#721ea3] px-2 text-sm font-semibold text-white hover:bg-[#540d7d] dark:bg-purple-500 dark:hover:bg-purple-600"
+              className="h-10 w-full cursor-pointer rounded border border-purple-700 bg-purple-600 px-2 py-1 text-sm font-semibold text-white hover:bg-purple-500 dark:bg-purple-500 dark:hover:bg-purple-600"
               type="submit"
             >
               Sign in

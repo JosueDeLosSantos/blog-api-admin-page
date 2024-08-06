@@ -23,21 +23,21 @@ export default function Main() {
   };
 
   return (
-    <div className="mb-5">
-      <form className="relative mx-5 rounded-lg border border-solid border-slate-200 max-lg:mt-16">
-        <button className="absolute left-0 top-1/2 -translate-y-1/2 rounded-l-md pb-[0.46rem] pl-1 pr-2 pt-[0.45rem] hover:bg-purple-700 hover:text-white dark:text-white dark:hover:bg-purple-100 dark:hover:text-black">
+    <div className="mb-4">
+      <form className="relative mx-4 rounded-lg border border-solid border-slate-200 max-lg:mt-16">
+        <button className="absolute left-0 top-1/2 -translate-y-1/2 rounded-l-md px-2 py-1 hover:bg-purple-600 hover:text-white dark:text-white dark:hover:bg-purple-100 dark:hover:text-black">
           <SearchOutlinedIcon />
         </button>
 
         <input
           onChange={onchange}
-          className="w-full appearance-none rounded-lg py-2 pl-10 pr-2 outline-none ring-purple-700 focus:ring-2 dark:text-white dark:ring-purple-100"
+          className="w-full appearance-none rounded-lg py-1 pl-12 pr-2 outline-none ring-2 ring-slate-200 focus:ring-2 focus:ring-purple-600 dark:text-white dark:ring-purple-100"
           type="text"
           placeholder="Search..."
         />
       </form>
       {value.filter.length > 0 && (
-        <div className="mx-5 mt-2 border border-solid border-slate-200 bg-white dark:bg-slate-800">
+        <div className="mx-4 mt-2 border border-solid border-slate-200 bg-white dark:bg-slate-800">
           <FilteredPosts posts={value.filter} />
         </div>
       )}

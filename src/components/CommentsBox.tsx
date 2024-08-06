@@ -199,14 +199,14 @@ function CommentsBox({
               maxLength={3000}
               name="comment"
               onInput={handleCommentChange}
-              className="box-border h-auto w-full resize-y rounded-sm border border-solid border-slate-300 bg-slate-100 px-3 py-2  focus:border-blue-300 focus:outline-none dark:bg-slate-950"
+              className="box-border h-auto w-full resize-y rounded-sm border border-solid border-slate-300 bg-blue-100 px-3 py-2  focus:border-blue-300 focus:outline-none dark:bg-slate-950"
               placeholder="Type Comment...*"
               value={he.decode(formData.comment)}
               required
             />
             <span className="text-sm text-gray-400">{`${formData.comment.length}/3000`}</span>
             <br />
-            <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+            <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
               {commentError}
             </span>
           </div>

@@ -13,7 +13,6 @@ import { RootState } from "../app/rootReducer";
 import { AppDispatch } from "../app/store";
 import useWindowSize from "../hooks/windowSize";
 import {
-  Divider,
   List,
   ListItem,
   ListItemButton,
@@ -135,21 +134,18 @@ export default function MenuBar() {
           </ListItem>
         )}
         {member === "user" && (
-          <>
-            <Divider className="divider" />
-            <ListItem
-              className="drawer-list-item"
-              onClick={signIn}
-              disablePadding
-            >
-              <ListItemButton>
-                <ListItemIcon>
-                  <VpnKeyOutlinedIcon className="drawerContent" />
-                </ListItemIcon>
-                <ListItemText className="drawerContent" primary={"Sign In"} />
-              </ListItemButton>
-            </ListItem>
-          </>
+          <ListItem
+            className="drawer-list-item"
+            onClick={signIn}
+            disablePadding
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                <VpnKeyOutlinedIcon className="drawerContent" />
+              </ListItemIcon>
+              <ListItemText className="drawerContent" primary={"Sign In"} />
+            </ListItemButton>
+          </ListItem>
         )}
         {member === "admin" && (
           <ListItem
@@ -166,21 +162,18 @@ export default function MenuBar() {
           </ListItem>
         )}
         {member === "admin" && (
-          <>
-            <Divider className="divider" />
-            <ListItem
-              className="drawer-list-item"
-              onClick={signOut}
-              disablePadding
-            >
-              <ListItemButton>
-                <ListItemIcon>
-                  <LogoutOutlinedIcon className="drawerContent" />
-                </ListItemIcon>
-                <ListItemText className="drawerContent" primary={"Sign Out"} />
-              </ListItemButton>
-            </ListItem>
-          </>
+          <ListItem
+            className="drawer-list-item"
+            onClick={signOut}
+            disablePadding
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                <LogoutOutlinedIcon className="drawerContent" />
+              </ListItemIcon>
+              <ListItemText className="drawerContent" primary={"Sign Out"} />
+            </ListItemButton>
+          </ListItem>
         )}
       </List>
     </Box>
@@ -203,7 +196,7 @@ export default function MenuBar() {
             edge="start"
             aria-label="menu"
             onClick={toggleDrawer(true)}
-            sx={{ mr: 2, color: "black" }}
+            sx={{ color: "black" }}
           >
             <MenuIcon fontSize={windowWidth >= 640 ? "large" : "medium"} />
           </IconButton>
@@ -214,7 +207,7 @@ export default function MenuBar() {
           <Typography
             variant="h6"
             component="div"
-            className="w-full text-center font-PressStart2P text-xs text-purple-700 sm:text-sm dark:text-purple-300"
+            className="mobile-logo w-fit font-PressStart2P text-sm text-purple-700 sm:text-sm dark:text-purple-300"
           >
             {"<JCODER>"}
           </Typography>

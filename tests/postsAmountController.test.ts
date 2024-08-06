@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
-import { mockArray } from "../src/features/posts/postsAmountController";
-import postsAmountController from "../src/features/posts/postsAmountController";
+import { mockArray } from "../src/utils/postsAmountController";
+import postsAmountController from "../src/utils/postsAmountController";
 
 const post = {
 	_id: "66300e40ac6cf0abebd65aa9",
