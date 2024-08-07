@@ -391,9 +391,9 @@ function Post({ server }: { server: string }) {
               )}
 
               <div className="absolute bottom-0 left-0 z-20 p-4">
-                <h2 className="except font-semibold leading-tight text-gray-100 sm:text-3xl">
+                <h1 className="except font-semibold leading-tight text-gray-100 max-sm:text-lg sm:text-xl">
                   {post?.title && he.decode(post.title)}
-                </h2>
+                </h1>
                 <div className="mt-4 flex">
                   <div>
                     <p className="font-semibold text-gray-200">
@@ -468,11 +468,10 @@ function Post({ server }: { server: string }) {
             {member === "user" && (
               <div className="mx-auto w-11/12 pb-10 pl-5 pr-5 pt-10 text-slate-600 dark:text-slate-300">
                 If you want to leave a comment{" "}
-                <Link
-                  className="font-bold text-blue-800 no-underline dark:text-white"
-                  to="/log-in"
-                >
-                  Log in
+                <Link className="w-fit font-bold " to="/log-in">
+                  <span className="text-blue-500 no-underline dark:text-blue-400">
+                    log in
+                  </span>
                 </Link>
               </div>
             )}

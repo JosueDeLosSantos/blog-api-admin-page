@@ -31,7 +31,7 @@ export default function Main() {
 
         <input
           onChange={onchange}
-          className="w-full appearance-none rounded-lg py-1 pl-12 pr-2 outline-none ring-2 ring-slate-200 focus:ring-2 focus:ring-purple-600 dark:text-white dark:ring-purple-100"
+          className="h-10 w-full appearance-none rounded-lg py-1 pl-12 pr-2 outline-none ring-2 ring-slate-200 focus:ring-2 focus:ring-purple-600 dark:text-white dark:ring-purple-100"
           type="text"
           placeholder="Search..."
         />

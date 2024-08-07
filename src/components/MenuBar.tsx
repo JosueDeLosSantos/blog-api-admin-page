@@ -207,7 +207,7 @@ export default function MenuBar() {
           <Typography
             variant="h6"
             component="div"
-            className="mobile-logo w-fit font-PressStart2P text-sm text-purple-700 sm:text-sm dark:text-purple-300"
+            className="mobile-logo w-fit font-PressStart2P text-sm text-purple-500 sm:text-sm dark:text-purple-400"
           >
             {"<JCODER>"}
           </Typography>

@@ -292,7 +292,7 @@ export default function Profile({ server }: { server: string }) {
       <div className="flex w-[75vw] max-w-[600px] flex-col items-center gap-3 rounded-xl border-slate-200 bg-white px-10 py-5 shadow-md md:gap-5 dark:border-slate-900 dark:bg-slate-800">
         <div>
           <img
-            className="rounded-full max-md:size-[80px]"
+            className="rounded-full ring-1 ring-blue-400 max-md:size-[80px] dark:ring-blue-500"
             width={100}
             height={100}
             src={profilePic.src}
@@ -300,12 +300,12 @@ export default function Profile({ server }: { server: string }) {
         </div>
         <div className="flex flex-col-reverse">
           {profilePic.src === "/images/profile-pic-placeholder.webp" && (
-            <h3 className="text-center text-xl antialiased md:text-2xl">
+            <h3 className="text-center antialiased sm:text-lg">
               Add a profile picture
             </h3>
           )}
           {profilePic.src !== "/images/profile-pic-placeholder.webp" && (
-            <h3 className="text-center text-xl antialiased md:text-2xl">
+            <h3 className="text-center antialiased sm:text-lg">
               Update profile picture
             </h3>
           )}
@@ -320,7 +320,7 @@ export default function Profile({ server }: { server: string }) {
       {/* MARK: Profile-info */}
       <div className="flex w-[75vw] max-w-[600px] flex-col rounded-xl border-slate-200 bg-white px-10 py-5 shadow-md dark:border-slate-900 dark:bg-slate-800">
         <div className="my-5">
-          <h2 className="text-center antialiased md:text-3xl">
+          <h2 className="text-center antialiased max-sm:text-lg sm:text-xl">
             Update your information here
           </h2>
         </div>
@@ -330,14 +330,14 @@ export default function Profile({ server }: { server: string }) {
               <label htmlFor="first_name">First Name</label>
               <input
                 onChange={handleInputChange}
-                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border  border-slate-400 bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-purple-400 focus:outline-none dark:border-slate-400 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-300"
+                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
                 name="first_name"
                 type="text"
                 placeholder="Your first name"
                 maxLength={40}
                 value={formValues.first_name}
               />
-              <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+              <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
                 {errors.first_name}
               </span>
             </div>
@@ -345,14 +345,14 @@ export default function Profile({ server }: { server: string }) {
               <label htmlFor="last_name">Last Name</label>
               <input
                 onChange={handleInputChange}
-                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border  border-slate-400 bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-purple-400 focus:outline-none dark:border-slate-400 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-300"
+                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
                 name="last_name"
                 type="text"
                 placeholder="Your last name"
                 maxLength={70}
                 value={formValues.last_name}
               />
-              <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+              <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
                 {errors.last_name}
               </span>
             </div>
@@ -362,14 +362,14 @@ export default function Profile({ server }: { server: string }) {
               <label htmlFor="email">Email</label>
               <input
                 onChange={handleInputChange}
-                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border  border-slate-400 bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-purple-400 focus:outline-none dark:border-slate-400 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-300"
+                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
                 name="email"
                 type="email"
                 placeholder="Your email address"
                 maxLength={120}
                 value={formValues.email}
               />
-              <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+              <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
                 {errors.email}
               </span>
             </div>
@@ -377,14 +377,14 @@ export default function Profile({ server }: { server: string }) {
               <label htmlFor="username">Username</label>
               <input
                 onChange={handleInputChange}
-                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border  border-slate-400 bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-purple-400 focus:outline-none dark:border-slate-400 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-300"
+                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
                 name="username"
                 type="text"
                 placeholder="Your username"
                 maxLength={80}
                 value={formValues.username}
               />
-              <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+              <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
                 {errors.username}
               </span>
             </div>
@@ -394,7 +394,7 @@ export default function Profile({ server }: { server: string }) {
               <label htmlFor="new_password">Update password</label>
               <select
                 onChange={onSelect}
-                className="py focus:shadow-outline mt-1 box-border h-10 w-full cursor-pointer appearance-none rounded border  border-slate-400 bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-purple-400 focus:outline-none dark:border-slate-400 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-300"
+                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
               >
                 <option
                   defaultValue={""}
@@ -409,7 +409,7 @@ export default function Profile({ server }: { server: string }) {
             <div className={`flex-1 ${selected ? "hidden" : ""}`}>
               <label htmlFor="password">Current Password</label>
               <input
-                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border  border-slate-400 bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-purple-400 focus:outline-none dark:border-slate-400 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-300"
+                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
                 name="password"
                 type="password"
                 placeholder="Your current password"
@@ -418,7 +418,7 @@ export default function Profile({ server }: { server: string }) {
                 onChange={handleInputChange}
                 disabled={selected}
               />
-              <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+              <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
                 {errors.password}
               </span>
             </div>
@@ -427,7 +427,7 @@ export default function Profile({ server }: { server: string }) {
             <div className={`flex-1 ${selected ? "hidden" : ""}`}>
               <label htmlFor="newPassword">New Password</label>
               <input
-                className="py focus:shadow-outline mt-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-purple-400 focus:outline-none dark:border-slate-400 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-300"
+                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
                 name="newPassword"
                 type="password"
                 placeholder="Your new password"
@@ -436,7 +436,7 @@ export default function Profile({ server }: { server: string }) {
                 disabled={selected}
                 value={formValues.newPassword}
               />
-              <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+              <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
                 {errors.newPassword}
               </span>
             </div>
@@ -445,7 +445,7 @@ export default function Profile({ server }: { server: string }) {
                 Confirm new password
               </label>
               <input
-                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border  border-slate-400 bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-purple-400 focus:outline-none dark:border-slate-400 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-300"
+                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
                 name="newPasswordConfirmation"
                 type="password"
                 placeholder="Your new password"
@@ -454,7 +454,7 @@ export default function Profile({ server }: { server: string }) {
                 disabled={selected}
                 value={formValues.newPasswordConfirmation}
               />
-              <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+              <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
                 {errors.newPasswordConfirmation}
               </span>
             </div>
@@ -462,7 +462,7 @@ export default function Profile({ server }: { server: string }) {
 
           <div className="mt-5 flex w-full">
             <button
-              className="h-10 w-full cursor-pointer rounded border border-[#461c5f]  bg-[#721ea3] px-2 py-2 text-sm font-semibold text-slate-100 hover:bg-[#540d7d] dark:bg-purple-500 dark:hover:bg-purple-600"
+              className="h-10 w-full cursor-pointer rounded border border-purple-700 bg-purple-600 px-2 py-2 text-sm font-semibold text-white hover:bg-purple-500 dark:bg-purple-500 dark:hover:bg-purple-600"
               type="submit"
             >
               Update Information

@@ -413,16 +413,16 @@ function CreateUpdatePost({
                   </label>
                   <input
                     type="text"
-                    maxLength={170}
+                    maxLength={120}
                     className="py focus:shadow-outline mt-3 box-border h-10 w-full appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
                     name="title"
                     onInput={handleInputChange}
                     value={formData.title}
                     required
                   />
-                  <span className="text-sm text-gray-400">{`${formData.title.length}/170`}</span>
+                  <span className="text-sm text-gray-400">{`${formData.title.length}/120`}</span>
                   <br />
-                  <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+                  <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
                     {errors.title}
                   </span>
                 </div>
@@ -444,7 +444,7 @@ function CreateUpdatePost({
                   />
                   <span className="text-sm text-gray-400">{`${formData.description.length}/370`}</span>
                   <br />
-                  <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+                  <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
                     {errors.description}
                   </span>
                 </div>
@@ -496,7 +496,7 @@ function CreateUpdatePost({
 
                   <span className="text-sm text-gray-400">{`${formData.post.length}/100000`}</span>
                   <br />
-                  <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+                  <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
                     {errors.post}
                   </span>
                 </div>
@@ -525,7 +525,7 @@ function CreateUpdatePost({
                       setFormData={setFormData}
                     />
                   )}
-                  <span className="text-red-600 max-sm:text-xs sm:text-sm dark:text-red-300">
+                  <span className="max-sm:text-xs text-red-600 sm:text-sm dark:text-red-300">
                     {errors.file}
                   </span>
                 </div>

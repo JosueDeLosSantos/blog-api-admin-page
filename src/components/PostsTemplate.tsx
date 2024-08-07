@@ -142,18 +142,18 @@ function PostsTemplate({
                   data-imgid={post._id}
                   className={`absolute bottom-0 left-1 lg:hidden`}
                 >
-                  <h2 className="except text-lg">{he.decode(post.title)}</h2>
+                  <h2 className="except sm:text-lg">{he.decode(post.title)}</h2>
                 </div>
               </div>
               <div className="w-full md:w-full  lg:w-1/2">
-                <h2 className="mb-2 mt-1 hidden text-base sm:text-lg lg:block">
+                <h2 className="mb-4 mt-1 hidden sm:text-lg lg:block">
                   {he.decode(post.title)}
                 </h2>
                 <span className="text-sm italic text-gray-500 md:text-base dark:text-gray-400">
                   {post.date}
                 </span>
                 <div className="max-lg:mt-2">
-                  <p className="prose line-clamp-6 text-sm max-lg:mt-0 sm:text-base dark:text-white">
+                  <p className="prose line-clamp-3 text-sm max-lg:mt-0 sm:text-base dark:text-white">
                     {he.decode(post.description)}
                   </p>
                 </div>

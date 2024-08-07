@@ -4,24 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  /* h1 {
-    @apply text-3xl;
-    @apply font-bold;
-  } */
-
-  h2 {
-    @apply text-2xl;
-    @apply font-bold;
-  }
-  h3 {
-    @apply text-xl;
-    @apply font-bold;
-  }
-  h4 {
-    @apply text-lg;
-    @apply font-bold;
-  }
+h2:not(.except) {
+  font-size: 1.5rem;
+}
+h3 {
+  font-size: 1.25rem;
 }
 
 body {
@@ -115,7 +102,7 @@ figure.table[style] {
 
 /* Light mode */
 @media (prefers-color-scheme: light) {
-  h1,
+  h1:not(.except),
   h2:not(.except),
   h3,
   h4,

@@ -70,7 +70,7 @@ export default function MenuBar() {
         {member && (
           <div
             data-menuitem="1"
-            className={`mt-2 flex w-full cursor-pointer items-center rounded p-2 font-medium hover:bg-purple-600 hover:text-white dark:hover:bg-blue-100 dark:hover:text-purple-600 ${(location.pathname === "/posts" && "bg-blue-100 text-purple-700 dark:bg-purple-600  dark:text-purple-100") || "bg-slate-100  dark:bg-slate-700 "}`}
+            className={`mt-2 flex w-full cursor-pointer items-center rounded p-2 font-medium hover:bg-purple-600 hover:text-white dark:hover:bg-blue-100 dark:hover:text-purple-600 ${(location.pathname === "/posts" && "bg-blue-100 text-purple-700 dark:bg-purple-500  dark:text-purple-100") || "bg-slate-100  dark:bg-slate-700 "}`}
             onClick={allPost}
           >
             <DynamicFeedOutlinedIcon data-menuitem="1" />
@@ -82,7 +82,7 @@ export default function MenuBar() {
         {member === "admin" && (
           <div
             data-menuitem="2"
-            className={`mt-2 flex w-full cursor-pointer items-center rounded p-2 font-medium hover:bg-purple-600 hover:text-white dark:hover:bg-blue-100 dark:hover:text-purple-700 ${(location.pathname === "/posts/create" && "bg-blue-100 text-purple-700 dark:bg-purple-600  dark:text-purple-100") || "bg-slate-100  dark:bg-slate-700 "}`}
+            className={`mt-2 flex w-full cursor-pointer items-center rounded p-2 font-medium hover:bg-purple-600 hover:text-white dark:hover:bg-blue-100 dark:hover:text-purple-700 ${(location.pathname === "/posts/create" && "bg-blue-100 text-purple-700 dark:bg-purple-500  dark:text-purple-100") || "bg-slate-100  dark:bg-slate-700 "}`}
             onClick={createPost}
           >
             <EditNoteOutlinedIcon data-menuitem="2" />
@@ -122,7 +122,7 @@ export default function MenuBar() {
           <>
             <div
               data-menuitem="5"
-              className={`mt-2 flex w-full cursor-pointer items-center rounded p-2 font-medium hover:bg-purple-600 hover:text-white dark:hover:bg-blue-100 dark:hover:text-purple-700 ${(location.pathname === "/profile" && "bg-blue-100 text-purple-700 dark:bg-purple-600  dark:text-purple-100") || "bg-slate-100  dark:bg-slate-700 "}`}
+              className={`mt-2 flex w-full cursor-pointer items-center rounded p-2 font-medium hover:bg-purple-600 hover:text-white dark:hover:bg-blue-100 dark:hover:text-purple-700 ${(location.pathname === "/profile" && "bg-blue-100 text-purple-700 dark:bg-purple-500  dark:text-purple-100") || "bg-slate-100  dark:bg-slate-700 "}`}
               onClick={profile}
             >
               <AccountCircleOutlinedIcon data-menuitem="5" />

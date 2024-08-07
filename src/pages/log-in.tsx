@@ -75,7 +75,7 @@ function LogIn({ server }: { server: string }) {
   // MARK: return
 
   return (
-    <div className="container mx-auto flex max-w-md overflow-hidden rounded-lg bg-white shadow max-[500px]:h-[100vh] min-[500px]:absolute min-[500px]:left-[50%] min-[500px]:top-[50%] min-[500px]:translate-x-[-50%] min-[500px]:translate-y-[-70%] xl:max-w-3xl dark:bg-slate-700">
+    <div className="container mx-auto flex max-w-md overflow-hidden rounded-lg bg-white shadow max-[500px]:h-[100vh] min-[500px]:absolute min-[500px]:left-[50%] min-[500px]:top-[50%] min-[500px]:translate-x-[-50%] min-[500px]:translate-y-[-70%] xl:max-w-3xl dark:bg-slate-800">
       <div className="relative hidden h-full xl:block xl:w-1/2">
         <img
           className="absolute h-auto w-full object-cover"
@@ -86,14 +86,14 @@ function LogIn({ server }: { server: string }) {
       <div className="w-full p-8 xl:w-1/2">
         <h1 className="mb-10 text-center font-PressStart2P text-xl ">
           <Link
-            className="logo text-purple-600 no-underline visited:text-purple-700 hover:text-purple-500 dark:text-purple-300 dark:visited:text-purple-400 dark:hover:text-purple-500"
+            className="logo text-lg text-purple-600 no-underline visited:text-purple-700 hover:text-purple-500 dark:text-purple-300 dark:visited:text-purple-400 dark:hover:text-purple-500"
             to="../"
           >
             {"<JCODER>"}
           </Link>
         </h1>
         <form onSubmit={onSubmit}>
-          <h1 className="text-xl font-bold">Sign in to your account</h1>
+          <h1 className="text-lg font-bold">Sign in to your account</h1>
           <div>
             <span className="text-sm text-gray-600 dark:text-gray-300">
               Don't have an account?
@@ -109,13 +109,13 @@ function LogIn({ server }: { server: string }) {
           </div>
           <div className="mb-4 mt-6 box-border w-full">
             <label
-              className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-200"
+              className="mb-2 block text-base font-semibold text-gray-700 dark:text-gray-200"
               htmlFor="username"
             >
               Username
             </label>
             <input
-              className="py focus:shadow-outline mb-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-800 dark:text-gray-200 dark:focus:border-blue-400"
+              className="py focus:shadow-outline mb-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
               name="username"
               type="text"
               placeholder="Your username"
@@ -130,13 +130,13 @@ function LogIn({ server }: { server: string }) {
           </div>
           <div className="mb-6 mt-6 box-border w-full">
             <label
-              className="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-200"
+              className="mb-2 block text-base font-semibold text-gray-700 dark:text-gray-200"
               htmlFor="password"
             >
               Password
             </label>
             <input
-              className="py focus:shadow-outline mb-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-800 dark:text-gray-200 dark:focus:border-blue-400"
+              className="py focus:shadow-outline mb-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
               name="password"
               type="password"
               placeholder="Your password"
@@ -165,7 +165,7 @@ function LogIn({ server }: { server: string }) {
           <div className="mt-5 flex w-full">
             <button
               onClick={() => navigate("/posts")}
-              className="py h-10 w-full cursor-pointer rounded border-none bg-white px-2 text-sm font-semibold text-slate-500 ring-1 ring-slate-400 hover:bg-slate-100 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
+              className="py h-10 w-full cursor-pointer rounded border-none bg-white px-2 text-sm font-semibold text-slate-500 ring-1 ring-slate-400 hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700"
               type="button"
             >
               Cancel
