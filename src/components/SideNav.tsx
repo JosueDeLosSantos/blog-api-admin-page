@@ -13,6 +13,7 @@ import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 export default function MenuBar() {
   const dispatch: AppDispatch = useDispatch();
@@ -43,6 +44,10 @@ export default function MenuBar() {
     navigate("/profile");
   };
 
+  const about = () => {
+    navigate("/about");
+  };
+
   const signOut = () => {
     dispatch(switchPrivilege("user"));
     localStorage.removeItem("accessToken");
@@ -60,7 +65,6 @@ export default function MenuBar() {
       <div className="flex flex-col justify-between text-black xl:text-lg dark:text-slate-100">
         {member === "user" && (
           <div
-            data-menuitem="0"
             className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-600 hover:text-white dark:bg-slate-700 dark:hover:bg-blue-100 dark:hover:text-purple-600"
             onClick={homePage}
           >
@@ -69,81 +73,77 @@ export default function MenuBar() {
         )}
         {member && (
           <div
-            data-menuitem="1"
             className={`mt-2 flex w-full cursor-pointer items-center rounded p-2 font-medium hover:bg-purple-600 hover:text-white dark:hover:bg-blue-100 dark:hover:text-purple-600 ${(location.pathname === "/posts" && "bg-blue-100 text-purple-700 dark:bg-purple-500  dark:text-purple-100") || "bg-slate-100  dark:bg-slate-700 "}`}
             onClick={allPost}
           >
-            <DynamicFeedOutlinedIcon data-menuitem="1" />
-            <span data-menuitem="1" className="ml-2">
-              All Posts
-            </span>
+            <DynamicFeedOutlinedIcon />
+            <span className="ml-2">All Posts</span>
           </div>
         )}
+
         {member === "admin" && (
           <div
-            data-menuitem="2"
             className={`mt-2 flex w-full cursor-pointer items-center rounded p-2 font-medium hover:bg-purple-600 hover:text-white dark:hover:bg-blue-100 dark:hover:text-purple-700 ${(location.pathname === "/posts/create" && "bg-blue-100 text-purple-700 dark:bg-purple-500  dark:text-purple-100") || "bg-slate-100  dark:bg-slate-700 "}`}
             onClick={createPost}
           >
-            <EditNoteOutlinedIcon data-menuitem="2" />
-            <span data-menuitem="2" className="ml-2">
-              Create Post
-            </span>
+            <EditNoteOutlinedIcon />
+            <span className="ml-2">Create Post</span>
           </div>
         )}
 
         {member === "user" && (
           <>
             <div
-              data-menuitem="4"
               className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-600 hover:text-white dark:bg-slate-700 dark:hover:bg-blue-100 dark:hover:text-purple-700"
               onClick={signUp}
             >
-              <HowToRegOutlinedIcon data-menuitem="4" />
-              <span data-menuitem="4" className="ml-2">
-                Sign Up
-              </span>
+              <HowToRegOutlinedIcon />
+              <span className="ml-2">Sign Up</span>
             </div>
           </>
         )}
+
         {member === "user" && (
           <div
-            data-menuitem="3"
             className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-600 hover:text-white dark:bg-slate-700 dark:hover:bg-blue-100 dark:hover:text-purple-700"
             onClick={signIn}
           >
-            <VpnKeyOutlinedIcon data-menuitem="3" />
-            <span data-menuitem="3" className="ml-2">
-              Sing In
-            </span>
+            <VpnKeyOutlinedIcon />
+            <span className="ml-2">Sing In</span>
           </div>
         )}
         {member === "admin" && (
           <>
             <div
-              data-menuitem="5"
               className={`mt-2 flex w-full cursor-pointer items-center rounded p-2 font-medium hover:bg-purple-600 hover:text-white dark:hover:bg-blue-100 dark:hover:text-purple-700 ${(location.pathname === "/profile" && "bg-blue-100 text-purple-700 dark:bg-purple-500  dark:text-purple-100") || "bg-slate-100  dark:bg-slate-700 "}`}
               onClick={profile}
             >
-              <AccountCircleOutlinedIcon data-menuitem="5" />
-              <span data-menuitem="5" className="ml-2">
-                Profile
-              </span>
+              <AccountCircleOutlinedIcon />
+              <span className="ml-2">Profile</span>
             </div>
           </>
         )}
 
         {member === "admin" && (
           <div
-            data-menuitem="6"
             className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-600 hover:text-white dark:bg-slate-700 dark:hover:bg-blue-100 dark:hover:text-purple-700"
             onClick={signOut}
           >
-            <LogoutOutlinedIcon data-menuitem="6" />
-            <span data-menuitem="6" className="ml-2">
-              Sign Out
-            </span>
+            <LogoutOutlinedIcon />
+            <span className="ml-2">Sign Out</span>
           </div>
+        )}
+
+        {member && (
+          <>
+            <div
+              className={`mt-2 flex w-full cursor-pointer items-center rounded p-2 font-medium hover:bg-purple-600 hover:text-white dark:hover:bg-blue-100 dark:hover:text-purple-700 ${(location.pathname === "/about" && "bg-blue-100 text-purple-700 dark:bg-purple-500  dark:text-purple-100") || "bg-slate-100  dark:bg-slate-700 "}`}
+              onClick={about}
+            >
+              <InfoOutlinedIcon />
+              <span className="ml-2">About</span>
+            </div>
+          </>
         )}
       </div>
     </div>

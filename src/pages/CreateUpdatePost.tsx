@@ -394,19 +394,19 @@ function CreateUpdatePost({
             <div className="min-h-[80vh] border-gray-200  bg-white p-6 dark:bg-slate-700">
               <form onSubmit={onSubmit}>
                 {operation === "update" && (
-                  <h1 className="text-center text-2xl font-bold sm:text-3xl">
+                  <h1 className="text-center font-bold max-sm:text-lg sm:text-xl">
                     Update post
                   </h1>
                 )}
                 {operation !== "update" && (
-                  <h1 className="text-center text-2xl font-bold sm:text-3xl">
+                  <h1 className="text-center font-bold max-sm:text-lg sm:text-xl">
                     Create post
                   </h1>
                 )}
                 <div className="mb-4 mt-16">
                   <label
                     htmlFor="title"
-                    className="text-xl font-bold text-gray-700 lg:text-2xl dark:text-gray-200"
+                    className="font-bold text-gray-700 sm:text-lg dark:text-gray-200"
                   >
                     Title{" "}
                     <span className="text-red-500 dark:text-red-300">*</span>
@@ -414,7 +414,7 @@ function CreateUpdatePost({
                   <input
                     type="text"
                     maxLength={120}
-                    className="py focus:shadow-outline mt-3 box-border h-10 w-full appearance-none rounded  border border-[#461c5f] bg-gray-200 px-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+                    className="py focus:shadow-outline box-border h-10 w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-100 px-2 leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
                     name="title"
                     onInput={handleInputChange}
                     value={formData.title}
@@ -430,14 +430,14 @@ function CreateUpdatePost({
                 <div className="mb-4">
                   <label
                     htmlFor="description"
-                    className="text-xl font-bold text-gray-700 lg:text-2xl dark:text-gray-200"
+                    className="font-bold text-gray-700 sm:text-lg dark:text-gray-200"
                   >
                     Description{" "}
                   </label>
                   <TextareaAutosize
                     maxLength={370}
                     minRows={2}
-                    className="focus:shadow-outline mt-3 box-border w-full resize-none appearance-none rounded border border-[#461c5f] bg-gray-200 px-2 py-2 text-sm leading-tight text-gray-700 focus:border-blue-300 focus:outline-none dark:border-slate-400 dark:bg-gray-800 dark:text-gray-200"
+                    className="py focus:shadow-outline box-border h-10 w-full cursor-pointer appearance-none rounded border  border-slate-400 bg-gray-100 px-2 py-1 leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
                     name="description"
                     onInput={handleDescriptionChange}
                     value={formData.description}
@@ -450,7 +450,7 @@ function CreateUpdatePost({
                 </div>
 
                 <div className="mb-4 space-y-3">
-                  <label className="text-xl font-bold text-gray-700 lg:text-2xl dark:text-gray-200">
+                  <label className="font-bold text-gray-700 sm:text-lg dark:text-gray-200">
                     Content{" "}
                     <span className="text-red-500 dark:text-red-300">*</span>
                   </label>
@@ -504,7 +504,7 @@ function CreateUpdatePost({
                 <div className="mb-4 space-y-3">
                   <label
                     htmlFor="file"
-                    className="text-xl font-bold text-gray-700 lg:text-2xl dark:text-gray-200"
+                    className="font-bold text-gray-700 sm:text-lg dark:text-gray-200"
                   >
                     Image
                   </label>

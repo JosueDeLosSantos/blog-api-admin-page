@@ -330,7 +330,7 @@ export default function Profile({ server }: { server: string }) {
               <label htmlFor="first_name">First Name</label>
               <input
                 onChange={handleInputChange}
-                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
+                className="py focus:shadow-outline mb-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-100 px-2 leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
                 name="first_name"
                 type="text"
                 placeholder="Your first name"
@@ -345,7 +345,7 @@ export default function Profile({ server }: { server: string }) {
               <label htmlFor="last_name">Last Name</label>
               <input
                 onChange={handleInputChange}
-                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
+                className="py focus:shadow-outline mb-1 box-border h-10  w-full cursor-pointer appearance-none rounded  border border-slate-400 bg-gray-100 px-2 leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
                 name="last_name"
                 type="text"
                 placeholder="Your last name"
@@ -362,7 +362,7 @@ export default function Profile({ server }: { server: string }) {
               <label htmlFor="email">Email</label>
               <input
                 onChange={handleInputChange}
-                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
+                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
                 name="email"
                 type="email"
                 placeholder="Your email address"
@@ -377,7 +377,7 @@ export default function Profile({ server }: { server: string }) {
               <label htmlFor="username">Username</label>
               <input
                 onChange={handleInputChange}
-                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
+                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
                 name="username"
                 type="text"
                 placeholder="Your username"
@@ -394,7 +394,7 @@ export default function Profile({ server }: { server: string }) {
               <label htmlFor="new_password">Update password</label>
               <select
                 onChange={onSelect}
-                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
+                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
               >
                 <option
                   defaultValue={""}
@@ -409,7 +409,7 @@ export default function Profile({ server }: { server: string }) {
             <div className={`flex-1 ${selected ? "hidden" : ""}`}>
               <label htmlFor="password">Current Password</label>
               <input
-                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
+                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
                 name="password"
                 type="password"
                 placeholder="Your current password"
@@ -427,7 +427,7 @@ export default function Profile({ server }: { server: string }) {
             <div className={`flex-1 ${selected ? "hidden" : ""}`}>
               <label htmlFor="newPassword">New Password</label>
               <input
-                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
+                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
                 name="newPassword"
                 type="password"
                 placeholder="Your new password"
@@ -445,7 +445,7 @@ export default function Profile({ server }: { server: string }) {
                 Confirm new password
               </label>
               <input
-                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
+                className="py focus:shadow-outline mt-1 box-border h-10 w-full  cursor-pointer appearance-none rounded border border-slate-400 bg-gray-100 px-2 leading-tight text-gray-700 focus:border-blue-500 focus:outline-none dark:border-slate-500 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-blue-400"
                 name="newPasswordConfirmation"
                 type="password"
                 placeholder="Your new password"

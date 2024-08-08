@@ -239,8 +239,8 @@ const BlogImgUploadBtn: React.FC<ImgUploadBtnProps> = ({
           style={{ display: `${imageContainer}` }}
           className={
             isDragging
-              ? "h-[24rem] w-full rounded-lg bg-blue-100 text-2xl font-bold text-blue-300 max-sm:h-[12rem] dark:bg-slate-900 dark:text-slate-700"
-              : "h-[24rem] w-full rounded-lg bg-slate-200 text-2xl font-bold text-slate-400 max-sm:h-[12rem] dark:bg-slate-800 dark:text-slate-600"
+              ? "h-[24rem] w-full rounded-lg bg-blue-100 font-bold text-blue-300 max-sm:h-[12rem] max-sm:text-lg sm:text-xl dark:bg-slate-900 dark:text-slate-700"
+              : "h-[24rem] w-full rounded-lg bg-slate-200 font-bold text-slate-400 max-sm:h-[12rem] max-sm:text-lg sm:text-xl dark:bg-slate-800 dark:text-slate-600"
           }
           onClick={(e) => {
             e.preventDefault();

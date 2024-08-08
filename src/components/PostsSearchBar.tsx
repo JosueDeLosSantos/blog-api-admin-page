@@ -24,14 +24,17 @@ export default function Main() {
 
   return (
     <div className="mb-4">
-      <form className="relative mx-4 rounded-lg border border-solid border-slate-200 max-lg:mt-16">
-        <button className="absolute left-0 top-1/2 -translate-y-1/2 rounded-l-md px-2 py-1 hover:bg-purple-600 hover:text-white dark:text-white dark:hover:bg-purple-100 dark:hover:text-black">
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className="relative mx-4 rounded-lg border border-solid border-slate-200 max-lg:mt-16"
+      >
+        <button className="absolute left-0 top-1/2 -translate-y-1/2 rounded-l-md px-2 py-2 hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-purple-500 dark:hover:text-white">
           <SearchOutlinedIcon />
         </button>
 
         <input
           onChange={onchange}
-          className="h-10 w-full appearance-none rounded-lg py-1 pl-12 pr-2 outline-none ring-2 ring-slate-200 focus:ring-2 focus:ring-purple-600 dark:text-white dark:ring-purple-100"
+          className="h-10 w-full appearance-none rounded-lg py-1 pl-12 pr-2 outline-none ring-2 ring-slate-200 focus:ring-2 focus:ring-blue-500 dark:text-white dark:ring-purple-100 dark:focus:ring-purple-500"
           type="text"
           placeholder="Search..."
         />
@@ -48,7 +51,7 @@ export default function Main() {
 function FilteredPosts({ posts }: { posts: postTypes[] }) {
   return posts.map((post) => (
     <Link to={`/posts/post/${post._id}`}>
-      <div className="cursor-pointer p-2 hover:bg-purple-100 dark:hover:bg-purple-700">
+      <div className="cursor-pointer p-2 hover:bg-blue-100 dark:hover:bg-purple-500">
         <p className="mb-[-0.1rem] font-bold">{post.title}</p>
         <span className="text-sm text-slate-500 dark:text-slate-300">
           {post.date}

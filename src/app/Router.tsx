@@ -9,6 +9,7 @@ import LogIn from "../pages/log-in";
 import SignUp from "../pages/sign-up";
 import Hero from "../pages/Hero";
 import Profile from "../pages/Profile";
+import About from "../pages/About";
 
 const Router = () => {
   //https://dummy-blog.adaptable.app/
@@ -43,6 +44,10 @@ const Router = () => {
         {
           path: "posts/update/:name",
           element: <CreateUpdatePost server={server} operation="update" />,
+        },
+        {
+          path: "about",
+          element: <About />,
         },
         {
           path: "server-error",
