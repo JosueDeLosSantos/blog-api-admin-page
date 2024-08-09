@@ -1,7 +1,7 @@
-import InstagramIcon from "../../public/icons/social media icons/instagram-svgrepo-com.svg";
-import LinkedInIcon from "../../public/icons/social media icons/linkedin-rounded-border-svgrepo-com.svg";
-import GithubIcon from "../../public/icons/social media icons/github-142-svgrepo-com.svg";
-import Xtwitter from "../../public/icons/social media icons/xtwiiter.svg";
+import InstagramIcon from "../../icons/social media icons/instagram-svgrepo-com.svg";
+import LinkedInIcon from "../../icons/social media icons/linkedin-rounded-border-svgrepo-com.svg";
+import GithubIcon from "../../icons/social media icons/github-142-svgrepo-com.svg";
+import Xtwitter from "../../icons/social media icons/xtwiiter.svg";
 
 function About() {
   // const { windowWidth } = useWindowSize();
@@ -17,7 +17,7 @@ function About() {
               width={160}
               height={160}
               className="h-full w-full rounded-full object-cover ring-1 ring-blue-400  dark:ring-blue-500"
-              src="../public/images/josuedelossantos.jpg"
+              src="../images/josuedelossantos.jpg"
             />
           </div>
 
