@@ -130,7 +130,7 @@ figure.table[style] {
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
-  a:not(.ck-editor__editable *, .logo),
+  a:not(.ck-editor__editable *, .logo, .except),
   h1:not(.ck-editor__editable *),
   h2:not(.ck-editor__editable *, .except),
   h3:not(.ck-editor__editable *),
