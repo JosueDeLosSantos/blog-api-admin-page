@@ -17,7 +17,7 @@ function About() {
               width={160}
               height={160}
               className="h-full w-full rounded-full object-cover ring-1 ring-blue-400  dark:ring-blue-500"
-              src="../images/josuedelossantos.jpg"
+              src="/images/josuedelossantos.jpg"
             />
           </div>
 

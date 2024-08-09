@@ -32,7 +32,7 @@ function LogIn({ server }: { server: string }) {
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
 
-    const apiUrl = `${server}user/admin/log-in`;
+    const apiUrl = `${server}/user/admin/log-in`;
     try {
       const response = await axios.post(apiUrl, formData);
 
