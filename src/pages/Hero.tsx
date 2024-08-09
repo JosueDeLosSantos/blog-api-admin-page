@@ -15,7 +15,7 @@ export default function Navbar() {
       </div>
       <div className="roboto-medium absolute left-[50%] top-[40%] z-10 w-[70%] translate-x-[-50%] translate-y-[-50%] rounded-lg border border-slate-200 bg-white p-4 sm:w-1/2 dark:border-slate-900 dark:bg-slate-800">
         <div className="text-center text-lg tracking-wide sm:text-xl lg:text-2xl">
-          <h1>The experiences of a programmer in pursuit of his dreams</h1>
+          <h1>Your Gateway to the Latest in Web Development Technologies.</h1>
         </div>
         <div className="mt-10 flex justify-center">
           <Link to="/posts">

@@ -13,7 +13,7 @@ import About from "../pages/About";
 
 const Router = () => {
   //https://dummy-blog.adaptable.app/
-  const server = "http://localhost:3000/";
+  const server = "https://dummy-blog.adaptable.app/";
 
   // MARK: Router
   const router = createBrowserRouter([

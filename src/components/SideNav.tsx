@@ -62,7 +62,7 @@ export default function MenuBar() {
         <LaptopIcon />
         {"<JCODER>"}
       </div>
-      <div className="flex flex-col justify-between text-black xl:text-lg dark:text-slate-100">
+      <div className="flex flex-col justify-between text-black dark:text-slate-100">
         {member === "user" && (
           <div
             className="mt-2 flex w-full cursor-pointer items-center rounded bg-slate-100 p-2 font-medium hover:bg-purple-600 hover:text-white dark:bg-slate-700 dark:hover:bg-blue-100 dark:hover:text-purple-600"

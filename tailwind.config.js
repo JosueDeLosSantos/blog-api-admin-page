@@ -6,6 +6,10 @@ export default {
     extend: {},
     fontFamily: {
       PressStart2P: ['"Press Start 2P"'],
+      Roboto: ["Roboto"],
+      Instagram: ["Instagram"],
+      Linkedin: ["Linkedin"],
+      Github: ["Github"],
     },
     fontSize: {
       sm: "0.75rem",

@@ -289,7 +289,7 @@ export default function Profile({ server }: { server: string }) {
   return (
     <div className="mb-[5vh] mt-[10vh] flex w-full flex-col items-center justify-center gap-5">
       {/*MARK: Profile-pic */}
-      <div className="flex w-[75vw] max-w-[600px] flex-col items-center gap-3 rounded-xl border-slate-200 bg-white px-10 py-5 shadow-md md:gap-5 dark:border-slate-900 dark:bg-slate-800">
+      <div className="flex w-[75vw] max-w-[600px] flex-col items-center gap-3 rounded-xl border-slate-200 bg-white shadow-md max-sm:p-4 sm:px-10 sm:py-5 md:gap-5 dark:border-slate-900 dark:bg-slate-800">
         <div>
           <img
             className="rounded-full ring-1 ring-blue-400 max-md:size-[80px] dark:ring-blue-500"
@@ -318,7 +318,7 @@ export default function Profile({ server }: { server: string }) {
         </div>
       </div>
       {/* MARK: Profile-info */}
-      <div className="flex w-[75vw] max-w-[600px] flex-col rounded-xl border-slate-200 bg-white px-10 py-5 shadow-md dark:border-slate-900 dark:bg-slate-800">
+      <div className="flex w-[75vw] max-w-[600px] flex-col rounded-xl border-slate-200 bg-white shadow-md max-sm:p-4 sm:px-10 sm:py-5 dark:border-slate-900 dark:bg-slate-800">
         <div className="my-5">
           <h2 className="text-center antialiased max-sm:text-lg sm:text-xl">
             Update your information here
