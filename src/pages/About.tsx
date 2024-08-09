@@ -1,7 +1,7 @@
-import InstagramIcon from "../../icons/social media icons/instagram-svgrepo-com.svg";
-import LinkedInIcon from "../../icons/social media icons/linkedin-rounded-border-svgrepo-com.svg";
-import GithubIcon from "../../icons/social media icons/github-142-svgrepo-com.svg";
-import Xtwitter from "../../icons/social media icons/xtwiiter.svg";
+import InstagramIcon from "/icons/social media icons/instagram-svgrepo-com.svg";
+import LinkedInIcon from "/icons/social media icons/linkedin-rounded-border-svgrepo-com.svg";
+import GithubIcon from "/icons/social media icons/github-142-svgrepo-com.svg";
+import Xtwitter from "/icons/social media icons/xtwiiter.svg";
 
 function About() {
   // const { windowWidth } = useWindowSize();

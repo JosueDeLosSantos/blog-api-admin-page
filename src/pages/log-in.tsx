@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import codeImage from "images/safar-safarov-koOdUvfGr4c-unsplash.jpg";
+import codeImage from "/images/safar-safarov-koOdUvfGr4c-unsplash.jpg";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../app/store";
 import { switchPrivilege } from "../utils/privilegeSlice";
