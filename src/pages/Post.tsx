@@ -319,13 +319,7 @@ function Post({ server }: { server: string }) {
           >
             <div>
               <IconButton
-                sx={{
-                  "@media (prefers-color-scheme: dark)": {
-                    "&:hover": {
-                      backgroundColor: "#1e293b",
-                    },
-                  },
-                }}
+                className="icons-hover"
                 onClick={() => ScrollTo("comments")}
               >
                 <Badge badgeContent={post?.comments?.length} color="primary">
@@ -341,13 +335,7 @@ function Post({ server }: { server: string }) {
             {post && member === "admin" && (
               <div>
                 <IconButton
-                  sx={{
-                    "@media (prefers-color-scheme: dark)": {
-                      "&:hover": {
-                        backgroundColor: "#1e293b",
-                      },
-                    },
-                  }}
+                  className="icons-hover"
                   onClick={() => EditPost(originalPost)}
                 >
                   <EditIcon
@@ -362,13 +350,7 @@ function Post({ server }: { server: string }) {
             {post && member === "admin" && (
               <div>
                 <IconButton
-                  sx={{
-                    "@media (prefers-color-scheme: dark)": {
-                      "&:hover": {
-                        backgroundColor: "#1e293b",
-                      },
-                    },
-                  }}
+                  className="icons-hover"
                   onClick={() => handleDeletePost(post._id)}
                 >
                   <DeleteIcon
@@ -382,13 +364,7 @@ function Post({ server }: { server: string }) {
             )}
             <div>
               <IconButton
-                sx={{
-                  "@media (prefers-color-scheme: dark)": {
-                    "&:hover": {
-                      backgroundColor: "#1e293b",
-                    },
-                  },
-                }}
+                className="icons-hover"
                 onClick={() => ScrollTo("posts")}
               >
                 <KeyboardArrowUpIcon
@@ -551,7 +527,7 @@ function Post({ server }: { server: string }) {
                           className="absolute right-[-15px] top-[-15px] flex flex-row-reverse max-md:right-[-35px] max-md:top-[-50px]"
                         >
                           <IconButton
-                            className="icons"
+                            className="icons comments-icons"
                             ref={(el) => (deleteRef.current[index] = el)}
                             data-deleteid={comment._id}
                             data-author={comment.author}
@@ -560,13 +536,6 @@ function Post({ server }: { server: string }) {
                               handleDeletion(e);
                             }}
                             title="Delete comment"
-                            sx={{
-                              "@media (prefers-color-scheme: dark)": {
-                                "&:hover": {
-                                  backgroundColor: "#334155",
-                                },
-                              },
-                            }}
                           >
                             <DeleteIcon
                               sx={{ opacity: 0.7 }}
@@ -575,7 +544,7 @@ function Post({ server }: { server: string }) {
                           </IconButton>
                           {comment.author === user._id && (
                             <IconButton
-                              className="icons"
+                              className="icons comments-icons"
                               ref={(el) => (editRef.current[index] = el)}
                               data-editid={comment._id}
                               data-author={comment.author}
@@ -584,13 +553,6 @@ function Post({ server }: { server: string }) {
                                 handleEdition(e);
                               }}
                               title="Edit comment"
-                              sx={{
-                                "@media (prefers-color-scheme: dark)": {
-                                  "&:hover": {
-                                    backgroundColor: "#334155",
-                                  },
-                                },
-                              }}
                             >
                               <EditIcon
                                 sx={{ opacity: 0.7 }}
