@@ -10,4 +10,10 @@ export default defineConfig({
     react(),
     ckeditor5({ theme: require.resolve("@ckeditor/ckeditor5-theme-lark") }),
   ],
+  server: {
+    // Enable SPA Fallback
+    //@ts-expect-error
+    // 'historyApiFallback' does not exist in type 'ServerOptions
+    historyApiFallback: true,
+  },
 });
