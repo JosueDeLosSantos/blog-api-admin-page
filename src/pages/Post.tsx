@@ -172,7 +172,6 @@ function Post({ server }: { server: string }) {
         return comment._id;
       }),
     };
-    // console.log(postWithFormattedComments);
     navigate(`/posts/update/${postToEdit?._id}`, {
       state: postWithFormattedComments,
     });

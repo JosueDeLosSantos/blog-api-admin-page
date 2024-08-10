@@ -464,10 +464,10 @@ function CreateUpdatePost({
                       const content = editor.getData();
                       // Update the state
                       handlePostChange(content);
-                      const toolbarItems = Array.from(
+                      /* const toolbarItems = Array.from(
                         editor.ui.componentFactory.names(), // display available list of toolbar editor
                       );
-                      console.log(toolbarItems.sort());
+                      console.log(toolbarItems.sort()); */
                     }}
                     onReady={(editor) => {
                       editor.editing.view.document.on("delete", () => {
