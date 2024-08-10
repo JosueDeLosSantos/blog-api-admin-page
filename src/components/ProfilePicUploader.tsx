@@ -294,7 +294,7 @@ const ImgCrop: React.FC<ImgCropPros> = ({
         style={{
           display: `${cropSectionVisibility}`,
         }}
-        className="absolute left-[50%] top-[50%] w-3/4 translate-x-[-50%] translate-y-[-120%] bg-white p-5 sm:w-fit"
+        className="absolute left-[50%] top-[60%] w-3/4 translate-x-[-50%] translate-y-[-120%] bg-white p-5 sm:w-fit"
       >
         <div
           style={{ display: `${cropSectionVisibility}` }}
