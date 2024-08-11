@@ -13,7 +13,7 @@ import About from "../pages/About";
 
 const Router = () => {
   //https://jcoder-api.adaptable.app/
-  const server = "https://jcoder-api.adaptable.app/";
+  const server = "http://localhost:3000/";
 
   // MARK: Router
   const router = createBrowserRouter([

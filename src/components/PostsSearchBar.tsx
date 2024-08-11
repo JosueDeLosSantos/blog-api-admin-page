@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
 import { postTypes } from "../types/types";
 import { Link } from "react-router-dom";
+import he from "he";
 
 export default function Main() {
   const posts = useSelector((state: RootState) => state.posts);
@@ -52,7 +53,7 @@ function FilteredPosts({ posts }: { posts: postTypes[] }) {
   return posts.map((post) => (
     <Link to={`/posts/post/${post._id}`}>
       <div className="cursor-pointer p-2 hover:bg-blue-100 dark:hover:bg-purple-500">
-        <p className="mb-[-0.1rem] font-bold">{post.title}</p>
+        <p className="mb-[-0.1rem] font-bold">{he.decode(post.title)}</p>
         <span className="text-sm text-slate-500 dark:text-slate-300">
           {post.date}
         </span>
