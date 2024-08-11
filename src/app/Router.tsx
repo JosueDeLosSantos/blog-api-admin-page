@@ -12,8 +12,8 @@ import Profile from "../pages/Profile";
 import About from "../pages/About";
 
 const Router = () => {
-  //https://dummy-blog.adaptable.app/
-  const server = "https://dummy-blog.adaptable.app/";
+  //https://https://jcoder-api.adaptable.app/
+  const server = "https://jcoder-api.adaptable.app/";
 
   // MARK: Router
   const router = createBrowserRouter([
