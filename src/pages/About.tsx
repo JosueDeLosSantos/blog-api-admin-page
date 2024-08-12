@@ -61,9 +61,9 @@ function About() {
             </p>
 
             <p>
-              I understand the challenges of learning programming independently;
-              it requires significant time, effort, and enthusiasm. However,
-              with persistence, almost anything is possible.
+              I understand the challenges of learning programming; it requires
+              significant time, effort, and enthusiasm. However, with
+              persistence, almost anything is possible.
             </p>
 
             <p>
@@ -82,7 +82,7 @@ function About() {
                   <div className="size-3 h-5 w-5">
                     <img src={LinkedInIcon} alt="Linkedin icon" />
                   </div>
-                  <div className="font-Linkedin flex items-center text-sm font-semibold text-white">
+                  <div className="flex items-center font-Linkedin text-sm font-semibold text-white">
                     JOSUE DE LOS SANTOS
                   </div>
                 </div>
@@ -95,7 +95,7 @@ function About() {
                   <div className="size-3 h-5 w-5">
                     <img src={Xtwitter} alt="Xtwitter icon" />
                   </div>
-                  <div className="font-Roboto flex items-center text-sm font-semibold text-white">
+                  <div className="flex items-center font-Roboto text-sm font-semibold text-white">
                     @joshcoder2000
                   </div>
                 </div>
@@ -108,7 +108,7 @@ function About() {
                   <div className="size-3 h-5 w-5">
                     <img src={InstagramIcon} alt="Instagram icon" />
                   </div>
-                  <div className="font-Instagram flex items-center text-sm font-bold text-white">
+                  <div className="flex items-center font-Instagram text-sm font-bold text-white">
                     joshcoder2000
                   </div>
                 </div>
@@ -121,7 +121,7 @@ function About() {
                   <div className="size-3 h-5 w-5">
                     <img src={GithubIcon} alt="Github icon" />
                   </div>
-                  <div className="font-Github flex items-center text-sm text-white">
+                  <div className="flex items-center font-Github text-sm text-white">
                     JosueDeLosSantos
                   </div>
                 </div>
