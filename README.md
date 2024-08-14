@@ -24,9 +24,9 @@ This repository contains the [admin page](https://blog-api-admin-page.vercel.app
 
 - **Responsive Design**: Optimized for various screen sizes.
 <div styles="display: flex;">
-  <div><figure><img alt="main screen" src="./public/images/phone-main.jpg" width="70"/><figcaption>Phones</figcaption></figure></div>&nbsp;&nbsp;&nbsp;
-  <div><figure><img alt="main screen" src="./public/images/tablet-main.jpg" width="115"/><figcaption>Tablets</figcaption></figure></div>&nbsp;&nbsp;&nbsp;
-  <div><figure><img alt="main screen" src="./public/images/main-screen.jpg" width="205"/><figcaption>Desktops</figcaption></figure></div>
+  <img alt="Phones screens" src="./public/images/phone-main.jpg" width="70"/>&nbsp;&nbsp;&nbsp;
+  <img alt="Tablets screens" src="./public/images/tablet-main.jpg" width="115"/>&nbsp;&nbsp;&nbsp;
+  <img alt="Desktops screens" src="./public/images/main-screen.jpg" width="205"/>
 </div>
 
 ## Getting Started
