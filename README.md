@@ -17,15 +17,15 @@ This repository contains the [admin page](https://blog-api-admin-page.vercel.app
 
 - **Dark Mode**: Automatic dark mode styles for a better user experience.
 <div styles="display: flex;">
-  <img alt="editor screen" src="./public/images/editor-screen-dark.jpg" width="200"/>
-  <img alt="main screen" src="./public/images/main-screen-dark.jpg" width="200"/>
+  <img alt="editor screen" src="./public/images/editor-screen-dark.jpg" width="200"/>&nbsp;&nbsp;&nbsp;
+  <img alt="main screen" src="./public/images/main-screen-dark.jpg" width="200"/>&nbsp;&nbsp;&nbsp;
   <img alt="post screen" src="./public/images/desktop-post-dark.jpg" width="200"/>
 </div>
 
 - **Responsive Design**: Optimized for various screen sizes.
 <div styles="display: flex;">
-  <img alt="main screen" src="./public/images/phone-main.jpg" width="70"/>
-  <img alt="main screen" src="./public/images/tablet-main.jpg" width="110"/>
+  <img alt="main screen" src="./public/images/phone-main.jpg" width="70"/>&nbsp;&nbsp;&nbsp;
+  <img alt="main screen" src="./public/images/tablet-main.jpg" width="115"/>&nbsp;&nbsp;&nbsp;
   <img alt="main screen" src="./public/images/main-screen.jpg" width="200"/>
 </div>
 
