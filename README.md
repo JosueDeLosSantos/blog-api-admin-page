@@ -6,7 +6,8 @@ This repository contains the [admin page](https://blog-api-admin-page.vercel.app
 
 - **User Authentication**: Sign up and log in pages with secure authentication.
 <div style="display: flex;">
-  <img style="margin-right: 50px;" alt="sign up screen" src="./public/images/sign-up-screen.jpg" width="200" />
+  <img alt="sign up screen" src="./public/images/sign-up-screen.jpg" width="200" />
+  <div style="width: 100px"></div>
   <img alt="login screen" src="./public/images/login-screen.jpg" width="200"/>
 </div>
 
