@@ -5,10 +5,10 @@ This repository contains the [admin page](https://blog-api-admin-page.vercel.app
 ## Features
 
 - **User Authentication**: Sign up and log in pages with secure authentication.
-<p style="align: center;">
-  <img alt="sign up screen" src="./public/images/sign-up-screen.jpg" width="195" style="margin-right: 30px;"/>
+<div style="display: flex;">
+  <img alt="sign up screen" src="./public/images/sign-up-screen.jpg" width="195" />&nbsp;&nbsp;&nbsp; 
   <img alt="login screen" src="./public/images/login-screen.jpg" width="200"/>
-</p>
+</div>
 
 - **Content Management**: Create, update, and delete blog posts.
   <div>
