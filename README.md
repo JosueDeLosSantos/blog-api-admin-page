@@ -8,10 +8,10 @@ This repository contains the [admin page](https://blog-api-admin-page.vercel.app
 <div style="display: flex; gap: 20px;">
   <div style="width: 200px;">
     <img alt="login screen" src="./public/images/login-screen.jpg" 
-    width="200" style="object-fit: cover;"/>
+    width="200" style="max-width: 100%;"/>
   </div>
   <div style="width: 200px;">
-    <img width="200" alt="login screen" src="./public/images/sign-up-screen.jpg" style="object-fit: cover;"/>
+    <img alt="login screen" src="./public/images/sign-up-screen.jpg" width="200" style="max-width: 100%;"/>
   </div>
 </div>
 - **Content Management**: Create, update, and delete blog posts.
