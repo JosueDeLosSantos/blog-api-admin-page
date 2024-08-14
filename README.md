@@ -4,6 +4,7 @@ This repository contains the [admin page](https://blog-api-admin-page.vercel.app
 
 <div style="display:flex;">
   <img width="50" src="./public/png icons/vite-icon.png" alt="vite logo"/>
+  <img width="50" src="./public/png icons/nodejs-icon.png" alt="nodejs logo"/>
   <img width="50" src="./public/png icons/react-icon.png" alt="react logo"/>
   <img width="50" src="./public/png icons/redux.png" alt="redux logo"/>
   <img width="50" src="./public/png icons/MUI.png" alt="MUI logo"/>
