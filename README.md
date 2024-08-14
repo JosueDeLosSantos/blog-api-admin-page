@@ -6,7 +6,7 @@ This repository contains the [admin page](https://blog-api-admin-page.vercel.app
 
 - **User Authentication**: Sign up and log in pages with secure authentication.
 <div style="display: flex;">
-  <img alt="sign up screen" src="./public/images/sign-up-screen.jpg" width="190" />
+  <img alt="sign up screen" src="./public/images/sign-up-screen.jpg" width="195" />
   <img alt="login screen" src="./public/images/login-screen.jpg" width="200"/>
 </div>
 
@@ -25,7 +25,7 @@ This repository contains the [admin page](https://blog-api-admin-page.vercel.app
 - **Responsive Design**: Optimized for various screen sizes.
 <div styles="display: flex;">
   <img alt="main screen" src="./public/images/phone-main.jpg" width="70"/>
-  <img alt="main screen" src="./public/images/tablet-main.jpg" width="120"/>
+  <img alt="main screen" src="./public/images/tablet-main.jpg" width="110"/>
   <img alt="main screen" src="./public/images/main-screen.jpg" width="200"/>
 </div>
 
