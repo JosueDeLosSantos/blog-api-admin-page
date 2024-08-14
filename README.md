@@ -6,24 +6,26 @@ This repository contains the [admin page](https://blog-api-admin-page.vercel.app
 
 - **User Authentication**: Sign up and log in pages with secure authentication.
 <div style="display: flex;">
-  <img alt="sign up screen" src="./public/images/sign-up-screen.jpg" width="200" />
+  <img alt="sign up screen" src="./public/images/sign-up-screen.jpg" width="190" />
   <img alt="login screen" src="./public/images/login-screen.jpg" width="200"/>
 </div>
 
 - **Content Management**: Create, update, and delete blog posts.
-  <img alt="editor screen" src="./public/images/editor-screen.jpg" width="200"/>
+  <div>
+    <img alt="editor screen" src="./public/images/editor-screen.jpg" width="200"/>
+  </div>
 
 - **Dark Mode**: Automatic dark mode styles for a better user experience.
 <div styles="display: flex;">
   <img alt="editor screen" src="./public/images/editor-screen-dark.jpg" width="200"/>
   <img alt="main screen" src="./public/images/main-screen-dark.jpg" width="200"/>
-  <img alt="post screen" src="./public/images/editor-post-dark.jpg" width="200"/>
+  <img alt="post screen" src="./public/images/desktop-post-dark.jpg" width="200"/>
 </div>
 
 - **Responsive Design**: Optimized for various screen sizes.
 <div styles="display: flex;">
   <img alt="main screen" src="./public/images/phone-main.jpg" width="70"/>
-  <img alt="main screen" src="./public/images/tablet-main.jpg" width="150"/>
+  <img alt="main screen" src="./public/images/tablet-main.jpg" width="120"/>
   <img alt="main screen" src="./public/images/main-screen.jpg" width="200"/>
 </div>
 
