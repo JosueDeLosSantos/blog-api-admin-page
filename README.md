@@ -1,6 +1,16 @@
 # Blog API Admin Page
 
-This repository contains the [admin page](https://blog-api-admin-page.vercel.app/) for the JCODER blog, built using **React**, **TypeScript**, and **Vite**.
+This repository contains the [admin page](https://blog-api-admin-page.vercel.app/) for the JCODER blog, built using the following technologies:
+
+<div style="display:flex;">
+  <img width="50" src="./public/png icons/react-icon.png" alt="react logo"/>
+  <img width="50" src="./public/png icons/redux.png" alt="redux logo"/>
+  <img width="50" src="./public/png icons/MUI.png" alt="MUI logo"/>
+  <img width="50" src="./public/png icons/typescript-icon.png" alt="typescript logo"/>
+   <img width="50" src="./public/png icons/tailwind-icon.png" alt="tailwind logo"/>
+   <img width="50" src="./public/png icons/css-icon.png" alt="css logo"/>
+   <img width="50" src="./public/png icons/html-icon.png" alt="html logo"/>
+</div>
 
 ## Features
 
