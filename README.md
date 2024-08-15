@@ -87,3 +87,12 @@ This project is configured for deployment on Vercel. To deploy, follow these ste
 ## Contributing
 
 Contributions are welcome! Please fork the repository and create a pull request with your changes.
+
+## About This Project
+
+This is part of my first full-stack project, where I applied all the concepts learned in The [Odin Project](https://www.theodinproject.com/) without following any tutorial. It showcases my journey and growth as a developer.
+
+Other repositories related to this project
+
+- [Blog API](https://github.com/JosueDeLosSantos/Blog-API.git)
+- [Users Page](https://github.com/JosueDeLosSantos/blog-api-users-page.git)
