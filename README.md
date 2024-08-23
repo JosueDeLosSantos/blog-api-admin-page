@@ -90,7 +90,7 @@ Contributions are welcome! Please fork the repository and create a pull request 
 
 ## About This Project
 
-This is part of my first full-stack project, where I applied all the concepts learned in The [Odin Project](https://www.theodinproject.com/) without following any tutorial. It showcases my journey and growth as a developer.
+This is part of my first full-stack project, where I applied all the concepts learned in The [Odin Project](https://www.theodinproject.com/). It showcases my journey and growth as a developer.
 
 Other repositories related to this project
 

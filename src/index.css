@@ -7,17 +7,17 @@
 @layer base {
   @font-face {
     font-family: "Instagram";
-    src: url(../public/fonts/instagram-font-bold.otf) format("otf");
+    src: url(../public/fonts/instagram-font-bold.otf);
   }
 
   @font-face {
     font-family: "Linkedin";
-    src: url(../public/fonts/Linkedin-font-Semibold.ttf) format("ttf");
+    src: url(../public/fonts/Linkedin-font-Semibold.ttf);
   }
 
   @font-face {
     font-family: "Github";
-    src: url(../public/fonts/github-font-regular.ttf) format("ttf");
+    src: url(../public/fonts/github-font-regular.ttf);
   }
 }
 
