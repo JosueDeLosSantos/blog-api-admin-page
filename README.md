@@ -1,6 +1,6 @@
 # Blog API Admin Page
 
-This repository contains the [admin page](https://blog-api-admin-page.vercel.app/) for the JCODER blog, built using the following technologies:
+This repository contains the admin page for the JCODER blog, built using the following technologies:
 
 <div style="display:flex;">
   <img width="50" src="./public/png icons/vite-icon.png" alt="vite logo"/>
@@ -70,19 +70,6 @@ This repository contains the [admin page](https://blog-api-admin-page.vercel.app
    npm run dev
    ```
 2. Open your browser and navigate to `http://localhost:5173`.
-
-## Deployment
-
-This project is configured for deployment on Vercel. To deploy, follow these steps:
-
-1. Install Vercel CLI:
-   ```bash
-   npm install -g vercel
-   ```
-2. Deploy the application:
-   ```bash
-   vercel
-   ```
 
 ## Contributing
 
