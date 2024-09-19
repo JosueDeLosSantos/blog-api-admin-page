@@ -12,8 +12,7 @@ import Profile from "../pages/Profile";
 import About from "../pages/About";
 
 const Router = () => {
-  //https://jcoder-api.adaptable.app/
-  const server = "https://blog-api-6mno.onrender.com/";
+  const server = "http://localhost:3000/";
 
   // MARK: Router
   const router = createBrowserRouter([
