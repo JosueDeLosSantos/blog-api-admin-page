@@ -128,34 +128,33 @@ function Post({ server }: { server: string }) {
       const jwtToken = localStorage.getItem("accessToken");
       const headers: Record<string, string> = {};
       if (jwtToken) {
+        // if user is authenticated
         headers["Authorization"] = `Bearer ${jwtToken}`;
-      }
-      try {
-        const url = `${server}user/posts/${urlId}`;
-        const response = await axios.get(url, {
-          headers: headers,
-        });
+        try {
+          const url = `${server}user/posts/${urlId}`;
+          const response = await axios.get(url, {
+            headers: headers,
+          });
 
-        dispatch(switchPrivilege("admin"));
-        setUser(response.data.user);
-        // this is the original post and will be needed to edit it
-        setOriginalPost(response.data.post);
-        // the following post is subject to change due to admins's color scheme preferences
-        dynamicStyles(response.data.post, setPost);
-        setCommentToEdit({ ...commentToEdit, post: response.data.post._id });
-      } catch (error) {
-        const axiosError = error as AxiosError;
-
-        if (
-          axiosError?.response?.status === 403 ||
-          axiosError?.response?.status === 401
-        ) {
-          type userPostType = { post: onePostType };
-          const userData = axiosError?.response?.data as userPostType;
+          dispatch(switchPrivilege("admin"));
+          setUser(response.data.user);
+          // this is the original post and will be needed to edit it
+          setOriginalPost(response.data.post);
+          // the following post is subject to change due to admins's color scheme preferences
+          dynamicStyles(response.data.post, setPost);
+          setCommentToEdit({ ...commentToEdit, post: response.data.post._id });
+        } catch (error) {
+          navigate("/log-in");
+        }
+      } else {
+        // if user is not authenticated
+        try {
+          const url = `${server}visitor/post/${urlId}`;
+          const response = await axios.get(url);
           dispatch(switchPrivilege("user"));
-          setOriginalPost(userData.post);
-          dynamicStyles(userData.post, setPost);
-        } else {
+          setOriginalPost(response.data.post);
+          dynamicStyles(response.data.post, setPost);
+        } catch (error) {
           navigate("/server-error");
         }
       }
@@ -184,26 +183,27 @@ function Post({ server }: { server: string }) {
     const headers: Record<string, string> = {};
     if (jwtToken) {
       headers["Authorization"] = `Bearer ${jwtToken}`;
-    }
-    try {
-      const response = await axios.delete(`${API_URL}/${postId}`, {
-        headers: headers,
-      });
 
-      dispatch(deletePost(response.data.post._id)); // update global state
-      navigate("/posts");
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      if (
-        axiosError?.response?.status === 403 ||
-        axiosError?.response?.status === 401
-      ) {
-        // if it's forbidden or unauthorized it will be logged out
-        dispatch(switchPrivilege("user")); // logout
-        navigate("/log-in");
-      } else {
-        navigate("/server-error");
+      try {
+        const response = await axios.delete(`${API_URL}/${postId}`, {
+          headers: headers,
+        });
+
+        dispatch(deletePost(response.data.post._id)); // update global state
+        navigate("/posts");
+      } catch (error) {
+        const axiosError = error as AxiosError;
+        if (axiosError?.response?.status === 403) {
+          // if it's forbidden it will be logged out
+          dispatch(switchPrivilege("user")); // logout
+          navigate("/log-in");
+        } else {
+          navigate("/server-error");
+        }
       }
+    } else {
+      dispatch(switchPrivilege("user"));
+      navigate("/log-in");
     }
   };
 

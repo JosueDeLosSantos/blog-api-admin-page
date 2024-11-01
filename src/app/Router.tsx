@@ -12,9 +12,9 @@ import Profile from "../pages/Profile";
 import About from "../pages/About";
 
 const Router = () => {
-  // https://jcoder-api.zeabur.app/
-  // http://localhost:3000/
-  const server = "https://jcoder-api.zeabur.app/";
+  // https://blog-o0ke822ac-josues-projects-1142327c.vercel.app
+  // http://localhost:3001/
+  const server = " https://blog-o0ke822ac-josues-projects-1142327c.vercel.app/";
 
   // MARK: Router
   const router = createBrowserRouter([

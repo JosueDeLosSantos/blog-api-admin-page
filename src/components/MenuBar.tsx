@@ -72,7 +72,6 @@ export default function MenuBar() {
 
   const signOut = () => {
     dispatch(switchPrivilege("user"));
-    localStorage.removeItem("accessToken");
     navigate("/posts");
   };
 

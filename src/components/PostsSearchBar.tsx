@@ -50,8 +50,8 @@ export default function Main() {
 }
 
 function FilteredPosts({ posts }: { posts: postTypes[] }) {
-  return posts.map((post) => (
-    <Link to={`/posts/post/${post._id}`}>
+  return posts.map((post, index) => (
+    <Link to={`/posts/post/${post._id}`} key={index}>
       <div className="cursor-pointer p-2 hover:bg-blue-100 dark:hover:bg-purple-500">
         <p className="mb-[-0.1rem] font-bold">{he.decode(post.title)}</p>
         <span className="text-sm text-slate-500 dark:text-slate-300">

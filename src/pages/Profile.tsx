@@ -51,30 +51,31 @@ export default function Profile({ server }: { server: string }) {
     const headers: Record<string, string> = {};
     if (jwtToken) {
       headers["Authorization"] = `Bearer ${jwtToken}`;
-    }
-    const url = `${server}user/admin/profile/photo`;
-    try {
-      const response = await axios.putForm(url, newProfile, {
-        headers: headers,
-      });
 
-      setProfilePic({
-        file: response.data.photo,
-        src: `${server}${response.data.photo.path}`,
-        trash: response.data.photo.filename,
-      });
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      if (
-        axiosError?.response?.status === 403 ||
-        axiosError?.response?.status === 401
-      ) {
-        // if it's forbidden or unauthorized it will be logged out
-        dispatch(switchPrivilege("user")); // logout
-        navigate("/log-in");
-      } else {
-        navigate("/server-error");
+      const url = `${server}user/admin/profile/photo`;
+      try {
+        const response = await axios.putForm(url, newProfile, {
+          headers: headers,
+        });
+
+        setProfilePic({
+          file: response.data.photo,
+          src: `${server}${response.data.photo.path}`,
+          trash: response.data.photo.filename,
+        });
+      } catch (error) {
+        const axiosError = error as AxiosError;
+        if (axiosError?.response?.status === 403) {
+          // if it's forbidden it will be logged out
+          dispatch(switchPrivilege("user")); // logout
+          navigate("/log-in");
+        } else {
+          navigate("/server-error");
+        }
       }
+    } else {
+      dispatch(switchPrivilege("user"));
+      navigate("/log-in");
     }
   }
 
@@ -83,30 +84,31 @@ export default function Profile({ server }: { server: string }) {
     const headers: Record<string, string> = {};
     if (jwtToken) {
       headers["Authorization"] = `Bearer ${jwtToken}`;
-    }
-    const url = `${server}user/admin/profile/photo`;
-    try {
-      await axios.putForm(
-        url,
-        { trash: toDelete },
-        {
-          headers: headers,
-        },
-      );
 
-      setProfilePic(initialProfilePic);
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      if (
-        axiosError?.response?.status === 403 ||
-        axiosError?.response?.status === 401
-      ) {
-        // if it's forbidden or unauthorized it will be logged out
-        dispatch(switchPrivilege("user")); // logout
-        navigate("/log-in");
-      } else {
-        navigate("/server-error");
+      const url = `${server}user/admin/profile/photo`;
+      try {
+        await axios.putForm(
+          url,
+          { trash: toDelete },
+          {
+            headers: headers,
+          },
+        );
+
+        setProfilePic(initialProfilePic);
+      } catch (error) {
+        const axiosError = error as AxiosError;
+        if (axiosError?.response?.status === 403) {
+          // if it's forbidden it will be logged out
+          dispatch(switchPrivilege("user")); // logout
+          navigate("/log-in");
+        } else {
+          navigate("/server-error");
+        }
       }
+    } else {
+      dispatch(switchPrivilege("user"));
+      navigate("/log-in");
     }
   }
 
@@ -141,39 +143,39 @@ export default function Profile({ server }: { server: string }) {
       const headers: Record<string, string> = {};
       if (jwtToken) {
         headers["Authorization"] = `Bearer ${jwtToken}`;
-      }
-      try {
-        const url = `${server}user/admin/profile`;
-        const response = await axios.get(url, {
-          headers: headers,
-        });
 
-        if (response.data.user.photo) {
-          setProfilePic({
-            ...profilePic,
-            src: `${server}${response.data.user.photo.path}`,
-            trash: response.data.user.photo.filename,
+        try {
+          const url = `${server}user/admin/profile`;
+          const response = await axios.get(url, {
+            headers: headers,
           });
-        }
 
-        setFormvalues({
-          ...formValues,
-          ...response.data.user,
-          password: "",
-        });
-      } catch (error) {
-        const axiosError = error as AxiosError;
-        if (
-          axiosError?.response?.status === 403 ||
-          axiosError?.response?.status === 401
-        ) {
-          // if it's forbidden or unauthorized it will be logged out
-          dispatch(switchPrivilege("user")); // logout
-          navigate("/log-in");
-        } else {
-          navigate("/server-error");
-          dispatch(switchPrivilege("user"));
+          if (response.data.user.photo) {
+            setProfilePic({
+              ...profilePic,
+              src: `${server}${response.data.user.photo.path}`,
+              trash: response.data.user.photo.filename,
+            });
+          }
+
+          setFormvalues({
+            ...formValues,
+            ...response.data.user,
+            password: "",
+          });
+        } catch (error) {
+          const axiosError = error as AxiosError;
+          if (axiosError?.response?.status === 403) {
+            // if it's forbidden it will be logged out
+            dispatch(switchPrivilege("user")); // logout
+            navigate("/log-in");
+          } else {
+            navigate("/server-error");
+          }
         }
+      } else {
+        dispatch(switchPrivilege("user"));
+        navigate("/log-in");
       }
     })();
 
@@ -226,63 +228,66 @@ export default function Profile({ server }: { server: string }) {
     const headers: Record<string, string> = {};
     if (jwtToken) {
       headers["Authorization"] = `Bearer ${jwtToken}`;
-    }
-    try {
-      const response = await axios.put(apiUrl, formValues, {
-        headers: headers,
-      });
 
-      if (response.data.errors) {
-        /* fix form's error management */
-        const newErrors = {
-          first_name: "",
-          last_name: "",
-          email: "",
-          username: "",
-          password: "",
-          newPassword: "",
-          newPasswordConfirmation: "",
-        };
-        while (response.data.errors.length > 0) {
-          const error = response.data.errors.shift();
-          switch (error.path) {
-            case "first_name":
-              newErrors.first_name = error.msg;
-              break;
-            case "last_name":
-              newErrors.last_name = error.msg;
-              break;
-            case "email":
-              newErrors.email = error.msg;
-              break;
-            case "username":
-              newErrors.username = error.msg;
-              break;
-            case "password":
-              newErrors.password = error.msg;
-              break;
-            case "newPassword":
-              newErrors.newPassword = error.msg;
-              break;
-            case "newPasswordConfirmation":
-              newErrors.newPasswordConfirmation = error.msg;
-              break;
-            default:
-              break;
+      try {
+        const response = await axios.put(apiUrl, formValues, {
+          headers: headers,
+        });
+
+        if (response.data.errors) {
+          /* fix form's error management */
+          const newErrors = {
+            first_name: "",
+            last_name: "",
+            email: "",
+            username: "",
+            password: "",
+            newPassword: "",
+            newPasswordConfirmation: "",
+          };
+          while (response.data.errors.length > 0) {
+            const error = response.data.errors.shift();
+            switch (error.path) {
+              case "first_name":
+                newErrors.first_name = error.msg;
+                break;
+              case "last_name":
+                newErrors.last_name = error.msg;
+                break;
+              case "email":
+                newErrors.email = error.msg;
+                break;
+              case "username":
+                newErrors.username = error.msg;
+                break;
+              case "password":
+                newErrors.password = error.msg;
+                break;
+              case "newPassword":
+                newErrors.newPassword = error.msg;
+                break;
+              case "newPasswordConfirmation":
+                newErrors.newPasswordConfirmation = error.msg;
+                break;
+              default:
+                break;
+            }
           }
+          setErrors(newErrors);
         }
-        setErrors(newErrors);
-      } else {
-        // logout
-        dispatch(switchPrivilege("user"));
-        localStorage.removeItem("accessToken");
-        navigate("/log-in");
+      } catch (error) {
+        const axiosError = error as AxiosError;
+        if (axiosError?.response?.status === 403) {
+          // if it's forbidden it will be logged out
+          dispatch(switchPrivilege("user")); // logout
+          navigate("/log-in");
+        } else {
+          navigate("/server-error");
+        }
       }
-    } catch (error) {
-      // logout
+    } else {
       dispatch(switchPrivilege("user"));
-      localStorage.removeItem("accessToken");
-      navigate("/server-error");
+      navigate("/log-in");
     }
   }
 

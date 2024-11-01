@@ -80,7 +80,6 @@ function CreateUpdatePost({
   operation: string;
   server: string;
 }) {
-  const jwtToken = localStorage.getItem("accessToken");
   const dispatch: AppDispatch = useDispatch();
   const { name } = useParams();
   const { state }: { state: editPostType | null } = useLocation();
@@ -176,8 +175,9 @@ function CreateUpdatePost({
   // MARK: onSubmit
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
-
+    const jwtToken = localStorage.getItem("accessToken");
     const headers: Record<string, string> = {};
+
     if (jwtToken) {
       headers["Authorization"] = `Bearer ${jwtToken}`;
     }
@@ -224,10 +224,7 @@ function CreateUpdatePost({
         }
       } catch (error) {
         const axiosError = error as AxiosError;
-        if (
-          axiosError?.response?.status === 403 ||
-          axiosError?.response?.status === 401
-        ) {
+        if (axiosError?.response?.status === 403) {
           // if it's forbidden or unauthorized it will be logged out
           dispatch(switchPrivilege("user")); // logout
           navigate("/log-in");
@@ -275,10 +272,7 @@ function CreateUpdatePost({
       } catch (error) {
         const axiosError = error as AxiosError;
 
-        if (
-          axiosError?.response?.status === 403 ||
-          axiosError?.response?.status === 401
-        ) {
+        if (axiosError?.response?.status === 403) {
           // if it's forbidden or unauthorized it will be logged out
           dispatch(switchPrivilege("user")); // logout
           navigate("/log-in");
