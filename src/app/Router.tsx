@@ -14,7 +14,7 @@ import About from "../pages/About";
 const Router = () => {
   // https://blog-o0ke822ac-josues-projects-1142327c.vercel.app
   // http://localhost:3001/
-  const server = " https://blog-o0ke822ac-josues-projects-1142327c.vercel.app/";
+  const server = "http://localhost:3000/";
 
   // MARK: Router
   const router = createBrowserRouter([
